@@ -73,21 +73,3 @@ extension Semester: Comparable {
         return false
     }
 }
-
-enum Season: String {
-    case Fall, Winter, Summer
-
-    static let all = [Fall, Winter, Summer]
-}
-
-extension Season: Equatable {
-    static func == (lhs: Season, rhs: Season) -> Bool {
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension Season: Comparable {
-    static func < (lhs: Season, rhs: Season) -> Bool {
-        return Season.all.index(of: lhs)! < Season.all.index(of: rhs)!
-    }
-}
