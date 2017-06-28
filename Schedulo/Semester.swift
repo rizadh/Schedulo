@@ -1,5 +1,5 @@
 //
-//  Term.swift
+//  Semester.swift
 //  Schedulo
 //
 //  Created by Rizadh Nizam on 2017-06-24.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Term {
+struct Semester {
     var label: String? {
         didSet {
             if label?.trimmingCharacters(in: .whitespaces) == "" { label = nil }
@@ -31,7 +31,7 @@ struct Term {
     }
 }
 
-extension Term: CustomStringConvertible {
+extension Semester: CustomStringConvertible {
     var description: String {
         return label ?? "\(season) \(year)"
     }

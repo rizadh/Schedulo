@@ -1,5 +1,5 @@
 //
-//  TermViewController.swift
+//  SemesterViewController.swift
 //  Schedulo
 //
 //  Created by Rizadh Nizam on 2017-06-24.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TermViewController: UITableViewController {
+class SemesterViewController: UITableViewController {
     let TERM_SECTION = 0
     let COURSES_SECTION = 1
 
@@ -16,13 +16,13 @@ class TermViewController: UITableViewController {
     let SEASON_ROW = 1
     let LABEL_ROW = 2
 
-    var term: Term {
+    var semester: Semester {
         didSet {
             updateSubviews()
         }
     }
 
-    var originalTerm: Term
+    var originalSemester: Semester
 
     lazy var yearPicker: StepperCell = {
         let cell = StepperCell()
@@ -64,9 +64,9 @@ class TermViewController: UITableViewController {
         return cell
     }()
 
-    init(for term: Term) {
-        self.term = term
-        self.originalTerm = term
+    init(for semester: Semester) {
+        self.semester = semester
+        self.originalSemester = semester
 
         super.init(style: .grouped)
 
@@ -78,15 +78,15 @@ class TermViewController: UITableViewController {
     }
 
     private func updateSubviews() {
-        seasonPicker.control.selectedSegmentIndex = Season.all.index(of: term.season)!
-        labelEditor.textField.text = term.label
-        yearPicker.value = term.year
+        seasonPicker.control.selectedSegmentIndex = Season.all.index(of: semester.season)!
+        labelEditor.textField.text = semester.label
+        yearPicker.value = semester.year
 
-        navigationItem.title = term.description
+        navigationItem.title = semester.description
     }
 
     func cancelEdit() {
-        term = originalTerm
+        semester = originalSemester
         navigationController?.popViewController(animated: true)
     }
 
@@ -95,22 +95,22 @@ class TermViewController: UITableViewController {
 
         self.view.backgroundColor = .groupTableViewBackground
 
-        navigationItem.title = term.description
+        navigationItem.title = semester.description
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelEdit))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        guard let controller = navigationController?.viewControllers.first as? TermTableViewController else {
-            fatalError("Could not access TermTableViewController")
+        guard let controller = navigationController?.viewControllers.first as? SemesterTableViewController else {
+            fatalError("Could not access SemesterTableViewController")
         }
 
-        controller.finishedEditing(term)
+        controller.finishedEditing(semester)
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case TERM_SECTION:
-            return "Term Information"
+            return "Semester Information"
         case COURSES_SECTION:
             return "Courses"
         default:
@@ -123,7 +123,7 @@ class TermViewController: UITableViewController {
         case TERM_SECTION:
             return 3
         case COURSES_SECTION:
-            return term.courses.count
+            return semester.courses.count
         default:
             fatalError("Unrecognized section")
         }
@@ -148,7 +148,7 @@ class TermViewController: UITableViewController {
             }
         case COURSES_SECTION:
             let cell = UITableViewCell()
-            cell.textLabel?.text = Array(term.courses)[indexPath.row].code
+            cell.textLabel?.text = Array(semester.courses)[indexPath.row].code
             return cell
         default:
             fatalError("Unrecognized section")
@@ -156,23 +156,23 @@ class TermViewController: UITableViewController {
     }
 }
 
-extension TermViewController: TextFieldCellDelegate {
+extension SemesterViewController: TextFieldCellDelegate {
     @nonobjc
     func valueDidChange(in textFieldCell: TextFieldCell, to newValue: String?) {
-        term.label = newValue
+        semester.label = newValue
     }
 }
 
-extension TermViewController: StepperCellDelegate {
+extension SemesterViewController: StepperCellDelegate {
     @nonobjc
     func valueDidChange(in stepperCell: StepperCell, to newValue: Double) {
-        term.year = Int(newValue)
+        semester.year = Int(newValue)
     }
 }
 
-extension TermViewController: SegmentedControlCellDelegate {
+extension SemesterViewController: SegmentedControlCellDelegate {
     @nonobjc
     func valueDidChange(in segmentedControlCell: SegmentedControlCell, to newValue: Int) {
-        term.season = Season.all[newValue]
+        semester.season = Season.all[newValue]
     }
 }
