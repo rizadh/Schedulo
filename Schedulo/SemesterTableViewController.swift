@@ -9,8 +9,35 @@
 import UIKit
 
 class SemesterTableViewController: UITableViewController {
-    var semesters = [Semester]()
+    var semesters = [Semester]() {
+        didSet {
+            semesters.sort()
+            semesters.reverse()
+        }
+    }
     var selectedSemesterIndex: Int!
+
+    var semestersGroupedByEffectiveYear: [(year: Int, semesters: [Semester])] {
+        var groupedSemesters = [Int: [Semester]]()
+
+        for semester in semesters {
+            let year = semester.effectiveYear
+
+            if groupedSemesters[year]?.append(semester) == nil {
+                groupedSemesters[year] = [semester]
+            }
+        }
+
+        return Array(groupedSemesters).map({ (year: $0.key, semesters: $0.value) })
+    }
+
+    init() {
+        super.init(style: .grouped)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) is not implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +49,21 @@ class SemesterTableViewController: UITableViewController {
 
     func addSemester() {
         let (year, season) = getCurrentSeasonAndYear()
-        semesters.append(Semester(year: year, season: season))
 
-        let indexPath = IndexPath(row: semesters.count - 1, section: 0)
+        let newSemester = Semester(year: year, season: season)
 
-        tableView.insertRows(at: [indexPath], with: .automatic)
+        semesters.append(newSemester)
 
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
-        tableView(tableView, didSelectRowAt: indexPath)
+        guard let semesterIndexPath = indexPath(of: newSemester) else {
+            fatalError("Could not find semester's index path")
+        }
+
+        tableView.beginUpdates()
+        if semestersGroupedByEffectiveYear.count > tableView.numberOfSections {
+            tableView.insertSections(IndexSet(integer: semesterIndexPath.section), with: .fade)
+        }
+        tableView.insertRows(at: [semesterIndexPath], with: .automatic)
+        tableView.endUpdates()
     }
 
     func finishedEditing(_ semester: Semester) {
@@ -55,19 +89,36 @@ class SemesterTableViewController: UITableViewController {
         }
     }
 
+    private func semester(at indexPath: IndexPath) -> Semester {
+        return semestersGroupedByEffectiveYear[indexPath.section].semesters[indexPath.row]
+    }
+
+    private func indexPath(of semester: Semester) -> IndexPath? {
+        var lastMatch: IndexPath?
+
+        for (section, group) in semestersGroupedByEffectiveYear.enumerated() {
+            for (row, currentSemester) in group.semesters.enumerated() {
+                if (currentSemester == semester) {
+                    lastMatch = IndexPath(row: row, section: section)
+                }
+            }
+        }
+
+        return lastMatch
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return semesters.count
+        return semestersGroupedByEffectiveYear[section].semesters.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let scheduleCell = UITableViewCell(style: .value1, reuseIdentifier: nil)
 
         scheduleCell.accessoryType = .disclosureIndicator
-        scheduleCell.showsReorderControl = true
 
-        let semester = semesters[indexPath.row]
-        let courseCount = semester.courses.count
-        scheduleCell.textLabel?.text = "\(semester)"
+        let targetSemester = semester(at: indexPath)
+        let courseCount = targetSemester.courses.count
+        scheduleCell.textLabel?.text = "\(targetSemester)"
         scheduleCell.detailTextLabel?.text = "\(courseCount) course"
         if courseCount != 1 { scheduleCell.detailTextLabel?.text? += "s" }
 
@@ -78,24 +129,42 @@ class SemesterTableViewController: UITableViewController {
         return true
     }
 
-    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movingSemester = semesters.remove(at: sourceIndexPath.row)
-        semesters.insert(movingSemester, at: destinationIndexPath.row)
-    }
-
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         switch editingStyle {
         case .delete:
-            semesters.remove(at: indexPath.row)
+            let needToRemoveSection = semestersGroupedByEffectiveYear[indexPath.section].semesters.count == 1
+
+            guard let index = semesters.index(of: semester(at: indexPath)) else {
+                fatalError("Could not find semester")
+            }
+            semesters.remove(at: index)
+
+            tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            if needToRemoveSection {
+                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+            }
+            tableView.endUpdates()
         default:
             fatalError("Unrecognized commit")
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedSemesterIndex = indexPath.row
-        navigationController?.pushViewController(SemesterViewController(for: semesters[indexPath.row]), animated: true)
+        let selectedSemester = semester(at: indexPath)
+
+        selectedSemesterIndex = semesters.index(of: selectedSemester)
+        navigationController?.pushViewController(SemesterViewController(for: selectedSemester), animated: true)
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return semestersGroupedByEffectiveYear.count
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let year = semestersGroupedByEffectiveYear[section].year
+
+        return "\(year) - \(year + 1)"
     }
 }
 
