@@ -18,17 +18,19 @@ class SemesterTableViewController: UITableViewController {
     var selectedSemesterIndex: Int!
 
     var semestersGroupedByEffectiveYear: [(year: Int, semesters: [Semester])] {
-        var groupedSemesters = [Int: [Semester]]()
+        var groupedSemesters = [(year: Int, semesters: [Semester])]()
 
         for semester in semesters {
             let year = semester.effectiveYear
 
-            if groupedSemesters[year]?.append(semester) == nil {
-                groupedSemesters[year] = [semester]
+            if year == groupedSemesters.last?.year {
+                groupedSemesters[groupedSemesters.count - 1].semesters.append(semester)
+            } else {
+                groupedSemesters.append((year, [semester]))
             }
         }
 
-        return Array(groupedSemesters).map({ (year: $0.key, semesters: $0.value) })
+        return groupedSemesters
     }
 
     init() {
