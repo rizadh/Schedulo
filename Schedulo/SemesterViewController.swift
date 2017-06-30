@@ -93,7 +93,7 @@ class SemesterViewController: UITableViewController {
         fatalError("init(coder:) is not implemented")
     }
 
-    func addNewCourse() {
+    private func addNewCourse() {
         let newCourse = Course(code: "", sections: [])
 
         semester.courses.append(newCourse)

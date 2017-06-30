@@ -45,11 +45,11 @@ class SemesterTableViewController: UITableViewController {
         super.viewDidLoad()
 
         navigationItem.title = "Semesters"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addSemester))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addNewSemester))
         navigationItem.leftBarButtonItem = editButtonItem
     }
 
-    func addSemester() {
+    func addNewSemester() {
         let (year, season) = getCurrentSeasonAndYear()
 
         let newSemester = Semester(year: year, season: season)

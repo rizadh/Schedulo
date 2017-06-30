@@ -71,7 +71,7 @@ class CourseViewController: UITableViewController, TextFieldCellDelegate {
         fatalError("init(coder:) is not implemented")
     }
 
-    func addNewSection() {
+    private func addNewSection() {
         let newSection = Section(identifier: "", sessions: [])
 
         self.course.sections.append(newSection)
