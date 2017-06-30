@@ -9,13 +9,19 @@
 import Foundation
 
 struct Course {
-    let code: String
-    let sections: Set<Section>
+    var code: String
+    var sections: Set<Section>
 }
 
 extension Course: Equatable {
     static func == (lhs: Course, rhs: Course) -> Bool {
-        return lhs.code == rhs.code
+        return lhs.code == rhs.code && lhs.sections == rhs.sections
+    }
+}
+
+extension Course: Comparable {
+    static func < (lhs: Course, rhs: Course) -> Bool {
+        return lhs.code < rhs.code
     }
 }
 

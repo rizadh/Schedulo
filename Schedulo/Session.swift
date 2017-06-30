@@ -9,9 +9,9 @@
 import Foundation
 
 struct Session {
-    let day: Day
-    let location: Location
-    let time: TimeRange
+    var day: Day
+    var location: Location
+    var time: TimeRange
 }
 
 extension Session: Equatable {
@@ -19,6 +19,16 @@ extension Session: Equatable {
         return lhs.day == rhs.day &&
         lhs.location == rhs.location &&
         lhs.time == rhs.time
+    }
+}
+
+extension Session: Comparable {
+    static func < (lhs: Session, rhs: Session) -> Bool {
+        guard lhs.day == rhs.day else {
+            return lhs.day < rhs.day
+        }
+
+        return lhs.time < rhs.time
     }
 }
 

@@ -9,18 +9,18 @@
 import Foundation
 
 struct TimeRange {
-    let start: Time
-    let end: Time
+    var start: Time
+    var end: Time
 
     init(from start: Time, to end: Time) {
         guard start < end else {
             fatalError("Time range start must be before time range end")
         }
-        
+
         self.start = start
         self.end = end
     }
-    
+
     var duration: Int {
         return end.minutes - start.minutes
     }

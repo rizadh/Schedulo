@@ -34,7 +34,7 @@ class SemesterTableViewController: UITableViewController {
     }
 
     init() {
-        super.init(style: .grouped)
+        super.init(style: .plain)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -66,11 +66,6 @@ class SemesterTableViewController: UITableViewController {
         }
         tableView.insertRows(at: [semesterIndexPath], with: .automatic)
         tableView.endUpdates()
-    }
-
-    func finishedEditing(_ semester: Semester) {
-        semesters[selectedSemesterIndex] = semester
-        tableView.reloadData()
     }
 
     private func getCurrentSeasonAndYear() -> (year: Int, season: Season) {
@@ -156,7 +151,11 @@ class SemesterTableViewController: UITableViewController {
         let selectedSemester = semester(at: indexPath)
 
         selectedSemesterIndex = semesters.index(of: selectedSemester)
-        navigationController?.pushViewController(SemesterViewController(for: selectedSemester), animated: true)
+        navigationController?.pushViewController(SemesterViewController(for: selectedSemester) { [unowned self] semester in
+            self.semesters[self.selectedSemesterIndex] = semester
+            self.selectedSemesterIndex = self.semesters.index(of: semester)
+            self.tableView.reloadData()
+        }, animated: true)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

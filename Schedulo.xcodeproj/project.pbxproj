@@ -13,6 +13,8 @@
 		4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */; };
 		4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */; };
 		4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87841F0459CC00FA1AC2 /* Season.swift */; };
+		4AAA87871F0544D800FA1AC2 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87861F0544D800FA1AC2 /* CourseViewController.swift */; };
+		4AAA87891F056ED300FA1AC2 /* SectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87881F056ED300FA1AC2 /* SectionViewController.swift */; };
 		4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6B1EFDC06300062548 /* AppDelegate.swift */; };
 		4AC85F6E1EFDC06300062548 /* SemesterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6D1EFDC06300062548 /* SemesterTableViewController.swift */; };
 		4AC85F731EFDC06300062548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F721EFDC06300062548 /* Assets.xcassets */; };
@@ -36,6 +38,8 @@
 		4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
 		4AAA87841F0459CC00FA1AC2 /* Season.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
+		4AAA87861F0544D800FA1AC2 /* CourseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
+		4AAA87881F056ED300FA1AC2 /* SectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionViewController.swift; sourceTree = "<group>"; };
 		4AC85F681EFDC06300062548 /* Schedulo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedulo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC85F6B1EFDC06300062548 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AC85F6D1EFDC06300062548 /* SemesterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemesterTableViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 				4AAA87841F0459CC00FA1AC2 /* Season.swift */,
 				4AC85F6D1EFDC06300062548 /* SemesterTableViewController.swift */,
 				4A3ADE2D1EFE37E700A2826D /* SemesterViewController.swift */,
+				4AAA87861F0544D800FA1AC2 /* CourseViewController.swift */,
+				4AAA87881F056ED300FA1AC2 /* SectionViewController.swift */,
 				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
 				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
 				4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */,
@@ -191,8 +197,10 @@
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,
 				4AC85F6E1EFDC06300062548 /* SemesterTableViewController.swift in Sources */,
+				4AAA87891F056ED300FA1AC2 /* SectionViewController.swift in Sources */,
 				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
+				4AAA87871F0544D800FA1AC2 /* CourseViewController.swift in Sources */,
 				4AC85F881EFDC08900062548 /* Location.swift in Sources */,
 				4AC85F8D1EFDC08900062548 /* Day.swift in Sources */,
 				4AC85F8C1EFDC08900062548 /* Section.swift in Sources */,

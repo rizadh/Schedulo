@@ -25,20 +25,20 @@ struct Time {
         guard fromMinutes < 24 * 60 else {
             fatalError("Cannot create a Time instance with more than 24 hours.")
         }
-        
+
         var minutes = fromMinutes
-        
+
         var hours = 0
 
         while minutes >= 60 {
             hours += 1
             minutes -= 60
         }
-        
+
         self.hour = hours
         self.minute = minutes
     }
-    
+
     var minutes: Int {
         return 60 * self.hour + self.minute
     }
@@ -63,17 +63,17 @@ extension Time: CustomStringConvertible {
         if hour < 10 {
             descriptionString += "0"
         }
-        
+
         descriptionString += String(hour)
-        
+
         descriptionString += ":"
-        
+
         if minute < 10 {
             descriptionString += "0"
         }
-        
+
         descriptionString += String(minute)
-     
+
         return descriptionString
     }
 }

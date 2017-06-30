@@ -19,8 +19,23 @@ class SemesterViewController: UITableViewController {
     var semester: Semester {
         didSet {
             updateSubviews()
+            changeHandler(semester)
         }
     }
+
+    let changeHandler: (Semester) -> Void
+
+    var courses: [Course] {
+        get {
+            return Array(semester.courses).sorted()
+        }
+
+        set {
+            semester.courses = Set(newValue)
+        }
+    }
+
+    var selectedCourseIndex: Int!
 
     var originalSemester: Semester
 
@@ -64,9 +79,10 @@ class SemesterViewController: UITableViewController {
         return cell
     }()
 
-    init(for semester: Semester) {
+    init(for semester: Semester, changeHandler: @escaping (Semester) -> Void) {
         self.semester = semester
         self.originalSemester = semester
+        self.changeHandler = changeHandler
 
         super.init(style: .grouped)
 
@@ -77,6 +93,28 @@ class SemesterViewController: UITableViewController {
         fatalError("init(coder:) is not implemented")
     }
 
+    func addNewCourse() {
+        let newCourse = Course(code: "", sections: [])
+
+        let result = semester.courses.insert(newCourse)
+
+        if result.inserted {
+            tableView.insertRows(at: [IndexPath(row: semester.courses.count - 1, section: COURSES_SECTION)], with: .automatic)
+        }
+
+        editCourse(result.memberAfterInsert)
+    }
+
+    private func editCourse(_ course: Course) {
+        selectedCourseIndex = courses.index(of: course)
+        let controller = CourseViewController(for: course) { [unowned self] course in
+            self.courses[self.selectedCourseIndex] = course
+            self.selectedCourseIndex = self.courses.index(of: course)
+            self.tableView.reloadData()
+        }
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
     private func updateSubviews() {
         seasonPicker.control.selectedSegmentIndex = Season.all.index(of: semester.season)!
         labelEditor.textField.text = semester.label
@@ -85,7 +123,7 @@ class SemesterViewController: UITableViewController {
         navigationItem.title = semester.description
     }
 
-    func cancelEdit() {
+    func revertToOriginalSemester() {
         semester = originalSemester
         navigationController?.popViewController(animated: true)
     }
@@ -93,18 +131,8 @@ class SemesterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = .groupTableViewBackground
-
         navigationItem.title = semester.description
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelEdit))
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        guard let controller = navigationController?.viewControllers.first as? SemesterTableViewController else {
-            fatalError("Could not access SemesterTableViewController")
-        }
-
-        controller.finishedEditing(semester)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(revertToOriginalSemester))
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -123,7 +151,7 @@ class SemesterViewController: UITableViewController {
         case TERM_SECTION:
             return 3
         case COURSES_SECTION:
-            return semester.courses.count
+            return semester.courses.count + 1
         default:
             fatalError("Unrecognized section")
         }
@@ -147,12 +175,57 @@ class SemesterViewController: UITableViewController {
                     fatalError("Unrecognized row")
             }
         case COURSES_SECTION:
-            let cell = UITableViewCell()
-            cell.textLabel?.text = Array(semester.courses)[indexPath.row].code
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.accessoryType = .disclosureIndicator
+
+            if indexPath.row < semester.courses.count {
+                let course = courses[indexPath.row]
+
+                if course.code.isEmpty {
+                    cell.textLabel?.text = "New Course"
+                    cell.textLabel?.textColor = .lightGray
+                } else {
+                    cell.textLabel?.text = course.code
+                    cell.detailTextLabel?.text = "\(course.sections.count) section"
+                    if course.sections.count != 1 { cell.detailTextLabel?.text? += "s" }
+                }
+            } else {
+                cell.textLabel?.text = "Add New Course"
+            }
             return cell
         default:
             fatalError("Unrecognized section")
         }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == COURSES_SECTION else {
+            return
+        }
+
+        if indexPath.row < semester.courses.count {
+            editCourse(courses[indexPath.row])
+        } else {
+            addNewCourse()
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard indexPath.section == COURSES_SECTION else {
+            fatalError("Can only delete from courses section")
+        }
+
+        switch editingStyle {
+        case .delete:
+            courses.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        default:
+            fatalError("Unsupported commit operation")
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == COURSES_SECTION && indexPath.row < courses.count
     }
 }
 

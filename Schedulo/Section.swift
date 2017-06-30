@@ -9,8 +9,8 @@
 import Foundation
 
 struct Section {
-    let identifier: String
-    let sessions: Set<Session>
+    var identifier: String
+    var sessions: Set<Session>
 }
 
 extension Section: Equatable {
@@ -22,6 +22,12 @@ extension Section: Equatable {
 extension Section: Hashable {
     var hashValue: Int {
         return self.identifier.hashValue
+    }
+}
+
+extension Section: Comparable {
+    static func < (lhs: Section, rhs: Section) -> Bool {
+        return lhs.identifier < rhs.identifier
     }
 }
 
