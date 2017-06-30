@@ -27,11 +27,11 @@ class SemesterViewController: UITableViewController {
 
     var courses: [Course] {
         get {
-            return Array(semester.courses).sorted()
+            return semester.courses
         }
 
         set {
-            semester.courses = Set(newValue)
+            semester.courses = newValue
         }
     }
 
@@ -96,13 +96,11 @@ class SemesterViewController: UITableViewController {
     func addNewCourse() {
         let newCourse = Course(code: "", sections: [])
 
-        let result = semester.courses.insert(newCourse)
+        semester.courses.append(newCourse)
 
-        if result.inserted {
-            tableView.insertRows(at: [IndexPath(row: semester.courses.count - 1, section: COURSES_SECTION)], with: .automatic)
-        }
+        tableView.insertRows(at: [IndexPath(row: semester.courses.count - 1, section: COURSES_SECTION)], with: .automatic)
 
-        editCourse(result.memberAfterInsert)
+        editCourse(newCourse)
     }
 
     private func editCourse(_ course: Course) {

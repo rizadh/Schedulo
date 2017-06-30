@@ -10,7 +10,7 @@ import Foundation
 
 struct Course {
     var code: String
-    var sections: Set<Section>
+    var sections: [Section]
 }
 
 extension Course: Equatable {

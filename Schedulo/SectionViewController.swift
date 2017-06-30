@@ -20,11 +20,11 @@ class SectionViewController: UITableViewController, TextFieldCellDelegate {
     }
     var sessions: [Session] {
         get {
-            return Array(section.sessions).sorted()
+            return section.sessions
         }
 
         set {
-            section.sessions = Set(newValue)
+            section.sessions = newValue
         }
     }
 

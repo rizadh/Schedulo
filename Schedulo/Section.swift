@@ -10,7 +10,7 @@ import Foundation
 
 struct Section {
     var identifier: String
-    var sessions: Set<Session>
+    var sessions: [Session]
 }
 
 extension Section: Equatable {

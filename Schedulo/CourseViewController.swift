@@ -27,11 +27,11 @@ class CourseViewController: UITableViewController, TextFieldCellDelegate {
 
     var sections: [Section] {
         get {
-            return Array(course.sections).sorted()
+            return course.sections
         }
 
         set {
-            course.sections = Set(newValue)
+            course.sections = newValue
         }
     }
 
@@ -74,13 +74,11 @@ class CourseViewController: UITableViewController, TextFieldCellDelegate {
     func addNewSection() {
         let newSection = Section(identifier: "", sessions: [])
 
-        let result = self.course.sections.insert(newSection)
+        self.course.sections.append(newSection)
 
-        if result.inserted {
-            tableView.insertRows(at: [IndexPath(row: course.sections.count - 1, section: SECTIONS_SECTION)], with: .automatic)
-        }
+        tableView.insertRows(at: [IndexPath(row: course.sections.count - 1, section: SECTIONS_SECTION)], with: .automatic)
 
-        editSection(result.memberAfterInsert)
+        editSection(newSection)
     }
 
     private func editSection(_ section: Section) {
@@ -157,5 +155,23 @@ class CourseViewController: UITableViewController, TextFieldCellDelegate {
         } else {
             addNewSection()
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard indexPath.section == SECTIONS_SECTION else {
+            fatalError("Can only delete from sections section")
+        }
+        
+        switch editingStyle {
+        case .delete:
+            sections.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        default:
+            fatalError("Unsupported commit operation")
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == SECTIONS_SECTION && indexPath.row < sections.count
     }
 }

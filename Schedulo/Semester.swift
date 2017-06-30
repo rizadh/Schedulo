@@ -14,7 +14,7 @@ struct Semester {
             if label?.trimmingCharacters(in: .whitespaces) == "" { label = nil }
         }
     }
-    var courses = Set<Course>()
+    var courses = [Course]()
     var year: Int {
         willSet {
             guard newValue >= 0 else {
