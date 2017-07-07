@@ -12,6 +12,8 @@ class CourseDetailViewController: UITableViewController {
     // MARK: - Private constants
     private struct Section {
         static let courses = 0
+
+        private init() { }
     }
 
     // MARK: - Private Properties
