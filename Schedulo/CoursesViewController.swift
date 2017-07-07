@@ -12,7 +12,6 @@ class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     private let stateController: StateController
 
-
     // MARK: - Initializers
     init(using stateController: StateController) {
         self.stateController = stateController
@@ -21,7 +20,10 @@ class CoursesViewController: UITableViewController {
 
         self.navigationItem.title = "Courses"
         self.navigationItem.leftBarButtonItem = editButtonItem
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addCourse))
+        self.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addCourse)),
+            UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(self.presentUndoSheet))
+        ]
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,10 +35,27 @@ class CoursesViewController: UITableViewController {
     private func addCourse() {
         let controller = CourseDetailViewController(for: nil) { newCourse in
             self.stateController.add(newCourse)
-            self.tableView.insertRows(at: [IndexPath(row: self.stateController.courses.count - 1, section: 0)], with: .automatic)
+            self.tableView.reloadData()
         }
         let navigationController = UINavigationController(rootViewController: controller)
         present(navigationController, animated: true, completion: nil)
+    }
+
+    @objc
+    private func presentUndoSheet() {
+        let controller = UIAlertController()
+        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        if stateController.isFirstState {
+            controller.title = "There is nothing to undo"
+        } else {
+            controller.title = "This cannot be reverted"
+            controller.addAction(UIAlertAction(title: "Undo Last Change", style: .destructive, handler: { _ in
+                self.stateController.revertState()
+                self.tableView.reloadSections([0], with: .automatic)
+            }))
+        }
+        present(controller, animated: true, completion: nil)
     }
 
     // MARK: - UITableViewController Overrides

@@ -12,8 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-   var stateController: StateController = StateController()
+
+    var stateController: StateController = StateController()
 
     lazy var coursesViewController: CoursesViewController = {
         CoursesViewController(using: self.stateController)
@@ -29,6 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         rootViewController.viewControllers = [
             UINavigationController(rootViewController: coursesViewController)
         ]
+
+        for controller in rootViewController.viewControllers! {
+            if let navigationController = controller as? UINavigationController {
+                if #available(iOS 11.0, *) {
+                    navigationController.navigationBar.prefersLargeTitles = true
+                }
+            }
+        }
+
         window?.rootViewController = rootViewController
 
         return true

@@ -14,36 +14,48 @@ class StateController {
         var courses = [Course]()
     }
 
-    private var state: State {
+    private var stateChain = [State]() {
         didSet {
-            StateController.savedState = state
+            StateController.savedStateChain = stateChain
         }
     }
 
-    private static var savedState: State {
+    private var state: State {
+        get {
+            return stateChain.last ?? State()
+        }
+
+        set {
+            stateChain.append(newValue)
+        }
+    }
+
+    private static var savedStateChain: [State] {
+        get {
+            guard let stateChainData = UserDefaults.standard.data(forKey: "stateChain") else {
+                return [State]()
+            }
+
+            guard let savedStateChain = try? JSONDecoder().decode([State].self, from: stateChainData) else {
+                return [State]()
+            }
+
+            return savedStateChain
+        }
+
         set {
             guard let jsonData = try? JSONEncoder().encode(newValue) else {
+                let message: StaticString = "Could not save application state"
+
                 if #available(iOS 10.0, *) {
-                    os_log("Could not save application state", log: .default, type: .error)
+                    os_log(message, log: .default, type: .error)
                 } else {
-                    NSLog("Could not save application state")
+                    NSLog(message.description)
                 }
                 return
             }
 
-            UserDefaults.standard.setValue(jsonData, forKeyPath: "state")
-        }
-
-        get {
-            guard let stateData = UserDefaults.standard.data(forKey: "state") else {
-                return State()
-            }
-
-            guard let savedState = try? JSONDecoder().decode(State.self, from: stateData) else {
-                return State()
-            }
-
-            return savedState
+            UserDefaults.standard.setValue(jsonData, forKeyPath: "stateChain")
         }
     }
 
@@ -51,8 +63,16 @@ class StateController {
         return state.courses
     }
 
+    var isFirstState: Bool {
+        return stateChain.count == 0
+    }
+
     init() {
-        state = StateController.savedState
+        stateChain = StateController.savedStateChain
+    }
+
+    func revertState() {
+        stateChain.removeLast()
     }
 
     func add(_ course: Course) {
