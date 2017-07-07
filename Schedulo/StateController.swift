@@ -26,7 +26,7 @@ class StateController {
                 if #available(iOS 10.0, *) {
                     os_log("Could not save application state", log: .default, type: .error)
                 } else {
-                    fatalError("Could not save application state")
+                    NSLog("Could not save application state")
                 }
                 return
             }
