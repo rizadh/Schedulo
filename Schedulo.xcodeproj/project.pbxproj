@@ -28,6 +28,7 @@
 		4AC85F8E1EFDC08900062548 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F841EFDC08900062548 /* Session.swift */; };
 		4AC85F8F1EFDC08900062548 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F851EFDC08900062548 /* Time.swift */; };
 		4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F861EFDC08900062548 /* TimeRange.swift */; };
+		4ADFE4811F1035F000CEF1C8 /* SectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADFE4801F1035F000CEF1C8 /* SectionType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		4AC85F841EFDC08900062548 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		4AC85F851EFDC08900062548 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		4AC85F861EFDC08900062548 /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
+		4ADFE4801F1035F000CEF1C8 /* SectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				4AC85F6B1EFDC06300062548 /* AppDelegate.swift */,
 				4AC85F7D1EFDC08900062548 /* Course.swift */,
 				4AC85F7E1EFDC08900062548 /* Location.swift */,
+				4ADFE4801F1035F000CEF1C8 /* SectionType.swift */,
 				4AC85F7F1EFDC08900062548 /* Overlappable.swift */,
 				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
 				4AC85F811EFDC08900062548 /* Schedule.swift */,
@@ -196,6 +199,7 @@
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,
 				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
+				4ADFE4811F1035F000CEF1C8 /* SectionType.swift in Sources */,
 				4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
 				4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */,

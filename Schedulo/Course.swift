@@ -8,10 +8,6 @@
 
 import Foundation
 
-enum SectionType: String, Codable {
-    case lecture, tutorial, practical, lab
-}
-
 struct Course: Codable {
     var code: String
     var sections: [SectionType: [Section]]
