@@ -9,6 +9,10 @@
 import UIKit
 
 class CourseDetailViewController: UITableViewController {
+    // MARK: - Private constants
+    private struct Section {
+        static let courses = 0
+    }
 
     // MARK: - Private Properties
     private let saveHandler: (Course) -> Void
@@ -75,19 +79,34 @@ class CourseDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        switch section {
+        case Section.courses:
+            return 1
+        default:
+            fatalError("Unrecognized section")
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = TextFieldCell { newCourseCode in
-            self.course.code = newCourseCode
+        switch (indexPath.section, indexPath.row) {
+        case (Section.courses, _):
+            let cell = TextFieldCell { newCourseCode in
+                self.course.code = newCourseCode
+            }
+            cell.textField.text = course.code
+            cell.textField.placeholder = "Course Code"
+            return cell
+        default:
+            fatalError("Unrecognized index path")
         }
-        cell.textField.text = course.code
-        cell.textField.placeholder = "Course Code (Required)"
-        return cell
     }
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return false
+        switch (indexPath.section, indexPath.row) {
+        case (Section.courses, _):
+            return false
+        default:
+            fatalError("Unrecognized index path")
+        }
     }
 }
