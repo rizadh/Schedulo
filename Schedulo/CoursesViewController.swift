@@ -76,16 +76,32 @@ class CoursesViewController: UITableViewController {
 
     // MARK: - UITableViewController Overrides
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard section == 0 else {
+            fatalError("Unrecognized section")
+        }
+
         return stateController.courses.count
     }
 
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard indexPath.section == 0 else {
+            fatalError("Unrecognized section")
+        }
+
         let cell = UITableViewCell()
         cell.textLabel?.text = stateController.courses[indexPath.row].code
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == 0 else {
+            fatalError("Unrecognized section")
+        }
+
         let index = indexPath.row
         let course = stateController.courses[index]
         let controller = CourseDetailViewController(for: course) { newCourse in
@@ -101,6 +117,10 @@ class CoursesViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard indexPath.section == 0 else {
+            fatalError("Unrecognized section")
+        }
+
         switch editingStyle {
         case .delete:
             stateController.removeCourse(at: indexPath.row)
@@ -111,6 +131,10 @@ class CoursesViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard indexPath.section == 0 else {
+            fatalError("Unrecognized section")
+        }
+
         return true
     }
 }
