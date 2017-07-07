@@ -9,58 +9,62 @@
 import Foundation
 
 struct Schedule {
-    private(set) var courses = [Course: Section]()
+    private(set) var courses = [Course: [SectionType: Section]]()
 
     static func getSchedules(for courses: [Course]) -> [Schedule] {
-        var schedules = [Schedule()]
-
-        for course in courses {
-            schedules = schedules.map() { schedule in
-                Array(schedule.generateSchedules(adding: course))
-            }.flatMap() { $0 }
-        }
-
-        return schedules
-    }
-
-    private func generateSchedules(adding course: Course) -> Set<Schedule> {
-        var schedules: Set = [self]
-
-        for section in course.sections {
-            var newCombination = self
-            newCombination.add(section, from: course)
-            if newCombination.isValid {
-                schedules.insert(newCombination)
+        return courses.reduce([Schedule()]) { (schedules, course) in
+            schedules.flatMap() { schedule in
+                schedule.generateSchedules(adding: course)
             }
         }
+    }
+
+    private func generateSchedules(adding course: Course) -> [Schedule] {
+        var schedules = [self]
+
+        for (sectionType, sections) in course.sections {
+            schedules = schedules.flatMap { schedule in
+                sections.map {
+                    schedule.adding($0, ofType: sectionType, from: course)
+                }
+            }.filter { $0.isValid }
+        }
 
         return schedules
     }
 
-    private mutating func add(_ section: Section, from course: Course) {
-        guard course.sections.contains(section) else {
+    private mutating func add(_ section: Section, ofType sectionType: SectionType, from course: Course) {
+        guard course.sections[sectionType]!.contains(section) else {
             fatalError("Section does not belong in course")
         }
+        
+        courses[course] = courses[course] ?? [:]
 
-        courses.updateValue(section, forKey: course)
+        guard courses[course]!.updateValue(section, forKey: sectionType) == nil else {
+            fatalError("Attempting to overwrite existing section")
+        }
     }
 
-    var sessions: Set<Session> {
-        return sections.reduce(Set<Session>(), {
-            $0.union($1.sessions)
-        })
+    private func adding(_ section: Section, ofType sectionType: SectionType, from course: Course) -> Schedule {
+        var schedule = self
+        schedule.add(section, ofType: sectionType, from: course)
+        return schedule
     }
 
-    var sections: Set<Section> {
-        return Set(courses.map( { $0.value }))
+    var sessions: [Session] {
+        return sections.flatMap { $0.sessions }
+    }
+
+    var sections: [Section] {
+        return courses.values.flatMap { $0.values }
     }
 }
 
 // MARK: - Validity
 extension Schedule {
     var isValid: Bool {
-        for outerSection in courses.values {
-            for innerSection in courses.values {
+        for outerSection in sections {
+            for innerSection in sections {
                 if (outerSection == innerSection) {
                     continue
                 }
@@ -71,6 +75,8 @@ extension Schedule {
             }
         }
 
+
+
         return true
     }
 
@@ -79,15 +85,7 @@ extension Schedule {
 // MARK: - Active Days
 extension Schedule {
     var daysWithSessions: Set<Day> {
-        var days = Set<Day>()
-
-        for (_, section) in courses {
-            for session in section.sessions {
-                days.update(with: session.day)
-            }
-        }
-
-        return days
+        return Set(sections.flatMap() { $0.sessions }.map() { $0.day })
     }
 }
 
@@ -147,41 +145,12 @@ extension Schedule {
 // MARK: - CustomStringConvertible
 extension Schedule: CustomStringConvertible {
     var description: String {
-        var sessions = [String]()
-
-        for (course, section) in courses.sorted(by: { $0.key.code < $1.key.code }) {
-            for session in section.sessions {
-                sessions.append("\(course.code): \(session.day) (\(session.time.start) - \(session.time.end))")
+        return courses.sorted { $0.key.code < $1.key.code }.flatMap { (course, sections) in
+            sections.flatMap { $0.value.sessions }.map {
+                (course: course, session: $0)
             }
-        }
-
-        return sessions.joined(separator: "\n")
-    }
-}
-
-// MARK: - Equatable
-extension Schedule: Equatable {
-    static func == (lhs: Schedule, rhs: Schedule) -> Bool {
-        return lhs.courses == rhs.courses
-    }
-}
-
-// MARK: - Hashable
-extension Schedule: Hashable {
-    var hashValue: Int {
-        var concatString = ""
-
-        for (course, section) in courses {
-            concatString += course.code + section.identifier
-        }
-
-        courses.keys.sorted(by: { $0.code < $1.code }).forEach({ course in
-            concatString += course.code
-            course.sections.sorted(by: { $0.identifier < $1.identifier }).forEach { section in
-                concatString += section.identifier
-            }
-        })
-
-        return concatString.hashValue
+        }.map { (course, session) in
+            "\(course.code): \(session.day) (\(session.time.start) - \(session.time.end))"
+        }.joined(separator: "\n")
     }
 }

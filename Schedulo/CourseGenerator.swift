@@ -32,7 +32,7 @@ struct CourseGenerator {
             sections.append(randomSection(sessionsPerSection: numSessions))
         }
 
-        return Course(code: randomIdentifier(), sections: sections)
+        return Course(code: randomIdentifier(), sections: [.lecture: sections])
     }
 
     private static func randomSection(sessionsPerSection numSessions: Int) -> Section {
@@ -59,11 +59,7 @@ struct CourseGenerator {
         let startTime = getTime(for: intervals.start)
         let endTime = getTime(for: intervals.end)
 
-        return Session(day: day, location: randomLocation(), time: TimeRange(from: startTime, to: endTime))
-    }
-
-    private static func randomLocation() -> Location {
-        return Location(building: randomIdentifier(), room: Int(arc4random_uniform(UInt32(1e5))))
+        return Session(day: day, time: TimeRange(from: startTime, to: endTime))
     }
 
     private static func generateIntervals() -> (start: Int, end: Int) {

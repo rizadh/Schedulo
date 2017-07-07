@@ -8,23 +8,34 @@
 
 import UIKit
 
-protocol TextFieldCellDelegate {
-    func valueDidChange(in textFieldCell: TextFieldCell, to newValue: String?)
-}
-
 class TextFieldCell: UITableViewCell, UITextFieldDelegate {
-    var delegate: TextFieldCellDelegate?
+    var changeHandler: (String) -> Void
 
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.textAlignment = .right
-        textField.autocapitalizationType = .words
-        textField.adjustsFontSizeToFitWidth = true
+        textField.autocapitalizationType = .allCharacters
+        textField.clearButtonMode = .whileEditing
         textField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         return textField
     }()
+
+    init(changeHandler: @escaping (String) -> Void) {
+        self.changeHandler = changeHandler
+
+        super.init(style: .default, reuseIdentifier: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc
+    private func textFieldDidChange() {
+        changeHandler(textField.text!)
+    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -32,8 +43,11 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
         return false
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        delegate?.valueDidChange(in: self, to: textField.text)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        changeHandler(newText)
+
+        return true
     }
 
     override func layoutSubviews() {
@@ -43,7 +57,8 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
 
         let guide = contentView.layoutMarginsGuide
 
-        textField.trailingAnchor.constraint(equalTo: textLabel!.trailingAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
+        textField.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
         textField.centerYAnchor.constraint(equalTo: guide.centerYAnchor).isActive = true
     }
 }

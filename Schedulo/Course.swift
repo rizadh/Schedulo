@@ -8,14 +8,36 @@
 
 import Foundation
 
+enum SectionType {
+    case lecture, tutorial, practical, lab
+}
+
 struct Course {
     var code: String
-    var sections: [Section]
+    var sections: [SectionType: [Section]]
+    var allSections: [Section] {
+        return sections.values.flatMap { $0 }
+    }
 }
 
 extension Course: Equatable {
     static func == (lhs: Course, rhs: Course) -> Bool {
-        return lhs.code == rhs.code && lhs.sections == rhs.sections
+        guard lhs.code == rhs.code else {
+            return false
+        }
+
+        // Can be replaced in Swift 4 with: lhs.sections == rhs.sections
+        for (sectionType, lhsSections) in lhs.sections {
+            guard let rhsSections = rhs.sections[sectionType] else {
+                return false
+            }
+
+            guard lhsSections == rhsSections else {
+                return false
+            }
+        }
+
+        return true
     }
 }
 

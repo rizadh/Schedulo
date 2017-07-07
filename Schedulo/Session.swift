@@ -10,14 +10,12 @@ import Foundation
 
 struct Session {
     var day: Day
-    var location: Location
     var time: TimeRange
 }
 
 extension Session: Equatable {
     static func == (lhs: Session, rhs: Session) -> Bool {
         return lhs.day == rhs.day &&
-        lhs.location == rhs.location &&
         lhs.time == rhs.time
     }
 }
@@ -34,9 +32,7 @@ extension Session: Comparable {
 
 extension Session: Hashable {
     var hashValue: Int {
-        return self.day.hashValue +
-            self.location.building.hashValue +
-            self.location.room.hashValue
+        return self.day.hashValue
     }
 }
 
