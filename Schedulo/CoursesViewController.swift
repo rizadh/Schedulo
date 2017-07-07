@@ -35,9 +35,14 @@ class CoursesViewController: UITableViewController {
     private func addCourse() {
         let controller = CourseDetailViewController(for: nil) { newCourse in
             self.stateController.add(newCourse)
-            self.tableView.reloadData()
+            let row = self.stateController.courses.count - 1
+            let indexPath = IndexPath(row: row, section: 0)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
         }
+
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .popover
+        navigationController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         present(navigationController, animated: true, completion: nil)
     }
 
@@ -74,9 +79,13 @@ class CoursesViewController: UITableViewController {
         let course = stateController.courses[index]
         let controller = CourseDetailViewController(for: course) { newCourse in
             self.stateController.replaceCourse(at: index, with: newCourse)
-            self.tableView.reloadData()
+            self.tableView.reloadSections([0], with: .automatic)
         }
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet
+        controller.cancelHandler = {
+            self.tableView.deselectRow(at: indexPath, animated: true)
+        }
         present(navigationController, animated: true, completion: nil)
     }
 

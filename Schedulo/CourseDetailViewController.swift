@@ -21,6 +21,9 @@ class CourseDetailViewController: UITableViewController {
     private var saveButton: UIBarButtonItem!
     private var cancelButton: UIBarButtonItem!
 
+    // MARK: - Public Properties
+    var cancelHandler: (() -> Void)?
+
     // MARK: - Initializers
     init(for courseOrNil: Course? = nil, saveHandler: @escaping (Course) -> Void) {
         self.saveHandler = saveHandler
@@ -57,6 +60,7 @@ class CourseDetailViewController: UITableViewController {
 
     @objc
     private func cancel() {
+        cancelHandler?()
         hideKeyboardAndDismiss()
     }
 
