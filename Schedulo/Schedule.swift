@@ -145,11 +145,11 @@ extension Schedule {
 // MARK: - CustomStringConvertible
 extension Schedule: CustomStringConvertible {
     var description: String {
-        return courses.sorted { $0.key.code < $1.key.code }.flatMap { (course, sections) in
+        return courses.sorted { $0.key.code < $1.key.code }.flatMap { let (course, sections) = $0; return
             sections.flatMap { $0.value.sessions }.map {
                 (course: course, session: $0)
             }
-        }.map { (course, session) in
+        }.map { let (course, session) = $0; return
             "\(course.code): \(session.day) (\(session.time.start) - \(session.time.end))"
         }.joined(separator: "\n")
     }

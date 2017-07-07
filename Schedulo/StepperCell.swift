@@ -60,7 +60,7 @@ class StepperCell: UITableViewCell, UITextFieldDelegate {
         return string.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
     }
 
-    func handleChange() {
+    @objc func handleChange() {
         delegate?.valueDidChange(in: self, to: stepper.value)
     }
 

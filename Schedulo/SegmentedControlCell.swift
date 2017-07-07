@@ -22,7 +22,7 @@ class SegmentedControlCell: UITableViewCell {
         return control
     }()
 
-    func handleChange() {
+    @objc func handleChange() {
         delegate?.valueDidChange(in: self, to: control.selectedSegmentIndex)
     }
 
