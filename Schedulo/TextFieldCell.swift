@@ -26,6 +26,8 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
         self.changeHandler = changeHandler
 
         super.init(style: .default, reuseIdentifier: nil)
+
+        textLabel?.isHidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {
