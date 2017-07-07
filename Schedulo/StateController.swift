@@ -17,6 +17,9 @@ class StateController {
     private var stateChain = [State]() {
         didSet {
             StateController.savedStateChain = stateChain
+
+            let notification = Notification(name: Notification.Name(rawValue: "stateDidChange"))
+            NotificationCenter.default.post(notification)
         }
     }
 
