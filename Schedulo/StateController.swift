@@ -1,5 +1,5 @@
 //
-//  AppState.swift
+//  StateController.swift
 //  Schedulo
 //
 //  Created by Rizadh Nizam on 2017-06-30.
