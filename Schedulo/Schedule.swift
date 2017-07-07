@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Schedule {
+struct Schedule: Codable {
     private(set) var courses = [Course: [SectionType: Section]]()
 
     static func getSchedules(for courses: [Course]) -> [Schedule] {

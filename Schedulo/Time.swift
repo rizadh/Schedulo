@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Time {
+struct Time: Codable {
     let hour: Int
     let minute: Int
 

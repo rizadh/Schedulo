@@ -7,19 +7,63 @@
 //
 
 import Foundation
+import os
 
 class StateController {
-    private(set) var courses = [Course]()
+    private struct State: Codable {
+        var courses = [Course]()
+    }
+
+    private var state: State {
+        didSet {
+            StateController.savedState = state
+        }
+    }
+
+    private static var savedState: State {
+        set {
+            guard let jsonData = try? JSONEncoder().encode(newValue) else {
+                if #available(iOS 10.0, *) {
+                    os_log("Could not save application state", log: .default, type: .error)
+                } else {
+                    fatalError("Could not save application state")
+                }
+                return
+            }
+
+            UserDefaults.standard.setValue(jsonData, forKeyPath: "state")
+        }
+
+        get {
+            guard let stateData = UserDefaults.standard.data(forKey: "state") else {
+                return State()
+            }
+
+            guard let savedState = try? JSONDecoder().decode(State.self, from: stateData) else {
+                return State()
+            }
+
+            return savedState
+        }
+    }
+
+    var courses: [Course] {
+        return state.courses
+    }
+
+    init() {
+        state = StateController.savedState
+    }
 
     func add(_ course: Course) {
-        courses.append(course)
+        state.courses.append(course)
     }
 
     func removeCourse(at index: Int) {
-        courses.remove(at: index)
+        state.courses.remove(at: index)
     }
 
     func replaceCourse(at index: Int, with course: Course) {
-        courses[index] = course
+        state.courses[index] = course
     }
 }

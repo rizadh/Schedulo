@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TimeRange {
+struct TimeRange: Codable {
     var start: Time
     var end: Time
 

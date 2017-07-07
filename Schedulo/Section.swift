@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Section {
+struct Section: Codable {
     var identifier: String
     var sessions: [Session]
 }

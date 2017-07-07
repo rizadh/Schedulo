@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Plan {
+struct Plan: Codable {
     // MARK:- Public Properties
     var name: String
     var season: Season

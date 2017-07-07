@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Season: String {
+enum Season: String, Codable {
     case Fall, Winter, Summer
 
     static let all = [Fall, Winter, Summer]
