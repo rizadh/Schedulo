@@ -47,10 +47,10 @@ class CoursesViewController: UITableViewController {
         controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         if stateController.isFirstState {
-            controller.title = "There is nothing to undo"
+            controller.title = "There is nothing to undo."
         } else {
-            controller.title = "This cannot be reverted"
             controller.addAction(UIAlertAction(title: "Undo Last Change", style: .destructive, handler: { _ in
+            controller.title = "This cannot be reverted."
                 self.stateController.revertState()
                 self.tableView.reloadSections([0], with: .automatic)
             }))
