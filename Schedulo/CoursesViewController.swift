@@ -12,7 +12,6 @@ class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     private let stateController: StateController
     private var addButtonItem: UIBarButtonItem!
-    private var undoButtonItem: UIBarButtonItem!
 
     // MARK: - Initializers
     init(using stateController: StateController) {
@@ -21,24 +20,26 @@ class CoursesViewController: UITableViewController {
         super.init(style: .plain)
 
         addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addCourse))
-        undoButtonItem = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(self.presentUndoSheet))
 
         self.navigationItem.title = "Courses"
-        self.navigationItem.leftBarButtonItem = editButtonItem
-        self.navigationItem.rightBarButtonItems = [
-            addButtonItem,
-            undoButtonItem
-        ]
-        NotificationCenter.default.addObserver(forName: Notification.Name("stateDidChange"), object: nil, queue: nil, using: updateStateBasedViews)
+        self.navigationItem.rightBarButtonItem = addButtonItem
+
+        self.updateStateBasedViews()
+        NotificationCenter.default.addObserver(forName: Notification.Name("stateDidChange"), object: nil, queue: nil) { [weak self] _ in
+            self?.updateStateBasedViews()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func updateStateBasedViews(notification: Notification) {
-        editButtonItem.isEnabled = stateController.courses.count > 0
-        undoButtonItem.isEnabled = !stateController.isFirstState
+    private func updateStateBasedViews() {
+        if stateController.courses.isEmpty {
+            self.navigationItem.setLeftBarButton(nil, animated: true)
+        } else {
+            self.navigationItem.setLeftBarButton(editButtonItem, animated: true)
+        }
     }
 
     // MARK: - Course Managing Methods
@@ -55,23 +56,6 @@ class CoursesViewController: UITableViewController {
         navigationController.modalPresentationStyle = .popover
         navigationController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         present(navigationController, animated: true, completion: nil)
-    }
-
-    @objc
-    private func presentUndoSheet() {
-        let controller = UIAlertController()
-        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        if stateController.isFirstState {
-            controller.title = "There is nothing to undo."
-        } else {
-            controller.title = "This cannot be reverted."
-            controller.addAction(UIAlertAction(title: "Undo Last Change", style: .destructive) { _ in
-                self.stateController.revertState()
-                self.tableView.reloadSections([0], with: .automatic)
-            })
-        }
-        present(controller, animated: true, completion: nil)
     }
 
     // MARK: - UITableViewController Overrides

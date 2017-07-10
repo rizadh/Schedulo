@@ -10,40 +10,32 @@ import Foundation
 import os
 
 class StateController {
+    private struct UserDefaultsConstants {
+        static let key = "state"
+    }
+
     private struct State: Codable {
         var courses = [Course]()
     }
 
-    private var stateChain = [State]() {
+    private var state = State() {
         didSet {
-            StateController.savedStateChain = stateChain
-
-            let notification = Notification(name: Notification.Name(rawValue: "stateDidChange"))
-            NotificationCenter.default.post(notification)
+            StateController.savedState = state
+            StateController.postStateDidChangeNotification()
         }
     }
 
-    private var state: State {
+    private static var savedState: State {
         get {
-            return stateChain.last ?? State()
-        }
-
-        set {
-            stateChain.append(newValue)
-        }
-    }
-
-    private static var savedStateChain: [State] {
-        get {
-            guard let stateChainData = UserDefaults.standard.data(forKey: "stateChain") else {
-                return [State]()
+            guard let stateData = UserDefaults.standard.data(forKey: UserDefaultsConstants.key) else {
+                return State()
             }
 
-            guard let savedStateChain = try? JSONDecoder().decode([State].self, from: stateChainData) else {
-                return [State]()
+            guard let savedState = try? JSONDecoder().decode(State.self, from: stateData) else {
+                return State()
             }
 
-            return savedStateChain
+            return savedState
         }
 
         set {
@@ -58,24 +50,22 @@ class StateController {
                 return
             }
 
-            UserDefaults.standard.setValue(jsonData, forKeyPath: "stateChain")
+            UserDefaults.standard.setValue(jsonData, forKeyPath: UserDefaultsConstants.key)
         }
+    }
+
+    private static func postStateDidChangeNotification() {
+        let notification = Notification(name: Notification.Name(rawValue: "stateDidChange"))
+        NotificationCenter.default.post(notification)
     }
 
     var courses: [Course] {
         return state.courses
     }
 
-    var isFirstState: Bool {
-        return stateChain.count == 0
-    }
-
     init() {
-        stateChain = StateController.savedStateChain
-    }
-
-    func revertState() {
-        stateChain.removeLast()
+        state = StateController.savedState
+        StateController.postStateDidChangeNotification()
     }
 
     func add(_ course: Course) {
