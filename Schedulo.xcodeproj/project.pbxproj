@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A71F1C11F10972300222735 /* SectionTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A71F1C01F10972300222735 /* SectionTypeSelectorViewController.swift */; };
 		4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */; };
 		4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */; };
 		4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */; };
@@ -33,7 +32,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4A71F1C01F10972300222735 /* SectionTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
 		4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 				4AAA87921F06F98B00FA1AC2 /* StateController.swift */,
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
 				4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */,
-				4A71F1C01F10972300222735 /* SectionTypeSelectorViewController.swift */,
 				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
 				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
 				4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */,
@@ -202,7 +199,6 @@
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,
 				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
-				4A71F1C11F10972300222735 /* SectionTypeSelectorViewController.swift in Sources */,
 				4ADFE4811F1035F000CEF1C8 /* SectionType.swift in Sources */,
 				4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
