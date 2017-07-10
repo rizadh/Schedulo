@@ -11,7 +11,7 @@ import UIKit
 class CourseDetailViewController: UITableViewController {
     // MARK: - Private constants
     private struct Section {
-        static let courses = 0
+        static let courseCode = 0
         static let sectionGrouping = 1
 
         private init() { }
@@ -19,52 +19,33 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: - Private Properties
     private let saveHandler: (Course) -> Void
+    private let cancelHandler: (() -> Void)?
     private var course: Course {
         didSet {
             self.saveButton.isEnabled = !course.code.isEmpty
         }
     }
     private let isNewCourse: Bool
+
+    // MARK: Bar Buttons
     private var saveButton: UIBarButtonItem!
     private var cancelButton: UIBarButtonItem!
-    private var multipleSectionGroups: (isEnabled: Bool, switch: UISwitch?, groups: Set<SectionType>) = (false, nil, []) {
-        didSet {
-            let indexPath = IndexPath(row: 1, section: Section.sectionGrouping)
-
-            switch (oldValue.isEnabled, multipleSectionGroups.isEnabled) {
-            case (true, false):
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            case (false, true):
-                self.tableView.insertRows(at: [indexPath], with: .automatic)
-            default:
-                break
-            }
-            multipleSectionGroups.switch?.isOn = multipleSectionGroups.isEnabled
-        }
-    }
+    // MARK: Section Grouping
+    private var sectionGroupingIsEnabled = false
+    private var sectionGroupingSwitch: UISwitch? = nil
 
     // MARK: - Private Methods
     @objc
-    private func updateMultipleSectionGroups() {
-        if let groupingSwitch = multipleSectionGroups.switch {
-            multipleSectionGroups.isEnabled = groupingSwitch.isOn
-        }
-    }
+    private func toggleSectionGrouping() {
+        sectionGroupingIsEnabled = !sectionGroupingIsEnabled
 
-    private func manageSectionGroups() {
-        let controller = SectionTypeSelectorViewController {
-            self.multipleSectionGroups.groups = $0
-        }
-        controller.sectionTypes = multipleSectionGroups.groups
-        navigationController?.pushViewController(controller, animated: true)
+//        tableView.reloadData()
     }
-
-    // MARK: - Public Properties
-    var cancelHandler: (() -> Void)?
 
     // MARK: - Initializers
-    init(for courseOrNil: Course? = nil, saveHandler: @escaping (Course) -> Void) {
+    init(for courseOrNil: Course? = nil, saveHandler: @escaping (Course) -> Void, cancelHandler: (() -> Void)? = nil) {
         self.saveHandler = saveHandler
+        self.cancelHandler = cancelHandler
         if let course = courseOrNil {
             isNewCourse = false
             self.course = course
@@ -114,10 +95,10 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Section.courses:
+        case Section.courseCode:
             return 1
         case Section.sectionGrouping:
-            return multipleSectionGroups.isEnabled ? 2 : 1
+            return 1
         default:
             fatalError("Unrecognized section")
         }
@@ -126,7 +107,7 @@ class CourseDetailViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case Section.sectionGrouping:
-            return "Enable this if your course offers more than one group of sections to choose from, e.g., one for lectures, another for tutorials. Generated schedules will contain one section from each group."
+            return "Generated schedules will contain one section from each group."
         default:
             return nil
         }
@@ -141,16 +122,9 @@ class CourseDetailViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch (indexPath.section, indexPath.row) {
-        case (Section.sectionGrouping, 1): manageSectionGroups()
-        default: fatalError("Unrecognized index path")
-        }
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
-        case (Section.courses, _):
+        case (Section.courseCode, _):
             let cell = TextFieldCell { newCourseCode in
                 self.course.code = newCourseCode
             }
@@ -160,17 +134,12 @@ class CourseDetailViewController: UITableViewController {
         case (Section.sectionGrouping, 0):
             let groupingSwitch = UISwitch()
 
-            multipleSectionGroups.switch = groupingSwitch
-            groupingSwitch.addTarget(self, action: #selector(updateMultipleSectionGroups), for: .valueChanged)
+            sectionGroupingSwitch = groupingSwitch
+            groupingSwitch.addTarget(self, action: #selector(toggleSectionGrouping), for: .valueChanged)
 
             let cell = UITableViewCell()
             cell.accessoryView = groupingSwitch
             cell.textLabel?.text = "Multiple Groups"
-            return cell
-        case (Section.sectionGrouping, 1):
-            let cell = UITableViewCell()
-            cell.textLabel?.text = "Manage"
-            cell.accessoryType = .disclosureIndicator
             return cell
         default:
             fatalError("Unrecognized index path")
@@ -179,9 +148,7 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         switch (indexPath.section, indexPath.row) {
-        case (Section.courses, _):
-            return false
-        case (Section.sectionGrouping, 0):
+        case (Section.courseCode, _), (Section.sectionGrouping, 0):
             return false
         default:
             return true

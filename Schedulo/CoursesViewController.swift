@@ -45,12 +45,12 @@ class CoursesViewController: UITableViewController {
     // MARK: - Course Managing Methods
     @objc
     private func addCourse() {
-        let controller = CourseDetailViewController(for: nil) { newCourse in
+        let controller = CourseDetailViewController(for: nil, saveHandler: { newCourse in
             self.stateController.add(newCourse)
             let row = self.stateController.courses.count - 1
             let indexPath = IndexPath(row: row, section: 0)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
-        }
+        })
 
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .popover
@@ -88,15 +88,14 @@ class CoursesViewController: UITableViewController {
 
         let index = indexPath.row
         let course = stateController.courses[index]
-        let controller = CourseDetailViewController(for: course) { newCourse in
+        let controller = CourseDetailViewController(for: course, saveHandler: { newCourse in
             self.stateController.replaceCourse(at: index, with: newCourse)
             self.tableView.reloadSections([0], with: .automatic)
-        }
+        }, cancelHandler: {
+            self.tableView.deselectRow(at: indexPath, animated: true)
+        })
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
-        controller.cancelHandler = {
-            self.tableView.deselectRow(at: indexPath, animated: true)
-        }
         present(navigationController, animated: true, completion: nil)
     }
 
