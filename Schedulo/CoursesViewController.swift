@@ -90,7 +90,7 @@ class CoursesViewController: UITableViewController {
         let course = stateController.courses[index]
         let controller = CourseDetailViewController(for: course, saveHandler: { newCourse in
             self.stateController.replaceCourse(at: index, with: newCourse)
-            self.tableView.reloadSections([0], with: .automatic)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }, cancelHandler: {
             self.tableView.deselectRow(at: indexPath, animated: true)
         })
