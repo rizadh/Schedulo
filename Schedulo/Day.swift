@@ -43,3 +43,13 @@ extension Day: Comparable {
         return lhs.rawValue < rhs.rawValue
     }
 }
+
+extension Day: Strideable {
+    func distance(to other: Day) -> Int {
+        return other.rawValue - self.rawValue
+    }
+
+    func advanced(by n: Int) -> Day {
+        return Day(rawValue: self.rawValue + n)!
+    }
+}
