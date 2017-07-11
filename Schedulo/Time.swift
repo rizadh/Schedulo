@@ -13,6 +13,22 @@ struct Time: Codable {
     let minute: Int
 
     init(hour: Int, minute: Int) {
+        guard hour >= 0 else {
+            fatalError("Cannot create a Time instance with a negative hour.")
+        }
+
+        guard hour < 24 else {
+            fatalError("Cannot create a Time instance with an hour greater than 23")
+        }
+
+        guard minute >= 0 else {
+            fatalError("Cannot create a Time instance with a negative minute.")
+        }
+
+        guard minute < 60 else {
+            fatalError("Cannot create a Time instance with a minute greater than 59")
+        }
+
         self.hour = hour
         self.minute = minute
     }
