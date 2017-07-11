@@ -27,7 +27,7 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
 
         super.init(style: .default, reuseIdentifier: nil)
 
-        textLabel?.isHidden = true
+        textLabel!.isHidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {
