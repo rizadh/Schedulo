@@ -11,7 +11,7 @@ import UIKit
 class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     private let stateController: StateController
-    private var addButtonItem: UIBarButtonItem!
+    private var addCourseItem: UIBarButtonItem!
 
     // MARK: - Initializers
     init(using stateController: StateController) {
@@ -19,10 +19,10 @@ class CoursesViewController: UITableViewController {
 
         super.init(style: .plain)
 
-        addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addCourse))
+        addCourseItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addCourse))
 
         self.navigationItem.title = "Courses"
-        self.navigationItem.rightBarButtonItem = addButtonItem
+        self.navigationItem.rightBarButtonItem = addCourseItem
 
         self.updateStateBasedViews()
         NotificationCenter.default.addObserver(forName: Notification.Name("stateDidChange"), object: nil, queue: nil) { [weak self] _ in
