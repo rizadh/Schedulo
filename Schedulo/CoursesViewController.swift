@@ -77,7 +77,7 @@ class CoursesViewController: UITableViewController {
         }
 
         let cell = UITableViewCell()
-        cell.textLabel?.text = stateController.courses[indexPath.row].code
+        cell.textLabel!.text = stateController.courses[indexPath.row].code
         return cell
     }
 
@@ -94,6 +94,7 @@ class CoursesViewController: UITableViewController {
         }, cancelHandler: {
             self.tableView.deselectRow(at: indexPath, animated: true)
         })
+
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true, completion: nil)
