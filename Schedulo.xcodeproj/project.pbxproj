@@ -17,7 +17,6 @@
 		4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87941F06FA3900FA1AC2 /* Plan.swift */; };
 		4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */; };
 		4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */; };
-		4AC291AF1F13FF9400DAF28F /* SectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC291AE1F13FF9400DAF28F /* SectionDetailViewController.swift */; };
 		4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6B1EFDC06300062548 /* AppDelegate.swift */; };
 		4AC85F731EFDC06300062548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F721EFDC06300062548 /* Assets.xcassets */; };
 		4AC85F761EFDC06300062548 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */; };
@@ -44,7 +43,6 @@
 		4AAA87941F06FA3900FA1AC2 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
 		4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
-		4AC291AE1F13FF9400DAF28F /* SectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDetailViewController.swift; sourceTree = "<group>"; };
 		4AC85F681EFDC06300062548 /* Schedulo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedulo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC85F6B1EFDC06300062548 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AC85F721EFDC06300062548 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,7 +108,6 @@
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
 				4A0865DF1F1557E800570D06 /* SectionsViewController.swift */,
 				4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */,
-				4AC291AE1F13FF9400DAF28F /* SectionDetailViewController.swift */,
 				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
 				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
 				4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */,
@@ -205,7 +202,6 @@
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,
 				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
-				4AC291AF1F13FF9400DAF28F /* SectionDetailViewController.swift in Sources */,
 				4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
 				4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */,
