@@ -23,8 +23,6 @@ class CourseDetailViewController: UITableViewController {
         didSet {
             self.saveCourseItem.isEnabled = !course.code.isEmpty
             navigationItem.title = getNavigationTitle()
-
-            tableView.reloadData()
         }
     }
     private let isNewCourse: Bool
@@ -128,6 +126,8 @@ class CourseDetailViewController: UITableViewController {
 
             saveHandler = {
                 self.course.sections = .ungrouped($0)
+                let indexPath = IndexPath(row: 1, section: TableSection.sections)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
             }
         }
 
