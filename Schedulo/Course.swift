@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 struct Course: Codable {
     var code: String
     var sections: Keyable<String, [Section]>
