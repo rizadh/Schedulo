@@ -26,6 +26,7 @@ class SectionsViewController: UITableViewController {
             if let identifier = alertController.textFields?.first?.text, !identifier.isEmpty {
                 self.sections.append(Section(identifier: identifier, sessions: []))
                 self.tableView.insertSections([self.sections.count - 1], with: .automatic)
+                self.tableView.deselectRow(at: IndexPath(row: 0, section: self.sections.count), animated: true)
             } else {
                 self.addSection()
             }
@@ -82,6 +83,8 @@ class SectionsViewController: UITableViewController {
         switch (indexPath.section, indexPath.row) {
         case (sections.count, _):
             cell.textLabel!.text = "Add Section"
+            cell.textLabel!.textColor = cell.textLabel!.tintColor
+            cell.textLabel!.textAlignment = .center
         case (let section, let row):
             if (row == sections[section].sessions.count) {
                 cell.textLabel!.text = "Add Session"
