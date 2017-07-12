@@ -26,15 +26,12 @@ class SectionsViewController: UITableViewController {
             if let identifier = alertController.textFields?.first?.text, !identifier.isEmpty {
                 self.sections.append(Section(identifier: identifier, sessions: []))
                 self.tableView.insertSections([self.sections.count - 1], with: .automatic)
-                self.tableView.deselectRow(at: IndexPath(row: 0, section: self.sections.count), animated: true)
             } else {
                 self.addSection()
             }
         })
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-            self.tableView.deselectRow(at: IndexPath(row: 0, section: self.sections.count), animated: true)
-        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "e.g. LEC001"
@@ -44,6 +41,8 @@ class SectionsViewController: UITableViewController {
         alertController.addAction(cancelAction)
 
         present(alertController, animated: true, completion: nil)
+
+        self.tableView.deselectRow(at: IndexPath(row: 0, section: self.sections.count), animated: true)
     }
 
     private func editSession(_ sessionIndex: Int, ofSection sectionIndex: Int) {
