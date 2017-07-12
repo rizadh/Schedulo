@@ -56,6 +56,9 @@ class SectionsViewController: UITableViewController {
         self.saveHandler = saveHandler
 
         super.init(style: .grouped)
+
+        self.navigationItem.title = "Sections"
+        self.navigationItem.rightBarButtonItem = editButtonItem
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -73,6 +76,10 @@ class SectionsViewController: UITableViewController {
             return 1
         }
 
+        if tableView.isEditing {
+            return sections[section].sessions.count + 2
+        }
+
         return sections[section].sessions.count + 1
     }
 
@@ -84,14 +91,33 @@ class SectionsViewController: UITableViewController {
             cell.textLabel!.text = "Add Section"
             cell.textLabel!.textColor = cell.textLabel!.tintColor
             cell.textLabel!.textAlignment = .center
-        case (let section, let row):
-            if (row == sections[section].sessions.count) {
-                cell.textLabel!.text = "Add Session"
-            } else {
-                cell.textLabel!.text = sections[section].sessions[row].description
+        case (let section, var row):
+            if tableView.isEditing {
+                row -= 1
             }
 
-            cell.accessoryType = .disclosureIndicator
+            switch row {
+                case 0..<sections[section].sessions.count:
+                    cell.textLabel!.text = sections[section].sessions[row].description
+                    cell.accessoryType = .disclosureIndicator
+                case sections[section].sessions.count:
+                    cell.textLabel!.text = "Add Session"
+                    cell.accessoryType = .disclosureIndicator
+                case -1:
+                    let originalIdentifier = sections[section].identifier
+                    let sectionIdentifierCell = TextFieldCell {
+                        if $0.isEmpty {
+                            self.sections[section].identifier = originalIdentifier
+                        } else {
+                            self.sections[section].identifier = $0
+                        }
+                    }
+                    sectionIdentifierCell.textField.placeholder = "Identifier"
+                    sectionIdentifierCell.textField.text = originalIdentifier
+                    return sectionIdentifierCell
+                default:
+                    break
+            }
         }
 
         return cell
@@ -107,7 +133,26 @@ class SectionsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section < sections.count ? sections[section].identifier : nil
+        return section < sections.count && !tableView.isEditing ? sections[section].identifier : nil
+    }
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        tableView.reloadSections(IndexSet(0..<sections.count), with: .automatic)
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        switch (indexPath.section, indexPath.row) {
+        case (sections.count, 0):
+            return false
+        case (_, 0):
+            return false
+        case (let section, let row) where row == sections[section].sessions.count + 1:
+            return false
+        default:
+            return true
+        }
     }
 }
 
