@@ -16,6 +16,7 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.autocapitalizationType = .allCharacters
+        textField.autocorrectionType = .no
         textField.clearButtonMode = .whileEditing
         textField.delegate = self
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
