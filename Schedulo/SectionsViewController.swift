@@ -200,7 +200,7 @@ class SectionsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         switch (indexPath.section, indexPath.row) {
-        case (0..<sections.count, 0):
+        case (0..<sections.count, 0) where tableView.isEditing:
             return false
         default:
             return true
