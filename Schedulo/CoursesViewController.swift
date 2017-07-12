@@ -49,7 +49,7 @@ class CoursesViewController: UITableViewController {
             self.stateController.add(newCourse)
             let row = self.stateController.courses.count - 1
             let indexPath = IndexPath(row: row, section: 0)
-            self.tableView.insertRows(at: [indexPath], with: .automatic)
+            self.tableView.insertRows(at: [indexPath], with: .left)
         })
 
         let navigationController = UINavigationController(rootViewController: controller)
@@ -90,7 +90,7 @@ class CoursesViewController: UITableViewController {
         let course = stateController.courses[index]
         let controller = CourseDetailViewController(for: course, saveHandler: { newCourse in
             self.stateController.replaceCourse(at: index, with: newCourse)
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
         }, cancelHandler: {
             self.tableView.deselectRow(at: indexPath, animated: true)
         })
@@ -108,7 +108,7 @@ class CoursesViewController: UITableViewController {
         switch editingStyle {
         case .delete:
             stateController.removeCourse(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
         default:
             fatalError("Unsupported commit operation")
         }
