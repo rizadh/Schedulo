@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* SectionsViewController.swift */; };
+		4A0865E21F16474C00570D06 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Keyable.swift */; };
 		4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */; };
 		4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */; };
 		4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */; };
@@ -15,6 +17,7 @@
 		4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87941F06FA3900FA1AC2 /* Plan.swift */; };
 		4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */; };
 		4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */; };
+		4AC291AF1F13FF9400DAF28F /* SectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC291AE1F13FF9400DAF28F /* SectionDetailViewController.swift */; };
 		4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6B1EFDC06300062548 /* AppDelegate.swift */; };
 		4AC85F731EFDC06300062548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F721EFDC06300062548 /* Assets.xcassets */; };
 		4AC85F761EFDC06300062548 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */; };
@@ -28,10 +31,11 @@
 		4AC85F8E1EFDC08900062548 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F841EFDC08900062548 /* Session.swift */; };
 		4AC85F8F1EFDC08900062548 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F851EFDC08900062548 /* Time.swift */; };
 		4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F861EFDC08900062548 /* TimeRange.swift */; };
-		4ADFE4811F1035F000CEF1C8 /* SectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADFE4801F1035F000CEF1C8 /* SectionType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A0865DF1F1557E800570D06 /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
+		4A0865E11F16474C00570D06 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
 		4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
@@ -40,6 +44,7 @@
 		4AAA87941F06FA3900FA1AC2 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
 		4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
+		4AC291AE1F13FF9400DAF28F /* SectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDetailViewController.swift; sourceTree = "<group>"; };
 		4AC85F681EFDC06300062548 /* Schedulo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedulo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC85F6B1EFDC06300062548 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AC85F721EFDC06300062548 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,7 +60,6 @@
 		4AC85F841EFDC08900062548 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		4AC85F851EFDC08900062548 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		4AC85F861EFDC08900062548 /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
-		4ADFE4801F1035F000CEF1C8 /* SectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,9 +95,9 @@
 				4AC85F6B1EFDC06300062548 /* AppDelegate.swift */,
 				4AC85F7D1EFDC08900062548 /* Course.swift */,
 				4AC85F7E1EFDC08900062548 /* Location.swift */,
-				4ADFE4801F1035F000CEF1C8 /* SectionType.swift */,
 				4AC85F7F1EFDC08900062548 /* Overlappable.swift */,
 				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
+				4A0865E11F16474C00570D06 /* Keyable.swift */,
 				4AC85F811EFDC08900062548 /* Schedule.swift */,
 				4AC85F821EFDC08900062548 /* Section.swift */,
 				4AC85F831EFDC08900062548 /* Day.swift */,
@@ -104,7 +108,9 @@
 				4AAA87941F06FA3900FA1AC2 /* Plan.swift */,
 				4AAA87921F06F98B00FA1AC2 /* StateController.swift */,
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
+				4A0865DF1F1557E800570D06 /* SectionsViewController.swift */,
 				4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */,
+				4AC291AE1F13FF9400DAF28F /* SectionDetailViewController.swift */,
 				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
 				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
 				4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */,
@@ -199,15 +205,17 @@
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,
 				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
-				4ADFE4811F1035F000CEF1C8 /* SectionType.swift in Sources */,
+				4AC291AF1F13FF9400DAF28F /* SectionDetailViewController.swift in Sources */,
 				4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
 				4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */,
+				4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */,
 				4AC85F881EFDC08900062548 /* Location.swift in Sources */,
 				4AC85F8D1EFDC08900062548 /* Day.swift in Sources */,
 				4AC85F8C1EFDC08900062548 /* Section.swift in Sources */,
 				4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */,
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
+				4A0865E21F16474C00570D06 /* Keyable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,12 +344,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UZW69BGU4W;
 				INFOPLIST_FILE = Schedulo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Schedulo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rizadh.schedulo-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -350,12 +361,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UZW69BGU4W;
 				INFOPLIST_FILE = Schedulo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Schedulo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rizadh.schedulo-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

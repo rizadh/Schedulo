@@ -8,11 +8,18 @@
 
 import Foundation
 
+
+
 struct Course: Codable {
     var code: String
-    var sections: [SectionType: [Section]]
+    var sections: Keyable<String, [Section]>
     var allSections: [Section] {
-        return sections.values.flatMap { $0 }
+        switch sections {
+        case .grouped(let groups):
+            return groups.values.flatMap { $0 }
+        case .ungrouped(let sections):
+            return sections
+        }
     }
 }
 
@@ -22,15 +29,23 @@ extension Course: Equatable {
             return false
         }
 
-        // Can be replaced in Swift 4 with: lhs.sections == rhs.sections
-        for (sectionType, lhsSections) in lhs.sections {
-            guard let rhsSections = rhs.sections[sectionType] else {
+        switch (lhs.sections, rhs.sections) {
+        case (.grouped(let lhsGroups), .grouped(let rhsGroups)):
+            guard lhsGroups.keys == rhsGroups.keys else {
                 return false
             }
 
+            for sectionType in lhsGroups.keys {
+                guard lhsGroups[sectionType]! == rhsGroups[sectionType]! else {
+                    return false
+                }
+            }
+        case (.ungrouped(let lhsSections), .ungrouped(let rhsSections)):
             guard lhsSections == rhsSections else {
                 return false
             }
+        default:
+            return false
         }
 
         return true

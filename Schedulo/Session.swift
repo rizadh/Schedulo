@@ -42,3 +42,9 @@ extension Session: Overlappable {
         lhs.time.overlaps(with: rhs.time)
     }
 }
+
+extension Session: CustomStringConvertible {
+    var description: String {
+        return "\(day) \(time.start) to \(time.end)"
+    }
+}
