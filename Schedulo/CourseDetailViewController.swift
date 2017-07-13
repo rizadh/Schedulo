@@ -23,9 +23,32 @@ class CourseDetailViewController: UITableViewController {
         didSet {
             self.saveCourseItem.isEnabled = !course.code.isEmpty
             navigationItem.title = getNavigationTitle()
+
+            switch (oldValue.sections, course.sections) {
+            case (.ungrouped, .grouped(let newGroups)):
+                let indexPaths = (0...newGroups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
+
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .fade)
+                tableView.insertRows(at: indexPaths, with: .top)
+                tableView.endUpdates()
+            case (.grouped(let oldGroups), .ungrouped):
+                // TODO: Implement grouped to ungrouped
+                break
+            default:
+                break
+            }
         }
     }
     private let isNewCourse: Bool
+    private var sectionTypes: [String]? {
+        switch course.sections {
+        case .grouped(let groups):
+            return groups.keys.sorted()
+        case .ungrouped:
+            return nil
+        }
+    }
 
     // MARK: Handlers
     private let saveHandler: (Course) -> Void
@@ -111,7 +134,103 @@ class CourseDetailViewController: UITableViewController {
     // MARK: Section Grouping
     @objc
     private func toggleSectionGrouping() {
-        print("Toggling section grouping")
+        switch course.sections {
+        case .ungrouped(let sections):
+            migrate(ungrouped: sections)
+        case .grouped(let groups):
+            migrate(grouped: groups)
+        }
+    }
+
+    private func migrate(ungrouped sections: [Section]) {
+        if sections.isEmpty {
+            course.sections = .grouped([:])
+            return
+        }
+
+        let alertController = UIAlertController(title: "Enable Grouping", message: "You have \(sections.count) ungrouped course(s). Choose a new group name to store them or discard them if you wish to re-add all courses. The group name cannot be empty.", preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let discardAction = UIAlertAction(title: "Discard", style: .destructive, handler: { _ in
+            self.course.sections = .grouped([:])
+        })
+        let continueAction = UIAlertAction(title: "Continue", style: .default, handler: { _ in
+            let groupName = alertController.textFields!.first!.text!
+
+            guard self.groupNameIsValid(groupName) else {
+                self.migrate(ungrouped: sections)
+                return
+            }
+
+            self.course.sections = .grouped([groupName: sections])
+        })
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(discardAction)
+        alertController.addAction(continueAction)
+        alertController.addTextField(configurationHandler: { textField in
+            textField.placeholder = "e.g. Lecture"
+            textField.autocapitalizationType = .words
+        })
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func migrate(grouped sections: [String: [Section]]) {
+        fatalError("Unsupported migration path.")
+    }
+
+    private func groupNameIsValid(_ name: String, for groupIndexOrNil: Int? = nil) -> Bool {
+        if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return false
+        }
+
+        if let sectionTypes = sectionTypes {
+            for (index, sectionType) in sectionTypes.enumerated() {
+                if let groupIndex = groupIndexOrNil, groupIndex == index {
+                    continue
+                }
+
+                if sectionType == name {
+                    return false
+                }
+            }
+        }
+
+        return true
+    }
+
+    private func addSectionGroup() {
+        tableView.deselectRow(at: IndexPath(row: self.sectionTypes!.count + 1, section: TableSection.sections), animated: true)
+
+        let alertController = UIAlertController(title: "Add Section Group", message: "Choose a name for the new section group. The name must not be blank.", preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
+            let groupName = alertController.textFields!.first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            guard self.groupNameIsValid(groupName) else {
+                self.addSectionGroup()
+                return
+            }
+
+            guard case .grouped(var groups) = self.course.sections else {
+                fatalError("Cannot add section group to ungrouped course.")
+            }
+
+            groups[groupName] = []
+            self.course.sections = .grouped(groups)
+            self.tableView.insertRows(at: [IndexPath(row: groups.keys.count, section: TableSection.sections)], with: .top)
+        })
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(addAction)
+        alertController.addTextField(configurationHandler: { textField in
+            textField.placeholder = "e.g. Lecture"
+            textField.autocapitalizationType = .words
+        })
+
+        present(alertController, animated: true, completion: nil)
     }
 
     // MARK: Section Management
@@ -119,23 +238,28 @@ class CourseDetailViewController: UITableViewController {
         let existingSections: [Section]
         let saveHandler: ([Section]) -> Void
 
-        if case .grouped = course.sections {
-            fatalError("Not supported yet")
-        } else {
+        switch course.sections {
+        case .grouped(var groups):
+            guard let sectionType = sectionTypeOrNil else {
+                fatalError("Did not pass a section type to a grouped course.")
+            }
+
+            existingSections = groups[sectionType]!
+            saveHandler = {
+                groups.updateValue($0, forKey: sectionType)
+                self.course.sections = .grouped(groups)
+                let indexPath = IndexPath(row: 1, section: TableSection.sections)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+        case .ungrouped(let sections):
             precondition(sectionTypeOrNil == nil, "Passed a section type to an ungrouped course.")
 
+            existingSections = sections
             saveHandler = {
                 self.course.sections = .ungrouped($0)
                 let indexPath = IndexPath(row: 1, section: TableSection.sections)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
             }
-        }
-
-        switch course.sections {
-        case .grouped:
-            fatalError("Not supported yet.")
-        case .ungrouped(let sections):
-            existingSections = sections
         }
 
         let contoller = SectionsViewController(for: existingSections, saveHandler: saveHandler)
@@ -153,7 +277,11 @@ class CourseDetailViewController: UITableViewController {
         case TableSection.courseCode:
             return 1
         case TableSection.sections:
-            return 2
+            if sectionGroupingIsEnabled {
+                return sectionTypes!.count + 2
+            } else {
+                return 2
+            }
         default:
             fatalError("Unrecognized section")
         }
@@ -185,14 +313,28 @@ class CourseDetailViewController: UITableViewController {
 
             cell.accessoryView = groupingSwitch
             cell.textLabel?.text = "Group Sections"
+            groupingSwitch.isOn = sectionGroupingIsEnabled
             groupingSwitch.addTarget(self, action: #selector(toggleSectionGrouping), for: .valueChanged)
 
             return cell
-        case (TableSection.sections, 1):
+        case (TableSection.sections, (sectionTypes?.count ?? 0) + 1) where sectionGroupingIsEnabled:
+            let cell = UITableViewCell()
+
+            cell.textLabel!.text = "Add Group"
+            cell.accessoryType = .disclosureIndicator
+
+            return cell
+        case (TableSection.sections, let row) where (1...).contains(row):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
 
             cell.accessoryType = .disclosureIndicator
-            cell.textLabel!.text = "Manage Sections"
+
+            if let sectionType = sectionTypes?[row - 1] {
+                cell.textLabel!.text = "Manage \(sectionType) Sections"
+            } else {
+                cell.textLabel!.text = "Manage Sections"
+            }
+
             let sectionCount = course.allSections.count
             cell.detailTextLabel!.text = "\(course.allSections.count) section" + (sectionCount == 1 ? "" : "s")
             return cell
@@ -212,8 +354,10 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch (indexPath.section, indexPath.row) {
-        case (TableSection.sections, 1):
-            manageSections(for: nil)
+        case (TableSection.sections, (sectionTypes?.count ?? 0) + 1) where sectionGroupingIsEnabled:
+            addSectionGroup()
+        case (TableSection.sections, let row) where (1...).contains(row):
+            manageSections(for: sectionTypes?[row - 1])
         default:
             break
         }

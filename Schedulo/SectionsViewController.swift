@@ -24,7 +24,9 @@ class SectionsViewController: UITableViewController {
         let alertController = UIAlertController(title: "Add Section", message: "Enter a uniquely identifying name for the section. It cannot be blank.", preferredStyle: .alert)
 
         let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
-            if let identifier = alertController.textFields?.first?.text, self.identifierIsValid(identifier) {
+            let identifier = alertController.textFields!.first!.text!
+
+            if self.identifierIsValid(identifier) {
                 self.sections.append(Section(identifier: identifier, sessions: []))
                 self.tableView.insertSections([self.sections.count - 1], with: .left)
             } else {
@@ -60,7 +62,7 @@ class SectionsViewController: UITableViewController {
     }
 
     private func identifierIsValid(_ identifier: String, for sectionIndexOrNil: Int? = nil) -> Bool {
-        if identifier.isEmpty {
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return false
         }
 
