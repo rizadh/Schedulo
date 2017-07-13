@@ -28,7 +28,7 @@ class SectionsViewController: UITableViewController {
 
             if self.identifierIsValid(identifier) {
                 self.sections.append(Section(identifier: identifier, sessions: []))
-                self.tableView.insertSections([self.sections.count - 1], with: .left)
+                self.tableView.insertSections([self.sections.count - 1], with: .fade)
             } else {
                 self.addSection()
             }
@@ -118,7 +118,7 @@ class SectionsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
 
-        let effectiveRow = tableView.isEditing ? indexPath.row - 1 : indexPath.row
+        let effectiveRow = tableView.isEditing ? (indexPath.row - 1) : indexPath.row
 
         switch (indexPath.section, effectiveRow) {
         case (sections.count, _):
@@ -175,7 +175,11 @@ class SectionsViewController: UITableViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
-        tableView.reloadSections(IndexSet(0..<sections.count), with: .middle)
+        if editing {
+            tableView.reloadSections(IndexSet(0..<sections.count), with: .left)
+        } else {
+            tableView.reloadSections(IndexSet(0..<sections.count), with: .right)
+        }
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
