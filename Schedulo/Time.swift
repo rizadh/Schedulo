@@ -73,22 +73,44 @@ extension Time: Comparable {
 }
 
 extension Time: CustomStringConvertible {
+    private enum TimeOfDay: String {
+        case am = "AM"
+        case pm = "PM"
+    }
+
+    private func hour24To12(_ hour: Int) -> (Int, TimeOfDay) {
+        switch hour {
+        case 0:
+            return (12, .am)
+        case 1..<12:
+            return (hour, .am)
+        case 12...:
+            return (hour, .pm)
+        default:
+            fatalError("Invalid hour: \(hour)")
+        }
+    }
+
     var description: String {
         var descriptionString = ""
 
-        if hour < 10 {
-            descriptionString += "0"
+        let (parsedHour, timeOfDay) = hour24To12(hour)
+        descriptionString += String(parsedHour)
+
+        switch minute {
+        case 0:
+            break
+        default:
+            descriptionString += ":"
+
+            if minute < 10 {
+                descriptionString += "0"
+            }
+
+            descriptionString += String(minute)
         }
 
-        descriptionString += String(hour)
-
-        descriptionString += ":"
-
-        if minute < 10 {
-            descriptionString += "0"
-        }
-
-        descriptionString += String(minute)
+        descriptionString += " \(timeOfDay.rawValue)"
 
         return descriptionString
     }
