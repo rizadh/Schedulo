@@ -54,11 +54,25 @@ class SectionsViewController: UITableViewController {
     }
 
     private func addSession(to sectionIndex: Int) {
-        print("Adding session")
+        let newSessionIndex = sections[sectionIndex].sessions.count
+        let controller = SessionDetailViewController(for: nil) { newSession in
+            self.sections[sectionIndex].sessions.append(newSession)
+
+            let indexPath = IndexPath(row: newSessionIndex, section: sectionIndex)
+            self.tableView.insertRows(at: [indexPath], with: .top)
+        }
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func editSession(_ sessionIndex: Int, of sectionIndex: Int) {
         print("Editing section")
+    }
+
+    private func deleteSession(_ sessionIndex: Int, of sectionIndex: Int) {
+        self.sections[sectionIndex].sessions.remove(at: sessionIndex)
+        let indexPath = IndexPath(row: sessionIndex + 1, section: sectionIndex)
+        self.tableView.deleteRows(at: [indexPath], with: .left)
     }
 
     private func identifierIsValid(_ identifier: String, for sectionIndexOrNil: Int? = nil) -> Bool {
@@ -173,7 +187,13 @@ class SectionsViewController: UITableViewController {
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
+        let oldValue = tableView.isEditing
+
         super.setEditing(editing, animated: animated)
+
+        guard oldValue != editing else {
+            return
+        }
 
         if editing {
             tableView.reloadSections(IndexSet(0..<sections.count), with: .left)
@@ -185,23 +205,33 @@ class SectionsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         switch editingStyle {
         case .delete:
-            deleteSection(at: indexPath.section)
+            switch (indexPath.section, indexPath.row) {
+            case (let section, let row) where tableView.isEditing && (1...sections[section].sessions.count).contains(row):
+                deleteSession(indexPath.row - 1, of: indexPath.section)
+            default:
+                fatalError("Unsupported row to delete.")
+            }
         default:
             fatalError("Unsupported commit.")
         }
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        switch (indexPath.section, indexPath.row) {
-        case (sections.count, 0):
+        guard tableView.isEditing else {
             return false
-        case (_, 0):
-            return false
-        case (let section, let row) where row > sections[section].sessions.count:
-            return false
-        default:
-            return true
         }
+
+        guard indexPath.section < sections.count else {
+            return false
+        }
+
+        let sessionCount = sections[indexPath.section].sessions.count
+
+        guard sessionCount > 0 else {
+            return false
+        }
+
+        return (1...sessionCount).contains(indexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

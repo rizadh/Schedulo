@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* SectionsViewController.swift */; };
 		4A0865E21F16474C00570D06 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Keyable.swift */; };
+		4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */; };
 		4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */; };
 		4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */; };
 		4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		4A0865DF1F1557E800570D06 /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
 		4A0865E11F16474C00570D06 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
+		4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
 		4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				4AAA87921F06F98B00FA1AC2 /* StateController.swift */,
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
 				4A0865DF1F1557E800570D06 /* SectionsViewController.swift */,
+				4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */,
 				4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */,
 				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
 				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
@@ -209,6 +212,7 @@
 				4AC85F881EFDC08900062548 /* Location.swift in Sources */,
 				4AC85F8D1EFDC08900062548 /* Day.swift in Sources */,
 				4AC85F8C1EFDC08900062548 /* Section.swift in Sources */,
+				4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */,
 				4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */,
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
 				4A0865E21F16474C00570D06 /* Keyable.swift in Sources */,
