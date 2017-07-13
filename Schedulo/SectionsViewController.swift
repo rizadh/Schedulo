@@ -66,7 +66,15 @@ class SectionsViewController: UITableViewController {
     }
 
     private func editSession(_ sessionIndex: Int, of sectionIndex: Int) {
-        print("Editing section")
+        let session = self.sections[sectionIndex].sessions[sessionIndex]
+        let controller = SessionDetailViewController(for: session) {
+            self.sections[sectionIndex].sessions[sessionIndex] = $0
+
+            let indexPath = IndexPath(row: sessionIndex, section: sectionIndex)
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func deleteSession(_ sessionIndex: Int, of sectionIndex: Int) {

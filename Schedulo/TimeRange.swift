@@ -9,13 +9,19 @@
 import Foundation
 
 struct TimeRange: Codable {
-    var start: Time
-    var end: Time
+    var start: Time {
+        willSet {
+            precondition(newValue < end, "Start time must be before end time")
+        }
+    }
+    var end: Time {
+        willSet {
+            precondition(start < newValue, "Start time must be before end time")
+        }
+    }
 
     init(from start: Time, to end: Time) {
-        guard start < end else {
-            fatalError("Time range start must be before time range end")
-        }
+        precondition(start < end, "Time range start must be before time range end")
 
         self.start = start
         self.end = end

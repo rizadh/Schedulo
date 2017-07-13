@@ -9,8 +9,8 @@
 import Foundation
 
 struct Time: Codable {
-    let hour: Int
-    let minute: Int
+    var hour: Int
+    var minute: Int
 
     init(hour: Int, minute: Int) {
         guard hour >= 0 else {
@@ -84,8 +84,10 @@ extension Time: CustomStringConvertible {
             return (12, .am)
         case 1..<12:
             return (hour, .am)
-        case 12...:
+        case 12:
             return (hour, .pm)
+        case 13...:
+            return (hour - 12, .pm)
         default:
             fatalError("Invalid hour: \(hour)")
         }
