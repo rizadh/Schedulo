@@ -33,7 +33,12 @@ class CourseDetailViewController: UITableViewController {
                 tableView.insertRows(at: indexPaths, with: .top)
                 tableView.endUpdates()
             case (.grouped(let oldGroups), .ungrouped):
-                // TODO: Implement grouped to ungrouped
+                let indexPaths = (0...oldGroups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
+
+                tableView.beginUpdates()
+                tableView.deleteRows(at: indexPaths, with: .fade)
+                tableView.insertRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .top)
+                tableView.endUpdates()
                 break
             default:
                 break
@@ -176,8 +181,8 @@ class CourseDetailViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func migrate(grouped sections: [String: [Section]]) {
-        fatalError("Unsupported migration path.")
+    private func migrate(grouped groups: [String: [Section]]) {
+        course.sections = .ungrouped(groups.values.flatMap({ $0 }))
     }
 
     private func groupNameIsValid(_ name: String, for groupIndexOrNil: Int? = nil) -> Bool {
@@ -220,7 +225,9 @@ class CourseDetailViewController: UITableViewController {
 
             groups[groupName] = []
             self.course.sections = .grouped(groups)
-            self.tableView.insertRows(at: [IndexPath(row: groups.keys.count, section: TableSection.sections)], with: .top)
+            let newIndex = groups.keys.sorted().index(of: groupName)!
+
+            self.tableView.insertRows(at: [IndexPath(row: newIndex + 1, section: TableSection.sections)], with: .top)
         })
 
         alertController.addAction(cancelAction)
@@ -246,10 +253,9 @@ class CourseDetailViewController: UITableViewController {
 
             existingSections = groups[sectionType]!
             saveHandler = {
-                groups.updateValue($0, forKey: sectionType)
+                groups[sectionType] = $0
                 self.course.sections = .grouped(groups)
-                let indexPath = IndexPath(row: 1, section: TableSection.sections)
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+                self.tableView.reloadSections([TableSection.sections], with: .none)
             }
         case .ungrouped(let sections):
             precondition(sectionTypeOrNil == nil, "Passed a section type to an ungrouped course.")
@@ -257,8 +263,7 @@ class CourseDetailViewController: UITableViewController {
             existingSections = sections
             saveHandler = {
                 self.course.sections = .ungrouped($0)
-                let indexPath = IndexPath(row: 1, section: TableSection.sections)
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+                self.tableView.reloadSections([TableSection.sections], with: .none)
             }
         }
 
@@ -329,14 +334,25 @@ class CourseDetailViewController: UITableViewController {
 
             cell.accessoryType = .disclosureIndicator
 
-            if let sectionType = sectionTypes?[row - 1] {
-                cell.textLabel!.text = "Manage \(sectionType) Sections"
-            } else {
+            let sectionCount: Int
+
+            switch course.sections {
+            case .grouped(let groups):
+                let sectionType = sectionTypes![row - 1]
+                sectionCount = groups[sectionTypes![row - 1]]!.count
+                cell.textLabel!.text = "\(sectionType) Sections"
+            case .ungrouped(let sections):
+                sectionCount = sections.count
                 cell.textLabel!.text = "Manage Sections"
             }
 
-            let sectionCount = course.allSections.count
-            cell.detailTextLabel!.text = "\(course.allSections.count) section" + (sectionCount == 1 ? "" : "s")
+            switch sectionCount {
+            case 1:
+                cell.detailTextLabel!.text = "1 section"
+            default:
+                cell.detailTextLabel!.text = "\(sectionCount) sections"
+            }
+
             return cell
         default:
             fatalError("Unrecognized index path")
