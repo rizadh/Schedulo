@@ -25,6 +25,8 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     private lazy var dayPicker: UIPickerView = {
         let picker = UIPickerView()
 
+        picker.translatesAutoresizingMaskIntoConstraints = false
+
         picker.dataSource = self
         picker.delegate = self
 
@@ -34,6 +36,8 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     private lazy var startTimePicker: UIPickerView = {
         let picker = UIPickerView()
 
+        picker.translatesAutoresizingMaskIntoConstraints = false
+
         picker.dataSource = self
         picker.delegate = self
 
@@ -42,6 +46,8 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
     private lazy var endTimePicker: UIPickerView = {
         let picker = UIPickerView()
+
+        picker.translatesAutoresizingMaskIntoConstraints = false
 
         picker.dataSource = self
         picker.delegate = self
@@ -154,16 +160,31 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             cell.detailTextLabel!.text = "\(self.session.day)"
         case (0, 1):
             cell.contentView.addSubview(dayPicker)
+
+            dayPicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
+            dayPicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
+            dayPicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
+            dayPicker.heightAnchor.constraint(equalToConstant: dayPicker.intrinsicContentSize.height).isActive = true
         case (1, 0):
             cell.textLabel!.text = "Start Time"
             cell.detailTextLabel!.text = "\(self.session.time.start)"
         case (1, 1):
             cell.contentView.addSubview(startTimePicker)
+
+            startTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
+            startTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
+            startTimePicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
+            startTimePicker.heightAnchor.constraint(equalToConstant: startTimePicker.intrinsicContentSize.height).isActive = true
         case (2, 0):
             cell.textLabel!.text = "End Time"
             cell.detailTextLabel!.text = "\(self.session.time.end)"
         case (2, 1):
             cell.contentView.addSubview(endTimePicker)
+
+            endTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
+            endTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
+            endTimePicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
+            endTimePicker.heightAnchor.constraint(equalToConstant: endTimePicker.intrinsicContentSize.height).isActive = true
         default:
             fatalError("Invalid index path.")
         }
