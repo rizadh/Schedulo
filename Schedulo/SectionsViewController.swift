@@ -181,15 +181,15 @@ class SectionsViewController: UITableViewController {
             sectionIdentifierCell.textField.placeholder = originalIdentifier
             sectionIdentifierCell.textField.text = originalIdentifier
             cell = sectionIdentifierCell
-        case 1...sections[indexPath.section].sessions.count:
-            cell.textLabel!.text = sections[indexPath.section].sessions[indexPath.row - 1].description
-            cell.accessoryType = .disclosureIndicator
         case sections[indexPath.section].sessions.count + 1:
             cell.textLabel!.text = "Add Session"
             cell.accessoryType = .disclosureIndicator
         case sections[indexPath.section].sessions.count + 2:
             cell.textLabel!.text = "Delete Section"
             cell.textLabel!.textColor = .red
+        case 1...sections[indexPath.section].sessions.count:
+            cell.textLabel!.text = sections[indexPath.section].sessions[indexPath.row - 1].description
+            cell.accessoryType = .disclosureIndicator
         default:
             break
         }
