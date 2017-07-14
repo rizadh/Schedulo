@@ -384,7 +384,6 @@ class CourseDetailViewController: UITableViewController {
         }
 
         guard let sectionTypes = sectionTypes, !sectionTypes.isEmpty else {
-
             return false
         }
 
