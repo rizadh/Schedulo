@@ -12,9 +12,16 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
     // MARK: - Private Properties
 
+    // MARK: Session Management
     private var session: Session
     private let saveHandler: (Session) -> Void
 
+    // MARK: Picker Visibility
+    private var showDayPicker = false
+    private var showStartTimePicker = false
+    private var showEndTimePicker = false
+
+    // MARK: Pickers
     private lazy var dayPicker: UIPickerView = {
         let picker = UIPickerView()
 
@@ -161,20 +168,61 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             fatalError("Unrecognized index path.")
         }
 
+        cell.clipsToBounds = true
+
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch (indexPath.section, indexPath.row) {
-        case (0, 1):
-            return dayPicker.intrinsicContentSize.height
-        case (1, 1):
-            return startTimePicker.intrinsicContentSize.height
-        case (2, 1):
-            return endTimePicker.intrinsicContentSize.height
+        guard indexPath.row == 1 else {
+            return UITableViewAutomaticDimension
+        }
+
+        switch indexPath.section {
+        case 0:
+            return showDayPicker ? dayPicker.intrinsicContentSize.height : 0
+        case 1:
+            return showStartTimePicker ? startTimePicker.intrinsicContentSize.height : 0
+        case 2:
+            return showEndTimePicker ? endTimePicker.intrinsicContentSize.height : 0
         default:
             return UITableViewAutomaticDimension
         }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row == 0 else {
+            fatalError("Unrecognized row.")
+        }
+
+        switch indexPath.section {
+        case 0:
+            showDayPicker = !showDayPicker
+            if showDayPicker {
+                showStartTimePicker = false
+                showEndTimePicker = false
+            }
+        case 1:
+            showStartTimePicker  = !showStartTimePicker
+            if showStartTimePicker {
+                showDayPicker = false
+                showEndTimePicker = false
+            }
+        case 2:
+            showEndTimePicker  = !showEndTimePicker
+            if showEndTimePicker {
+                showDayPicker = false
+                showStartTimePicker = false
+            }
+        default:
+            fatalError("Unrecognized section.")
+        }
+
+        // Animate cell heights
+        tableView.beginUpdates()
+        tableView.endUpdates()
+
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     // MARK: - UIPickerViewDataSource Methods
