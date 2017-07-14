@@ -377,4 +377,41 @@ class CourseDetailViewController: UITableViewController {
             break
         }
     }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard indexPath.section == TableSection.sections else {
+            return false
+        }
+
+        guard let sectionTypes = sectionTypes, !sectionTypes.isEmpty else {
+
+            return false
+        }
+
+        return (1...sectionTypes.count).contains(indexPath.row)
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else {
+            fatalError("Unsupported commit.")
+        }
+
+        guard indexPath.section == TableSection.sections else {
+            fatalError("Unrecognized section.")
+        }
+
+        guard case .grouped(var sectionGroups) = course.sections else {
+            fatalError("Inconsistent state: Cannot delete any rows when section grouping is disabled.")
+        }
+
+        guard let sectionTypes = sectionTypes, !sectionTypes.isEmpty else {
+            fatalError("Inconsistent state: Cannot delete any rows when no section groups are present.")
+        }
+
+        let sectionType = sectionTypes[indexPath.row - 1]
+        sectionGroups.removeValue(forKey: sectionType)
+
+        course.sections = .grouped(sectionGroups)
+        tableView.deleteRows(at: [indexPath], with: .left)
+    }
 }
