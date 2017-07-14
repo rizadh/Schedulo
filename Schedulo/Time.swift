@@ -9,24 +9,29 @@
 import Foundation
 
 struct Time: Codable {
+    static let maxHour = 23
+    static let minHour = 0
+    static let maxMinute = 59
+    static let minMinute = 0
+
     var hour: Int
     var minute: Int
 
     init(hour: Int, minute: Int) {
-        guard hour >= 0 else {
-            fatalError("Cannot create a Time instance with a negative hour.")
+        guard hour >= Time.minHour else {
+            fatalError("Cannot create a Time instance with an hour less than \(Time.minHour).")
         }
 
-        guard hour < 24 else {
-            fatalError("Cannot create a Time instance with an hour greater than 23")
+        guard hour <= Time.maxHour else {
+            fatalError("Cannot create a Time instance with an hour greater than \(Time.maxHour)")
         }
 
-        guard minute >= 0 else {
-            fatalError("Cannot create a Time instance with a negative minute.")
+        guard minute >= Time.minMinute else {
+            fatalError("Cannot create a Time instance with a minute less than \(Time.minMinute).")
         }
 
-        guard minute < 60 else {
-            fatalError("Cannot create a Time instance with a minute greater than 59")
+        guard minute <= Time.maxMinute else {
+            fatalError("Cannot create a Time instance with a minute greater than \(Time.maxMinute)")
         }
 
         self.hour = hour
