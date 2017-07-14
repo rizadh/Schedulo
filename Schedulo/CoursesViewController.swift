@@ -11,7 +11,6 @@ import UIKit
 class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     private let stateController: StateController
-    private var addCourseItem: UIBarButtonItem!
 
     // MARK: - Initializers
     init(using stateController: StateController) {
@@ -19,10 +18,11 @@ class CoursesViewController: UITableViewController {
 
         super.init(style: .plain)
 
-        addCourseItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addCourse))
+        let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
 
         self.navigationItem.title = "Courses"
-        self.navigationItem.rightBarButtonItem = addCourseItem
+        self.navigationItem.rightBarButtonItem = addButtomItem
+
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .always
         }
