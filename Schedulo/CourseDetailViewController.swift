@@ -24,22 +24,21 @@ class CourseDetailViewController: UITableViewController {
             self.saveCourseItem.isEnabled = !course.code.isEmpty
             navigationItem.title = getNavigationTitle()
 
+            func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
+                tableView.beginUpdates()
+                if !groups.keys.isEmpty {
+                    let indexPaths = (1...groups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
+                    updateFunc(indexPaths, .top)
+                }
+                tableView.reloadRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .fade)
+                tableView.endUpdates()
+            }
+
             switch (oldValue.sections, course.sections) {
             case (.ungrouped, .grouped(let newGroups)):
-                let indexPaths = (0...newGroups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
-
-                tableView.beginUpdates()
-                tableView.deleteRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .fade)
-                tableView.insertRows(at: indexPaths, with: .top)
-                tableView.endUpdates()
+                updateRows(groups: newGroups, updateFunc: tableView.insertRows(at:with:))
             case (.grouped(let oldGroups), .ungrouped):
-                let indexPaths = (0...oldGroups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
-
-                tableView.beginUpdates()
-                tableView.deleteRows(at: indexPaths, with: .fade)
-                tableView.insertRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .top)
-                tableView.endUpdates()
-                break
+                updateRows(groups: oldGroups, updateFunc: tableView.deleteRows(at:with:))
             default:
                 break
             }
