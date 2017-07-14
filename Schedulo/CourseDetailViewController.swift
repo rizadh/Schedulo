@@ -19,6 +19,7 @@ class CourseDetailViewController: UITableViewController {
     }
 
     // MARK: Course Properties
+    private let originalCourse: Course
     private var course: Course {
         didSet {
             self.saveCourseItem.isEnabled = !course.code.isEmpty
@@ -36,9 +37,9 @@ class CourseDetailViewController: UITableViewController {
 
             switch (oldValue.sections, course.sections) {
             case (.ungrouped, .grouped(let newGroups)):
-                updateRows(groups: newGroups, updateFunc: tableView.insertRows(at:with:))
+                updateRows(groups: newGroups, updateFunc: tableView.insertRows(at: with:))
             case (.grouped(let oldGroups), .ungrouped):
-                updateRows(groups: oldGroups, updateFunc: tableView.deleteRows(at:with:))
+                updateRows(groups: oldGroups, updateFunc: tableView.deleteRows(at: with:))
             default:
                 break
             }
@@ -99,6 +100,8 @@ class CourseDetailViewController: UITableViewController {
             self.course = Course(code: "", sections: .ungrouped([]))
         }
 
+        self.originalCourse = self.course
+
         super.init(style: .grouped)
 
         saveCourseItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveCourse))
@@ -126,8 +129,27 @@ class CourseDetailViewController: UITableViewController {
 
     @objc
     private func cancel() {
-        cancelHandler?()
-        hideKeyboardAndDismiss()
+        if course == originalCourse {
+            cancelHandler?()
+            hideKeyboardAndDismiss()
+            return
+        }
+
+        let alertMessage = isNewCourse ? "Are you sure you want to discard this course?\n\nAll sections and session will be lost." : "Are you sure you want to revert all changes you have made to this course?\n\nAll changes to sections and sessions will be lost."
+        let alertController = UIAlertController(title: nil, message: alertMessage, preferredStyle: .actionSheet)
+
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        let revertButtonTitle = isNewCourse ? "Discard Course" : "Revert Changes"
+        let revertButton = UIAlertAction(title: revertButtonTitle, style: .destructive) { _ in
+            self.cancelHandler?()
+            self.hideKeyboardAndDismiss()
+        }
+
+        alertController.addAction(cancelButton)
+        alertController.addAction(revertButton)
+
+        present(alertController, animated: true, completion: nil)
     }
 
     private func hideKeyboardAndDismiss() {
