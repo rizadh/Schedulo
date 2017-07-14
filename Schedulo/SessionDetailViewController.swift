@@ -165,7 +165,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         case (2, 1):
             cell.contentView.addSubview(endTimePicker)
         default:
-            fatalError("Unrecognized index path.")
+            fatalError("Invalid index path.")
         }
 
         cell.clipsToBounds = true
@@ -192,7 +192,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.row == 0 else {
-            fatalError("Unrecognized row.")
+            fatalError("Invalid row.")
         }
 
         switch indexPath.section {
@@ -215,7 +215,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
                 showStartTimePicker = false
             }
         default:
-            fatalError("Unrecognized section.")
+            fatalError("Invalid section.")
         }
 
         // Animate cell heights
@@ -234,7 +234,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         case startTimePicker, endTimePicker:
             return 3
         default:
-            fatalError("Unrecognized picker.")
+            fatalError("Invalid picker.")
         }
     }
 
@@ -249,7 +249,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         case (startTimePicker, 2), (endTimePicker, 2):
             return 2
         default:
-            fatalError("Unrecognized picker component.")
+            fatalError("Invalid picker component.")
         }
 
     }
@@ -279,10 +279,10 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
                 case 1:
                     return "PM"
                 default:
-                    fatalError("Unrecognized picker row.")
+                    fatalError("Invalid picker row.")
             }
         default:
-            fatalError("Unrecognized picker component.")
+            fatalError("Invalid picker component.")
         }
     }
 
@@ -318,7 +318,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
                 case 1:
                     startTime.hour = rawHour + 12
                 default:
-                    fatalError("Unrecognized picker row.")
+                    fatalError("Invalid picker row.")
             }
         case (endTimePicker, 2):
             let rawHour = pickerView.selectedRow(inComponent: 0)
@@ -329,10 +329,10 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
                 case 1:
                     endTime.hour = rawHour + 12
                 default:
-                    fatalError("Unrecognized picker row.")
+                    fatalError("Invalid picker row.")
             }
         default:
-            fatalError("Unrecognized picker component.")
+            fatalError("Invalid picker component.")
         }
 
         if startTime == Time(hour: Time.maxHour, minute: Time.maxMinute) {

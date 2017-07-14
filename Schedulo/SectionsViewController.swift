@@ -217,7 +217,7 @@ class SectionsViewController: UITableViewController {
             case (let section, let row) where tableView.isEditing && (1...sections[section].sessions.count).contains(row):
                 deleteSession(indexPath.row - 1, of: indexPath.section)
             default:
-                fatalError("Unsupported row to delete.")
+                fatalError("Invalid row.")
             }
         default:
             fatalError("Unsupported commit.")

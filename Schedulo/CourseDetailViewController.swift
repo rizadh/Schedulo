@@ -287,7 +287,7 @@ class CourseDetailViewController: UITableViewController {
                 return 2
             }
         default:
-            fatalError("Unrecognized section")
+            fatalError("Invalid section")
         }
     }
 
@@ -354,7 +354,7 @@ class CourseDetailViewController: UITableViewController {
 
             return cell
         default:
-            fatalError("Unrecognized index path")
+            fatalError("Invalid index path")
         }
     }
 
@@ -396,7 +396,7 @@ class CourseDetailViewController: UITableViewController {
         }
 
         guard indexPath.section == TableSection.sections else {
-            fatalError("Unrecognized section.")
+            fatalError("Invalid section.")
         }
 
         guard case .grouped(var sectionGroups) = course.sections else {

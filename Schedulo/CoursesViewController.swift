@@ -61,7 +61,7 @@ class CoursesViewController: UITableViewController {
     // MARK: - UITableViewController Overrides
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard section == 0 else {
-            fatalError("Unrecognized section")
+            fatalError("Invalid section")
         }
 
         return stateController.courses.count
@@ -73,7 +73,7 @@ class CoursesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.section == 0 else {
-            fatalError("Unrecognized section")
+            fatalError("Invalid section")
         }
 
         let cell = UITableViewCell()
@@ -83,7 +83,7 @@ class CoursesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 0 else {
-            fatalError("Unrecognized section")
+            fatalError("Invalid section")
         }
 
         let index = indexPath.row
@@ -102,7 +102,7 @@ class CoursesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard indexPath.section == 0 else {
-            fatalError("Unrecognized section")
+            fatalError("Invalid section")
         }
 
         switch editingStyle {
@@ -116,7 +116,7 @@ class CoursesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard indexPath.section == 0 else {
-            fatalError("Unrecognized section")
+            fatalError("Invalid section")
         }
 
         return true
