@@ -55,11 +55,16 @@ class SectionsViewController: UITableViewController {
 
     private func addSession(to sectionIndex: Int) {
         let newSessionIndex = sections[sectionIndex].sessions.count
-        let controller = SessionDetailViewController(for: nil) { newSession in
-            self.sections[sectionIndex].sessions.append(newSession)
+        let indexPath = IndexPath(row: newSessionIndex + 1, section: sectionIndex)
 
-            let indexPath = IndexPath(row: newSessionIndex, section: sectionIndex)
-            self.tableView.insertRows(at: [indexPath], with: .top)
+        let controller = SessionDetailViewController(for: nil) {
+            if newSessionIndex < self.sections[sectionIndex].sessions.count {
+                self.sections[sectionIndex].sessions[newSessionIndex] = $0
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            } else {
+                self.sections[sectionIndex].sessions.append($0)
+                self.tableView.insertRows(at: [indexPath], with: .none)
+            }
         }
 
         navigationController?.pushViewController(controller, animated: true)

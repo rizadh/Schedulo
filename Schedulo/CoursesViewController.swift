@@ -23,6 +23,9 @@ class CoursesViewController: UITableViewController {
 
         self.navigationItem.title = "Courses"
         self.navigationItem.rightBarButtonItem = addCourseItem
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .always
+        }
 
         self.updateStateBasedViews()
         NotificationCenter.default.addObserver(forName: Notification.Name("stateDidChange"), object: nil, queue: nil) { [weak self] _ in
@@ -45,17 +48,21 @@ class CoursesViewController: UITableViewController {
     // MARK: - Course Managing Methods
     @objc
     private func addCourse() {
-        let controller = CourseDetailViewController(for: nil, saveHandler: { newCourse in
-            self.stateController.add(newCourse)
-            let row = self.stateController.courses.count - 1
-            let indexPath = IndexPath(row: row, section: 0)
-            self.tableView.insertRows(at: [indexPath], with: .left)
-        })
+        let courseIndex = self.stateController.courses.count
+        let indexPath = IndexPath(row: courseIndex, section: 0)
+        let courseDetailViewController = CourseDetailViewController(for: nil) {
+            if courseIndex < self.stateController.courses.count {
+                self.stateController.replaceCourse(at: courseIndex, with: $0)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            } else {
+                self.stateController.add($0)
+                let indexPath = IndexPath(row: courseIndex, section: 0)
+                self.tableView.insertRows(at: [indexPath], with: .none)
+            }
 
-        let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.modalPresentationStyle = .popover
-        navigationController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-        present(navigationController, animated: true, completion: nil)
+        }
+
+        navigationController?.pushViewController(courseDetailViewController, animated: true)
     }
 
     // MARK: - UITableViewController Overrides
@@ -78,6 +85,7 @@ class CoursesViewController: UITableViewController {
 
         let cell = UITableViewCell()
         cell.textLabel!.text = stateController.courses[indexPath.row].code
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
 
@@ -88,16 +96,12 @@ class CoursesViewController: UITableViewController {
 
         let index = indexPath.row
         let course = stateController.courses[index]
-        let controller = CourseDetailViewController(for: course, saveHandler: { newCourse in
-            self.stateController.replaceCourse(at: index, with: newCourse)
+        let courseDetailViewController = CourseDetailViewController(for: course) {
+            self.stateController.replaceCourse(at: index, with: $0)
             self.tableView.reloadRows(at: [indexPath], with: .fade)
-        }, cancelHandler: {
-            self.tableView.deselectRow(at: indexPath, animated: true)
-        })
+        }
 
-        let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.modalPresentationStyle = .formSheet
-        present(navigationController, animated: true, completion: nil)
+        navigationController?.pushViewController(courseDetailViewController, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

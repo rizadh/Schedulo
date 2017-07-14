@@ -13,7 +13,11 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     // MARK: - Private Properties
 
     // MARK: Session Management
-    private var session: Session
+    private var session: Session {
+        didSet {
+            saveHandler(session)
+        }
+    }
     private let saveHandler: (Session) -> Void
 
     // MARK: Picker Visibility
@@ -66,19 +70,6 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         return Session(day: .Wednesday, time: timeRange)
     }
 
-    // MARK: - Private Methods
-
-    @objc
-    private func saveAndDismiss() {
-        saveHandler(session)
-        navigationController?.popViewController(animated: true)
-    }
-
-    @objc
-    private func cancel() {
-        navigationController?.popViewController(animated: true)
-    }
-
     // MARK: - Initializers
 
     init(for sessionOrNil: Session?, saveHandler: @escaping (Session) -> Void) {
@@ -96,12 +87,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
         super.init(style: .grouped)
 
-        let cancelItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel))
-        let saveItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveAndDismiss))
-
         self.navigationItem.title = isNewSession ? "New Session" : "Edit Session"
-        self.navigationItem.leftBarButtonItem = cancelItem
-        self.navigationItem.rightBarButtonItem = saveItem
     }
 
     required init?(coder aDecoder: NSCoder) {

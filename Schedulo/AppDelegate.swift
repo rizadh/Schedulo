@@ -15,30 +15,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var stateController: StateController = StateController()
 
-    lazy var coursesViewController: CoursesViewController = {
-        CoursesViewController(using: self.stateController)
-    }()
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
+        let tabBarController = UITabBarController()
 
-        let rootViewController = UITabBarController()
-        rootViewController.viewControllers = [
-            UINavigationController(rootViewController: coursesViewController)
+        let navigationControllers = [
+            UINavigationController(rootViewController: CoursesViewController(using: self.stateController))
         ]
 
-        for controller in rootViewController.viewControllers! {
-            if let navigationController = controller as? UINavigationController {
-                if #available(iOS 11.0, *) {
-                    navigationController.navigationBar.prefersLargeTitles = true
-                }
-            }
+        if #available(iOS 11, *) {
+            navigationControllers.forEach { $0.navigationBar.prefersLargeTitles = true }
         }
 
-        window?.rootViewController = rootViewController
+        tabBarController.viewControllers = navigationControllers
+
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = tabBarController
 
         return true
     }

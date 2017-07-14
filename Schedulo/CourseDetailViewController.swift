@@ -9,6 +9,9 @@
 import UIKit
 
 class CourseDetailViewController: UITableViewController {
+    // MARK: - Private Static Properties
+
+    private static var placeholderCourseCodesGenerated = 0
 
     // MARK: - Private Properties
 
@@ -22,8 +25,11 @@ class CourseDetailViewController: UITableViewController {
     private let originalCourse: Course
     private var course: Course {
         didSet {
-            self.saveCourseItem.isEnabled = !course.code.isEmpty
-            navigationItem.title = getNavigationTitle()
+            if !courseNameIsValid(course.code) {
+                course.code = CourseDetailViewController.generatePlaceholderCourseCode()
+            }
+
+            saveHandler(course)
 
             func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
                 tableView.beginUpdates()
@@ -57,11 +63,6 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: Handlers
     private let saveHandler: (Course) -> Void
-    private let cancelHandler: (() -> Void)?
-
-    // MARK: Bar Buttons
-    private var saveCourseItem: UIBarButtonItem!
-    private var cancelItem: UIBarButtonItem!
 
     // MARK: Section Grouping
     private var sectionGroupingIsEnabled: Bool {
@@ -73,25 +74,23 @@ class CourseDetailViewController: UITableViewController {
         }
     }
 
+    // MARK: - Private Static Methods
+    private static func generatePlaceholderCourseCode() -> String {
+        placeholderCourseCodesGenerated += 1
+
+        return "Course \(placeholderCourseCodesGenerated)"
+    }
+
     // MARK: - Private Methods
 
-    private func getNavigationTitle() -> String {
-        if !course.code.isEmpty {
-            return course.code
-        }
-
-        if isNewCourse {
-            return "New Course"
-        }
-
-        return "Edit Course"
+    private func courseNameIsValid(_ courseName: String) -> Bool {
+        return !courseName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     // MARK: - Initializers
 
-    init(for courseOrNil: Course?, saveHandler: @escaping (Course) -> Void, cancelHandler: (() -> Void)? = nil) {
+    init(for courseOrNil: Course?, saveHandler: @escaping (Course) -> Void) {
         self.saveHandler = saveHandler
-        self.cancelHandler = cancelHandler
         if let course = courseOrNil {
             isNewCourse = false
             self.course = course
@@ -104,14 +103,10 @@ class CourseDetailViewController: UITableViewController {
 
         super.init(style: .grouped)
 
-        saveCourseItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveCourse))
-        cancelItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel))
-
-        self.navigationItem.title = getNavigationTitle()
-        self.navigationItem.rightBarButtonItem = saveCourseItem
-        self.navigationItem.leftBarButtonItem = cancelItem
-
-        saveCourseItem.isEnabled = !isNewCourse
+        self.navigationItem.title = isNewCourse ? "New Course" : "Edit Course"
+        if #available(iOS 11, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -119,43 +114,6 @@ class CourseDetailViewController: UITableViewController {
     }
 
     // MARK: - Private Functions
-
-    // MARK: Button Handlers
-    @objc
-    private func saveCourse() {
-        saveHandler(course)
-        hideKeyboardAndDismiss()
-    }
-
-    @objc
-    private func cancel() {
-        if course == originalCourse {
-            cancelHandler?()
-            hideKeyboardAndDismiss()
-            return
-        }
-
-        let alertMessage = isNewCourse ? "Are you sure you want to discard this course?\n\nAll sections and session will be lost." : "Are you sure you want to revert all changes you have made to this course?\n\nAll changes to sections and sessions will be lost."
-        let alertController = UIAlertController(title: nil, message: alertMessage, preferredStyle: .actionSheet)
-
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-        let revertButtonTitle = isNewCourse ? "Discard Course" : "Revert Changes"
-        let revertButton = UIAlertAction(title: revertButtonTitle, style: .destructive) { _ in
-            self.cancelHandler?()
-            self.hideKeyboardAndDismiss()
-        }
-
-        alertController.addAction(cancelButton)
-        alertController.addAction(revertButton)
-
-        present(alertController, animated: true, completion: nil)
-    }
-
-    private func hideKeyboardAndDismiss() {
-        self.view.endEditing(true)
-        dismiss(animated: true, completion: nil)
-    }
 
     // MARK: Section Grouping
     @objc
@@ -327,8 +285,13 @@ class CourseDetailViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
         case (TableSection.courseCode, 0):
-            let cell = TextFieldCell { newCourseCode in
-                self.course.code = newCourseCode
+            let originalCourseName = course.code
+            let cell = TextFieldCell {
+                if self.courseNameIsValid($0) {
+                    self.course.code = $0
+                } else {
+                    self.course.code = originalCourseName
+                }
             }
             cell.textField.text = course.code
             cell.textField.placeholder = "e.g. AAAB01"

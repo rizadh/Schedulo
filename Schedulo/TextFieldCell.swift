@@ -43,14 +43,9 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
+        changeHandler(textField.text!)
+
         return false
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        changeHandler(newText)
-
-        return true
     }
 
     override func layoutSubviews() {
