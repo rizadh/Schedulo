@@ -13,12 +13,21 @@ class SectionsViewController: UITableViewController {
 
     private var sections: [Section] {
         didSet {
+            updateEditButtonVisibility()
             saveHandler(sections)
         }
     }
     private let saveHandler: ([Section]) -> Void
 
     // MARK: - Private Methods
+
+    private func updateEditButtonVisibility() {
+        if sections.isEmpty {
+            navigationItem.setRightBarButton(nil, animated: true)
+        } else {
+            navigationItem.setRightBarButton(editButtonItem, animated: true)
+        }
+    }
 
     private func addSection() {
         let alertController = UIAlertController(title: "Add Section", message: "Enter a uniquely identifying name for the section. It cannot be blank.", preferredStyle: .alert)
@@ -115,7 +124,7 @@ class SectionsViewController: UITableViewController {
         super.init(style: .grouped)
 
         self.navigationItem.title = "Sections"
-        self.navigationItem.rightBarButtonItem = editButtonItem
+        updateEditButtonVisibility()
 
         self.tableView.allowsSelectionDuringEditing = true
     }
