@@ -203,13 +203,13 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
                 showEndTimePicker = false
             }
         case 1:
-            showStartTimePicker  = !showStartTimePicker
+            showStartTimePicker = !showStartTimePicker
             if showStartTimePicker {
                 showDayPicker = false
                 showEndTimePicker = false
             }
         case 2:
-            showEndTimePicker  = !showEndTimePicker
+            showEndTimePicker = !showEndTimePicker
             if showEndTimePicker {
                 showDayPicker = false
                 showStartTimePicker = false
@@ -335,9 +335,35 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             fatalError("Unrecognized picker component.")
         }
 
-        guard startTime < endTime else {
-            let startHour = session.time.start.hour
-            let startMinute = session.time.start.minute
+        if startTime == Time(hour: Time.maxHour, minute: Time.maxMinute) {
+            startTime = Time(hour: Time.maxHour, minute: Time.maxMinute - 1)
+        }
+
+        if endTime == Time(hour: Time.minHour, minute: Time.minMinute) {
+            endTime = Time(hour: Time.minHour, minute: Time.minMinute + 1)
+        }
+
+        if startTime >= endTime {
+            if startTime == session.time.start {
+                if endTime.hour > Time.minHour {
+                    startTime = Time(hour: endTime.hour - 1, minute: Time.minMinute)
+                } else {
+                    startTime = Time(hour: Time.minHour, minute: Time.minMinute)
+                }
+            }
+
+            if endTime == session.time.end {
+                if startTime.hour < Time.maxHour {
+                    endTime = Time(hour: startTime.hour + 1, minute: Time.minMinute)
+                } else {
+                    endTime = Time(hour: Time.maxHour, minute: Time.maxMinute)
+                }
+            }
+        }
+
+        do {
+            let startHour = startTime.hour
+            let startMinute = startTime.minute
 
             if startHour < 12 {
                 startTimePicker.selectRow(startHour, inComponent: 0, animated: true)
@@ -348,9 +374,11 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             }
 
             startTimePicker.selectRow(startMinute, inComponent: 1, animated: true)
+        }
 
-            let endHour = session.time.end.hour
-            let endMinute = session.time.end.minute
+        do {
+            let endHour = endTime.hour
+            let endMinute = endTime.minute
 
             if endHour < 12 {
                 endTimePicker.selectRow(endHour, inComponent: 0, animated: true)
@@ -361,22 +389,14 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             }
 
             endTimePicker.selectRow(endMinute, inComponent: 1, animated: true)
-
-            return
         }
 
-        session.time.start = startTime
-        session.time.end = endTime
+        session.time = TimeRange(from: startTime, to: endTime)
 
-        switch pickerView {
-        case dayPicker:
-            self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
-        case startTimePicker:
-            self.tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
-        case endTimePicker:
-            self.tableView.reloadRows(at: [IndexPath(row: 0, section: 2)], with: .none)
-        default:
-            fatalError("Unrecognized component.")
-        }
+        self.tableView.reloadRows(at: [
+                                      IndexPath(row: 0, section: 0),
+                                      IndexPath(row: 0, section: 1),
+                                      IndexPath(row: 0, section: 2)
+                                  ], with: .none)
     }
 }
