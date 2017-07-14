@@ -84,7 +84,7 @@ class SectionsViewController: UITableViewController {
         let controller = SessionDetailViewController(for: session) {
             self.sections[sectionIndex].sessions[sessionIndex] = $0
 
-            let indexPath = IndexPath(row: sessionIndex, section: sectionIndex)
+            let indexPath = IndexPath(row: sessionIndex + 1, section: sectionIndex)
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
 
