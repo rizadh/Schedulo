@@ -183,6 +183,8 @@ class SectionsViewController: UITableViewController {
             addSection()
         case let (section, row) where row == sections[section].sessions.count:
             addSession(to: section)
+        case let (section, row) where row == sections[section].sessions.count + 1 && tableView.isEditing:
+            addSession(to: section)
         case let (section, row) where row == sections[section].sessions.count + 2 && tableView.isEditing:
             deleteSection(at: section)
         case let (section, row):
