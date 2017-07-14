@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
 
         let navigationControllers = [
+            UINavigationController(rootViewController: SchedulesViewController(using: self.stateController)),
             UINavigationController(rootViewController: CoursesViewController(using: self.stateController))
         ]
 
@@ -29,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         tabBarController.viewControllers = navigationControllers
+
+        tabBarController.selectedIndex = 1
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
