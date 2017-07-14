@@ -37,6 +37,9 @@ class CoursesViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Private Methods
+
+
     private func updateStateBasedViews() {
         if stateController.courses.isEmpty {
             self.navigationItem.setLeftBarButton(nil, animated: true)
@@ -45,7 +48,7 @@ class CoursesViewController: UITableViewController {
         }
     }
 
-    // MARK: - Course Managing Methods
+    // MARK: Course Management
     @objc
     private func addCourse() {
         let courseIndex = self.stateController.courses.count
@@ -63,6 +66,21 @@ class CoursesViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(courseDetailViewController, animated: true)
+    }
+
+    private func editCourse(at courseIndex: Int) {
+        let course = stateController.courses[courseIndex]
+        let courseDetailViewController = CourseDetailViewController(for: course) {
+            self.stateController.replaceCourse(at: courseIndex, with: $0)
+            self.tableView.reloadRows(at: [IndexPath(row: courseIndex, section: 0)], with: .fade)
+        }
+
+        navigationController?.pushViewController(courseDetailViewController, animated: true)
+    }
+
+    private func deleteCourse(at courseIndex: Int) {
+        stateController.removeCourse(at: courseIndex)
+        self.tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .left)
     }
 
     // MARK: - UITableViewController Overrides
@@ -94,14 +112,7 @@ class CoursesViewController: UITableViewController {
             fatalError("Invalid section")
         }
 
-        let index = indexPath.row
-        let course = stateController.courses[index]
-        let courseDetailViewController = CourseDetailViewController(for: course) {
-            self.stateController.replaceCourse(at: index, with: $0)
-            self.tableView.reloadRows(at: [indexPath], with: .fade)
-        }
-
-        navigationController?.pushViewController(courseDetailViewController, animated: true)
+        editCourse(at: indexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -111,8 +122,7 @@ class CoursesViewController: UITableViewController {
 
         switch editingStyle {
         case .delete:
-            stateController.removeCourse(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
+            deleteCourse(at: indexPath.row)
         default:
             fatalError("Unsupported commit operation")
         }
