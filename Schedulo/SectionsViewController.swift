@@ -130,65 +130,90 @@ class SectionsViewController: UITableViewController {
             return 1
         }
 
-        if tableView.isEditing {
-            return sections[section].sessions.count + 3
+        return sections[section].sessions.count + 3
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard indexPath.section < sections.count else {
+            return UITableViewAutomaticDimension
         }
 
-        return sections[section].sessions.count + 1
+        switch indexPath.row {
+        case 0:
+            return tableView.isEditing ? UITableViewAutomaticDimension : 0
+        case sections[indexPath.section].sessions.count + 2:
+            return tableView.isEditing ? UITableViewAutomaticDimension : 0
+        default:
+            return UITableViewAutomaticDimension
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
 
-        let effectiveRow = tableView.isEditing ? (indexPath.row - 1) : indexPath.row
-
-        switch (indexPath.section, effectiveRow) {
-        case (sections.count, _):
+        guard indexPath.section < sections.count else {
             cell.textLabel!.text = "Add Section"
             cell.textLabel!.textColor = cell.textLabel!.tintColor
             cell.textLabel!.textAlignment = .center
-        case let (section, row) where (0..<sections[section].sessions.count).contains(row):
-            cell.textLabel!.text = sections[section].sessions[row].description
-            cell.accessoryType = .disclosureIndicator
-        case let (section, row) where row == sections[section].sessions.count:
-            cell.textLabel!.text = "Add Session"
-            cell.accessoryType = .disclosureIndicator
-        case (let section, -1) where tableView.isEditing:
-            let originalIdentifier = sections[section].identifier
+
+            return cell
+        }
+
+        switch indexPath.row {
+        case 0:
+            let originalIdentifier = sections[indexPath.section].identifier
             let sectionIdentifierCell = TextFieldCell {
                 let sectionIndex = self.tableView.indexPath(for: cell)!.section
 
                 if self.identifierIsValid($0, for: sectionIndex) {
-                    self.sections[sectionIndex].identifier = $0
+                    self.sections[sectionIndex].identifier = $0.uppercased()
                 } else {
                     self.sections[sectionIndex].identifier = originalIdentifier
+                }
+
+                if #available(iOS 11, *) {
+                    tableView.performBatchUpdates(nil, completion: nil)
+                } else {
+                    tableView.beginUpdates()
+                    tableView.endUpdates()
                 }
             }
             sectionIdentifierCell.textField.placeholder = originalIdentifier
             sectionIdentifierCell.textField.text = originalIdentifier
             cell = sectionIdentifierCell
-        case let (section, row) where row == sections[section].sessions.count + 1 && tableView.isEditing:
+        case 1...sections[indexPath.section].sessions.count:
+            cell.textLabel!.text = sections[indexPath.section].sessions[indexPath.row - 1].description
+            cell.accessoryType = .disclosureIndicator
+        case sections[indexPath.section].sessions.count + 1:
+            cell.textLabel!.text = "Add Session"
+            cell.accessoryType = .disclosureIndicator
+        case sections[indexPath.section].sessions.count + 2:
             cell.textLabel!.text = "Delete Section"
             cell.textLabel!.textColor = .red
         default:
             break
         }
 
+        cell.clipsToBounds = true
+
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch (indexPath.section, indexPath.row) {
-        case (sections.count, _):
+        guard indexPath.section < sections.count else {
             addSection()
-        case let (section, row) where row == sections[section].sessions.count:
-            addSession(to: section)
-        case let (section, row) where row == sections[section].sessions.count + 1 && tableView.isEditing:
-            addSession(to: section)
-        case let (section, row) where row == sections[section].sessions.count + 2 && tableView.isEditing:
-            deleteSection(at: section)
-        case let (section, row):
-            editSession(row, of: section)
+            return
+        }
+
+        switch indexPath.row {
+        case sections[indexPath.section].sessions.count + 1:
+            addSession(to: indexPath.section)
+        case sections[indexPath.section].sessions.count + 2:
+            deleteSection(at: indexPath.section)
+        case 1...sections[indexPath.section].sessions.count:
+            editSession(indexPath.row - 1, of: indexPath.section)
+        default:
+            fatalError("Invalid index path.")
         }
     }
 
@@ -197,18 +222,13 @@ class SectionsViewController: UITableViewController {
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
-        let oldValue = tableView.isEditing
-
         super.setEditing(editing, animated: animated)
 
-        guard oldValue != editing else {
-            return
-        }
-
-        if editing {
-            tableView.reloadSections(IndexSet(0..<sections.count), with: .left)
+        if #available(iOS 11, *) {
+            tableView.performBatchUpdates(nil, completion: nil)
         } else {
-            tableView.reloadSections(IndexSet(0..<sections.count), with: .right)
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
     }
 
