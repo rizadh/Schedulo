@@ -15,8 +15,7 @@ class SchedulesViewController: UITableViewController {
 
     // MARK: - Private Methods
 
-    @objc
-    private func addSchedule() {
+    @objc private func addSchedule() {
         print("Adding schedule")
     }
 

@@ -116,8 +116,7 @@ class CourseDetailViewController: UITableViewController {
     // MARK: - Private Functions
 
     // MARK: Section Grouping
-    @objc
-    private func toggleSectionGrouping() {
+    @objc private func toggleSectionGrouping() {
         switch course.sections {
         case .ungrouped(let sections):
             migrate(ungrouped: sections)

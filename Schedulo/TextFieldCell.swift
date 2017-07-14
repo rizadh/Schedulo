@@ -35,8 +35,7 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc
-    private func textFieldDidChange() {
+    @objc private func textFieldDidChange() {
         changeHandler(textField.text!)
     }
 

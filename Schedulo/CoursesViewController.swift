@@ -49,8 +49,7 @@ class CoursesViewController: UITableViewController {
     }
 
     // MARK: Course Management
-    @objc
-    private func addCourse() {
+    @objc private func addCourse() {
         let courseIndex = self.stateController.courses.count
         let indexPath = IndexPath(row: courseIndex, section: 0)
         let courseDetailViewController = CourseDetailViewController(for: nil) {
