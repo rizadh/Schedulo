@@ -74,7 +74,6 @@ class StateController {
 
     init() {
         state = StateController.savedState
-        StateController.postStateDidChangeNotification()
     }
 
     func add(_ course: Course) {
