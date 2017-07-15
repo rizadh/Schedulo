@@ -12,7 +12,11 @@ import os
 class StateController {
     private struct UserDefaultsConstants {
         static let key = "state"
+
+        private init() { }
     }
+
+    static let stateDidChange = Notification.Name("stateDidChange")
 
     private struct State: Codable {
         var courses = [Course]()
@@ -56,7 +60,7 @@ class StateController {
     }
 
     private static func postStateDidChangeNotification() {
-        let notification = Notification(name: Notification.Name(rawValue: "stateDidChange"))
+        let notification = Notification(name: stateDidChange)
         NotificationCenter.default.post(notification)
     }
 
