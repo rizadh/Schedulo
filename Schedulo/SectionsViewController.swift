@@ -8,10 +8,34 @@
 
 import UIKit
 
+private extension String {
+    var isValidIdentifier: Bool {
+        return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    func isValidIndentifier(forSection index: Int, in controller: SectionsViewController) -> Bool {
+        if !self.isValidIdentifier {
+            return false
+        }
+
+        for (sectionIndex, section) in controller.sections.enumerated() {
+            if sectionIndex == index {
+                continue
+            }
+
+            if self.caseInsensitiveCompare(section.identifier) == .orderedSame {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+
 class SectionsViewController: UITableViewController {
     // MARK: - Private Properties
 
-    private var sections: [Section] {
+    fileprivate var sections: [Section] {
         didSet {
             updateEditButtonVisibility()
             saveHandler(sections)
@@ -35,7 +59,7 @@ class SectionsViewController: UITableViewController {
         let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
             let identifier = alertController.textFields!.first!.text!
 
-            if self.identifierIsValid(identifier) {
+            if identifier.isValidIdentifier {
                 self.sections.append(Section(identifier: identifier, sessions: []))
                 self.tableView.insertSections([self.sections.count - 1], with: .fade)
             } else {
@@ -95,24 +119,6 @@ class SectionsViewController: UITableViewController {
         self.sections[sectionIndex].sessions.remove(at: sessionIndex)
         let indexPath = IndexPath(row: sessionIndex + 1, section: sectionIndex)
         self.tableView.deleteRows(at: [indexPath], with: .left)
-    }
-
-    private func identifierIsValid(_ identifier: String, for sectionIndexOrNil: Int? = nil) -> Bool {
-        if identifier.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return false
-        }
-
-        for (index, section) in self.sections.enumerated() {
-            if let sectionIndex = sectionIndexOrNil, sectionIndex == index {
-                continue
-            }
-
-            if section.identifier == identifier {
-                return false
-            }
-        }
-
-        return true
     }
 
     // MARK: - Initializers
@@ -179,7 +185,7 @@ class SectionsViewController: UITableViewController {
             let sectionIdentifierCell = TextFieldCell {
                 let sectionIndex = self.tableView.indexPath(for: cell)!.section
 
-                if self.identifierIsValid($0, for: sectionIndex) {
+                if $0.isValidIndentifier(forSection: sectionIndex, in: self) {
                     self.sections[sectionIndex].identifier = $0.uppercased()
                 } else {
                     self.sections[sectionIndex].identifier = originalIdentifier

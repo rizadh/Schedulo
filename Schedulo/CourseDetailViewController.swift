@@ -8,7 +8,36 @@
 
 import UIKit
 
+private extension String {
+    var isValidCourseName: Bool {
+        return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var isValidGroupName: Bool {
+        return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    func isValidGroupName(in controller: CourseDetailViewController) -> Bool {
+        if !self.isValidGroupName {
+            return false
+        }
+
+        guard case .grouped(let groups) = controller.course.sections else {
+            return true
+        }
+
+        for groupName in groups.keys {
+            if self.caseInsensitiveCompare(groupName) == .orderedSame {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+
 class CourseDetailViewController: UITableViewController {
+
     // MARK: - Private Static Properties
 
     private static var placeholderCourseCodesGenerated = 0
@@ -26,9 +55,9 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: Course Properties
     private let originalCourse: Course
-    private var course: Course {
+    fileprivate var course: Course {
         didSet {
-            if !courseNameIsValid(course.code) {
+            if !course.code.isValidCourseName {
                 course.code = CourseDetailViewController.generatePlaceholderCourseCode()
             }
 
@@ -84,12 +113,6 @@ class CourseDetailViewController: UITableViewController {
         return "Course \(placeholderCourseCodesGenerated)"
     }
 
-    // MARK: - Private Methods
-
-    private func courseNameIsValid(_ courseName: String) -> Bool {
-        return !courseName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
     // MARK: - Initializers
 
     init(for courseOrNil: Course?, saveHandler: @escaping (Course) -> Void) {
@@ -143,7 +166,7 @@ class CourseDetailViewController: UITableViewController {
         let continueAction = UIAlertAction(title: "Continue", style: .default, handler: { _ in
             let groupName = alertController.textFields!.first!.text!
 
-            guard self.groupNameIsValid(groupName) else {
+            guard groupName.isValidGroupName(in: self) else {
                 self.migrate(ungrouped: sections)
                 return
             }
@@ -166,26 +189,6 @@ class CourseDetailViewController: UITableViewController {
         course.sections = .ungrouped(groups.values.flatMap({ $0 }))
     }
 
-    private func groupNameIsValid(_ name: String, for groupIndexOrNil: Int? = nil) -> Bool {
-        if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return false
-        }
-
-        if let sectionTypes = sectionTypes {
-            for (index, sectionType) in sectionTypes.enumerated() {
-                if let groupIndex = groupIndexOrNil, groupIndex == index {
-                    continue
-                }
-
-                if sectionType == name {
-                    return false
-                }
-            }
-        }
-
-        return true
-    }
-
     private func addSectionGroup() {
         tableView.deselectRow(at: IndexPath(row: self.sectionTypes!.count + 1, section: TableSection.sections), animated: true)
 
@@ -195,7 +198,7 @@ class CourseDetailViewController: UITableViewController {
         let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
             let groupName = alertController.textFields!.first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
-            guard self.groupNameIsValid(groupName) else {
+            guard groupName.isValidGroupName(in: self) else {
                 self.addSectionGroup()
                 return
             }
@@ -257,7 +260,7 @@ class CourseDetailViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if !courseNameIsValid(course.code) {
+        if !course.code.isValidCourseName {
             courseCodeTextField?.becomeFirstResponder()
         }
     }
@@ -299,7 +302,7 @@ class CourseDetailViewController: UITableViewController {
         case (TableSection.courseCode, 0):
             let originalCourseName = course.code
             let cell = TextFieldCell {
-                if self.courseNameIsValid($0) {
+                if $0.isValidCourseName {
                     self.course.code = $0
                 } else {
                     self.course.code = originalCourseName
