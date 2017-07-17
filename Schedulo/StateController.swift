@@ -80,8 +80,16 @@ class StateController {
         state.courses.append(course)
     }
 
+    func add(_ course: Course, at index: Int) {
+        state.courses.insert(course, at: index)
+    }
+
     func add(_ schedule: Schedule) {
         state.schedules.append(schedule)
+    }
+
+    func add(_ schedule: Schedule, at index: Int) {
+        state.schedules.insert(schedule, at: index)
     }
 
     func removeCourse(at index: Int) {

@@ -52,27 +52,58 @@ class CoursesViewController: UITableViewController {
     @objc private func addCourse() {
         let courseIndex = self.stateController.courses.count
         let indexPath = IndexPath(row: courseIndex, section: 0)
-        let courseDetailViewController = CourseDetailViewController(for: nil) {
+
+        let courseItem = AutoSavingItem<Course>(with: nil) { courseOrNil in
+            guard let course = courseOrNil else {
+                if courseIndex < self.stateController.courses.count {
+                    self.stateController.removeCourse(at: courseIndex)
+                    self.tableView.deleteRows(at: [indexPath], with: .none)
+                }
+
+                return
+            }
+
             if courseIndex < self.stateController.courses.count {
-                self.stateController.replaceCourse(at: courseIndex, with: $0)
+                self.stateController.replaceCourse(at: courseIndex, with: course)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
             } else {
-                self.stateController.add($0)
+                self.stateController.add(course)
                 let indexPath = IndexPath(row: courseIndex, section: 0)
                 self.tableView.insertRows(at: [indexPath], with: .none)
             }
-
         }
+
+        let courseDetailViewController = CourseDetailViewController(for: courseItem)
 
         navigationController?.pushViewController(courseDetailViewController, animated: true)
     }
 
     private func editCourse(at courseIndex: Int) {
-        let course = stateController.courses[courseIndex]
-        let courseDetailViewController = CourseDetailViewController(for: course) {
-            self.stateController.replaceCourse(at: courseIndex, with: $0)
-            self.tableView.reloadRows(at: [IndexPath(row: courseIndex, section: 0)], with: .fade)
+        let existingCourse = stateController.courses[courseIndex]
+        let indexPath = IndexPath(row: courseIndex, section: 0)
+        var courseHasBeenDeleted = false
+
+        let courseItem = AutoSavingItem<Course>(with: existingCourse) { courseOrNil in
+            guard let course = courseOrNil else {
+                self.stateController.removeCourse(at: courseIndex)
+                self.tableView.deleteRows(at: [indexPath], with: .none)
+                courseHasBeenDeleted = true
+
+                return
+            }
+
+            if courseHasBeenDeleted {
+                self.stateController.add(course, at: courseIndex)
+                self.tableView.insertRows(at: [indexPath], with: .none)
+            } else {
+                self.stateController.replaceCourse(at: courseIndex, with: course)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+
+            courseHasBeenDeleted = false
         }
+
+        let courseDetailViewController = CourseDetailViewController(for: courseItem)
 
         navigationController?.pushViewController(courseDetailViewController, animated: true)
     }

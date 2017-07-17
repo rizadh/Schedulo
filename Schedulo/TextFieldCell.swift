@@ -19,7 +19,6 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
         textField.autocorrectionType = .no
         textField.clearButtonMode = .whileEditing
         textField.delegate = self
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         return textField
     }()
 
@@ -33,10 +32,6 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc private func textFieldDidChange() {
-        changeHandler(textField.text!)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

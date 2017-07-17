@@ -10,6 +10,7 @@
 		4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* SectionsViewController.swift */; };
 		4A0865E21F16474C00570D06 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Keyable.swift */; };
 		4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */; };
+		4A8C8B611F1CE22E00D317D0 /* AutoSavingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */; };
 		4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */; };
 		4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */; };
 		4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */; };
@@ -38,6 +39,7 @@
 		4A0865DF1F1557E800570D06 /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
 		4A0865E11F16474C00570D06 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
+		4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoSavingItem.swift; sourceTree = "<group>"; };
 		4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
 		4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				4AC85F7E1EFDC08900062548 /* Location.swift */,
 				4AC85F7F1EFDC08900062548 /* Overlappable.swift */,
 				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
+				4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */,
 				4A0865E11F16474C00570D06 /* Keyable.swift */,
 				4AC85F811EFDC08900062548 /* Schedule.swift */,
 				4AC85F821EFDC08900062548 /* Section.swift */,
@@ -203,6 +206,7 @@
 				4AC85F8F1EFDC08900062548 /* Time.swift in Sources */,
 				4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */,
 				4AC85F891EFDC08900062548 /* Overlappable.swift in Sources */,
+				4A8C8B611F1CE22E00D317D0 /* AutoSavingItem.swift in Sources */,
 				4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */,
 				4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */,
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,

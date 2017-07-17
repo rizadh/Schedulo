@@ -9,7 +9,7 @@
 import UIKit
 
 private extension String {
-    var isValidCourseName: Bool {
+    var isValidCourseCode: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
@@ -50,11 +50,37 @@ class CourseDetailViewController: UITableViewController {
     var courseCodeTextField: UITextField?
 
     // MARK: Course Properties
-    private let originalCourse: Course
-    fileprivate var course: Course {
+    private var courseItem: AutoSavingItem<Course> {
         didSet {
-            if course.code.isValidCourseName {
-                saveHandler(course)
+            func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
+                tableView.beginUpdates()
+                if !groups.keys.isEmpty {
+                    let indexPaths = (1...groups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
+                    updateFunc(indexPaths, .top)
+                }
+                tableView.reloadRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .fade)
+                tableView.endUpdates()
+            }
+
+            switch (oldValue.value?.sections ?? .ungrouped([]), course.sections) {
+            case (.ungrouped, .grouped(let newGroups)):
+                updateRows(groups: newGroups, updateFunc: tableView.insertRows(at: with:))
+            case (.grouped(let oldGroups), .ungrouped):
+                updateRows(groups: oldGroups, updateFunc: tableView.deleteRows(at: with:))
+            default:
+                break
+            }
+        }
+    }
+    private var isNewCourse: Bool {
+        return courseItem.isNewItem
+    }
+    var course = Course(code: "", sections: .ungrouped([])) {
+        didSet {
+            if course.code.isValidCourseCode {
+                courseItem.value = course
+            } else {
+                courseItem.value = nil
             }
 
             func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
@@ -77,7 +103,6 @@ class CourseDetailViewController: UITableViewController {
             }
         }
     }
-    private let isNewCourse: Bool
     private var sectionTypes: [String]? {
         switch course.sections {
         case .grouped(let groups):
@@ -86,9 +111,6 @@ class CourseDetailViewController: UITableViewController {
             return nil
         }
     }
-
-    // MARK: Handlers
-    private let saveHandler: (Course) -> Void
 
     // MARK: Section Grouping
     private var sectionGroupingIsEnabled: Bool {
@@ -102,17 +124,11 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: - Initializers
 
-    init(for courseOrNil: Course?, saveHandler: @escaping (Course) -> Void) {
-        self.saveHandler = saveHandler
-        if let course = courseOrNil {
-            isNewCourse = false
+    init(for courseItem: AutoSavingItem<Course>) {
+        self.courseItem = courseItem
+        if let course = courseItem.value {
             self.course = course
-        } else {
-            isNewCourse = true
-            self.course = Course(code: "", sections: .ungrouped([]))
         }
-
-        self.originalCourse = self.course
 
         super.init(style: .grouped)
 
@@ -247,7 +263,7 @@ class CourseDetailViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if !course.code.isValidCourseName {
+        if !course.code.isValidCourseCode {
             courseCodeTextField?.becomeFirstResponder()
         }
     }
@@ -255,7 +271,7 @@ class CourseDetailViewController: UITableViewController {
     // MARK: - UITableViewController Overrides
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return course.code.isValidCourseName ? 2 : 1
+        return course.code.isValidCourseCode ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -287,17 +303,21 @@ class CourseDetailViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
         case (TableSection.courseCode, 0):
-            let originalCourseName = course.code
+            var lastValidCourseName = course.code
             let cell = TextFieldCell {
-                let wasValidCourseName = self.course.code.isValidCourseName
+                let wasValidCourseName = self.course.code.isValidCourseCode
 
-                if $0.isValidCourseName {
+                if $0.isValidCourseCode {
                     self.course.code = $0
+                    lastValidCourseName = $0
                 } else {
-                    self.course.code = originalCourseName
+                    self.course.code = lastValidCourseName
+                    if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
+                        textFieldCell.textField.text = self.course.code
+                    }
                 }
 
-                let isValidCoursename = self.course.code.isValidCourseName
+                let isValidCoursename = self.course.code.isValidCourseCode
 
                 switch (wasValidCourseName, isValidCoursename) {
                 case (false, true):
