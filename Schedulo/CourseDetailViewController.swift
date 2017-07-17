@@ -21,6 +21,9 @@ class CourseDetailViewController: UITableViewController {
         static let sections = 1
     }
 
+    // MARK: TableCells
+    var courseCodeTextField: UITextField?
+
     // MARK: Course Properties
     private let originalCourse: Course
     private var course: Course {
@@ -249,6 +252,16 @@ class CourseDetailViewController: UITableViewController {
         navigationController?.pushViewController(contoller, animated: true)
     }
 
+    // MARK: - UIViewController Overrides
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if !courseNameIsValid(course.code) {
+            courseCodeTextField?.becomeFirstResponder()
+        }
+    }
+
     // MARK: - UITableViewController Overrides
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -294,6 +307,9 @@ class CourseDetailViewController: UITableViewController {
             }
             cell.textField.text = course.code
             cell.textField.placeholder = "e.g. AAAB01"
+
+            courseCodeTextField = cell.textField
+
             return cell
         case (TableSection.sections, 0):
             let cell = UITableViewCell()
