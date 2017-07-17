@@ -29,7 +29,7 @@ struct Schedule: Codable {
                     sections.map {
                         schedule.adding($0, ofType: sectionType, from: course)
                     }
-                    }.filter { $0.isValid }
+                }.filter { $0.isValid }
             }
         case .ungrouped(let sections):
             schedules = schedules.flatMap { schedule in

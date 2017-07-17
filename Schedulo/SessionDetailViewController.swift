@@ -281,12 +281,12 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             }
         case (startTimePicker, 2), (endTimePicker, 2):
             switch row {
-                case 0:
-                    return "AM"
-                case 1:
-                    return "PM"
-                default:
-                    fatalError("Invalid picker row.")
+            case 0:
+                return "AM"
+            case 1:
+                return "PM"
+            default:
+                fatalError("Invalid picker row.")
             }
         default:
             fatalError("Invalid picker component.")
@@ -320,23 +320,23 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             let rawHour = pickerView.selectedRow(inComponent: 0)
 
             switch row {
-                case 0:
-                    startTime.hour = rawHour
-                case 1:
-                    startTime.hour = rawHour + 12
-                default:
-                    fatalError("Invalid picker row.")
+            case 0:
+                startTime.hour = rawHour
+            case 1:
+                startTime.hour = rawHour + 12
+            default:
+                fatalError("Invalid picker row.")
             }
         case (endTimePicker, 2):
             let rawHour = pickerView.selectedRow(inComponent: 0)
 
             switch row {
-                case 0:
-                    endTime.hour = rawHour
-                case 1:
-                    endTime.hour = rawHour + 12
-                default:
-                    fatalError("Invalid picker row.")
+            case 0:
+                endTime.hour = rawHour
+            case 1:
+                endTime.hour = rawHour + 12
+            default:
+                fatalError("Invalid picker row.")
             }
         default:
             fatalError("Invalid picker component.")
@@ -401,9 +401,9 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         session.time = TimeRange(from: startTime, to: endTime)
 
         self.tableView.reloadRows(at: [
-                                      IndexPath(row: 0, section: 0),
-                                      IndexPath(row: 0, section: 1),
-                                      IndexPath(row: 0, section: 2)
-                                  ], with: .none)
+            IndexPath(row: 0, section: 0),
+            IndexPath(row: 0, section: 1),
+            IndexPath(row: 0, section: 2)
+        ], with: .none)
     }
 }

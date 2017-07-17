@@ -14,7 +14,7 @@ struct Location {
 }
 
 extension Location: Equatable {
-    static func ==(lhs: Location, rhs: Location) -> Bool {
+    static func == (lhs: Location, rhs: Location) -> Bool {
         return lhs.building == rhs.building && lhs.room == rhs.room
     }
 }

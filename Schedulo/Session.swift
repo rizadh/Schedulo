@@ -16,7 +16,7 @@ struct Session: Codable {
 extension Session: Equatable {
     static func == (lhs: Session, rhs: Session) -> Bool {
         return lhs.day == rhs.day &&
-        lhs.time == rhs.time
+            lhs.time == rhs.time
     }
 }
 
@@ -39,7 +39,7 @@ extension Session: Hashable {
 extension Session: Overlappable {
     static func overlap(lhs: Session, rhs: Session) -> Bool {
         return lhs.day == rhs.day &&
-        lhs.time.overlaps(with: rhs.time)
+            lhs.time.overlaps(with: rhs.time)
     }
 }
 
