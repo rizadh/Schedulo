@@ -57,11 +57,9 @@ class CourseDetailViewController: UITableViewController {
     private let originalCourse: Course
     fileprivate var course: Course {
         didSet {
-            if !course.code.isValidCourseName {
-                course.code = CourseDetailViewController.generatePlaceholderCourseCode()
+            if course.code.isValidCourseName {
+                saveHandler(course)
             }
-
-            saveHandler(course)
 
             func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
                 tableView.beginUpdates()
@@ -268,7 +266,7 @@ class CourseDetailViewController: UITableViewController {
     // MARK: - UITableViewController Overrides
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return course.code.isValidCourseName ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -302,10 +300,23 @@ class CourseDetailViewController: UITableViewController {
         case (TableSection.courseCode, 0):
             let originalCourseName = course.code
             let cell = TextFieldCell {
+                let wasValidCourseName = self.course.code.isValidCourseName
+
                 if $0.isValidCourseName {
                     self.course.code = $0
                 } else {
                     self.course.code = originalCourseName
+                }
+
+                let isValidCoursename = self.course.code.isValidCourseName
+
+                switch (wasValidCourseName, isValidCoursename) {
+                case (false, true):
+                    tableView.insertSections([TableSection.sections], with: .fade)
+                case (true, false):
+                    tableView.deleteSections([TableSection.sections], with: .fade)
+                default:
+                    break
                 }
             }
             cell.textField.text = course.code
