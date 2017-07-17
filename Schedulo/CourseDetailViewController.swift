@@ -38,10 +38,6 @@ private extension String {
 
 class CourseDetailViewController: UITableViewController {
 
-    // MARK: - Private Static Properties
-
-    private static var placeholderCourseCodesGenerated = 0
-
     // MARK: - Private Properties
 
     // MARK: Table Sections
@@ -102,13 +98,6 @@ class CourseDetailViewController: UITableViewController {
         case .ungrouped:
             return false
         }
-    }
-
-    // MARK: - Private Static Methods
-    private static func generatePlaceholderCourseCode() -> String {
-        placeholderCourseCodesGenerated += 1
-
-        return "Course \(placeholderCourseCodesGenerated)"
     }
 
     // MARK: - Initializers
