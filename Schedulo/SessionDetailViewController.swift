@@ -21,9 +21,9 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     private let saveHandler: (Session) -> Void
 
     // MARK: Picker Visibility
-    private var showDayPicker = false
-    private var showStartTimePicker = false
-    private var showEndTimePicker = false
+    private var shouldDisplayDayPicker = false
+    private var shouldDisplayStartTimePicker = false
+    private var shouldDisplayEndTimePicker = false
 
     // MARK: Pickers
     private lazy var dayPicker: UIPickerView = {
@@ -187,11 +187,11 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
         switch indexPath.section {
         case 0:
-            return showDayPicker ? dayPicker.intrinsicContentSize.height : 0
+            return shouldDisplayDayPicker ? dayPicker.intrinsicContentSize.height : 0
         case 1:
-            return showStartTimePicker ? startTimePicker.intrinsicContentSize.height : 0
+            return shouldDisplayStartTimePicker ? startTimePicker.intrinsicContentSize.height : 0
         case 2:
-            return showEndTimePicker ? endTimePicker.intrinsicContentSize.height : 0
+            return shouldDisplayEndTimePicker ? endTimePicker.intrinsicContentSize.height : 0
         default:
             return UITableViewAutomaticDimension
         }
@@ -204,22 +204,22 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
         switch indexPath.section {
         case 0:
-            showDayPicker = !showDayPicker
-            if showDayPicker {
-                showStartTimePicker = false
-                showEndTimePicker = false
+            shouldDisplayDayPicker = !shouldDisplayDayPicker
+            if shouldDisplayDayPicker {
+                shouldDisplayStartTimePicker = false
+                shouldDisplayEndTimePicker = false
             }
         case 1:
-            showStartTimePicker = !showStartTimePicker
-            if showStartTimePicker {
-                showDayPicker = false
-                showEndTimePicker = false
+            shouldDisplayStartTimePicker = !shouldDisplayStartTimePicker
+            if shouldDisplayStartTimePicker {
+                shouldDisplayDayPicker = false
+                shouldDisplayEndTimePicker = false
             }
         case 2:
-            showEndTimePicker = !showEndTimePicker
-            if showEndTimePicker {
-                showDayPicker = false
-                showStartTimePicker = false
+            shouldDisplayEndTimePicker = !shouldDisplayEndTimePicker
+            if shouldDisplayEndTimePicker {
+                shouldDisplayDayPicker = false
+                shouldDisplayStartTimePicker = false
             }
         default:
             fatalError("Invalid section.")
