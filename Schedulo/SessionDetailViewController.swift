@@ -10,55 +10,16 @@ import UIKit
 
 class SessionDetailViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    // MARK: - Private Properties
+    // MARK: Private Properties
 
-    // MARK: Session Management
     private var session: Session {
         didSet {
             saveHandler(session)
         }
     }
+
     private let saveHandler: (Session) -> Void
 
-    // MARK: Picker Visibility
-    private var shouldDisplayDayPicker = false {
-        didSet {
-            switch (oldValue, shouldDisplayDayPicker) {
-            case (false, true):
-                expand(.day, .picker)
-            case (true, false):
-                collapse(.day, .picker)
-            default:
-                break
-            }
-        }
-    }
-    private var shouldDisplayStartTimePicker = false {
-        didSet {
-            switch (oldValue, shouldDisplayStartTimePicker) {
-            case (false, true):
-                expand(.startTime, .picker)
-            case (true, false):
-                collapse(.startTime, .picker)
-            default:
-                break
-            }
-        }
-    }
-    private var shouldDisplayEndTimePicker = false {
-        didSet {
-            switch (oldValue, shouldDisplayEndTimePicker) {
-            case (false, true):
-                expand(.endTime, .picker)
-            case (true, false):
-                collapse(.endTime, .picker)
-            default:
-                break
-            }
-        }
-    }
-
-    // MARK: Pickers
     private lazy var dayPicker: UIPickerView = {
         let picker = UIPickerView()
 
@@ -92,7 +53,46 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         return picker
     }()
 
-    // MARK: - Private Static Methods
+    private var shouldDisplayDayPicker = false {
+        didSet {
+            switch (oldValue, shouldDisplayDayPicker) {
+            case (false, true):
+                expand(.day, .picker)
+            case (true, false):
+                collapse(.day, .picker)
+            default:
+                break
+            }
+        }
+    }
+
+    private var shouldDisplayStartTimePicker = false {
+        didSet {
+            switch (oldValue, shouldDisplayStartTimePicker) {
+            case (false, true):
+                expand(.startTime, .picker)
+            case (true, false):
+                collapse(.startTime, .picker)
+            default:
+                break
+            }
+        }
+    }
+
+    private var shouldDisplayEndTimePicker = false {
+        didSet {
+            switch (oldValue, shouldDisplayEndTimePicker) {
+            case (false, true):
+                expand(.endTime, .picker)
+            case (true, false):
+                collapse(.endTime, .picker)
+            default:
+                break
+            }
+        }
+    }
+
+    // MARK: Private Static Methods
 
     private static func generateSession() -> Session {
         let startTime = Time(hour: 6, minute: 0)
@@ -103,7 +103,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         return Session(day: .Wednesday, time: timeRange)
     }
 
-    // MARK: - Private Methods
+    // MARK: Private Methods
 
     private func expand(_ section: TableSection, _ row: TableRow) {
         self.tableView.insertRows(at: [indexPathFor(section, row)], with: .fade)
@@ -113,7 +113,7 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         self.tableView.deleteRows(at: [indexPathFor(section, row)], with: .fade)
     }
 
-    // MARK: - Initializers
+    // MARK: Initializers
 
     init(for sessionOrNil: Session?, saveHandler: @escaping (Session) -> Void) {
         let isNewSession: Bool
@@ -136,9 +136,10 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
-    // MARK: - UIViewController Overrides
-
+// MARK: - UIViewController Overrides
+extension SessionDetailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -169,9 +170,10 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
         endTimePicker.selectRow(endMinute, inComponent: 1, animated: false)
     }
+}
 
-    // MARK: - UITableViewContoller Overrides
-
+// MARK: - UITableViewController Overrides
+extension SessionDetailViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
@@ -286,9 +288,10 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
 
-    // MARK: - UIPickerViewDataSource Methods
-
+// MARK: - UIPickerViewDataSource Conformance
+extension SessionDetailViewController {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         switch pickerView {
         case dayPicker:
@@ -313,11 +316,11 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         default:
             fatalError("Invalid picker component.")
         }
-
     }
+}
 
-    // MARK: - UIPickerViewDelegate Methods
-
+// MARK: - UIPickerViewDelegate Conformance
+extension SessionDetailViewController {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch (pickerView, component) {
         case (dayPicker, 0):
