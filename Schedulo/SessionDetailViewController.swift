@@ -186,9 +186,9 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let (sectionOrNil, _) = tableSectionAndRow(for: indexPath)
+        let (sectionOrNil, rowOrNil) = tableSectionAndRow(for: indexPath)
 
-        guard let section = sectionOrNil else {
+        guard let section = sectionOrNil, let row = rowOrNil, row == .picker else {
             return UITableViewAutomaticDimension
         }
 
