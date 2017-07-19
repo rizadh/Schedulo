@@ -37,9 +37,11 @@ class TextFieldCell: UITableViewCell, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
-        changeHandler(textField.text!)
-
         return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        changeHandler(textField.text!)
     }
 
     override func layoutSubviews() {
