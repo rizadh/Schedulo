@@ -238,7 +238,11 @@ class SectionsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section < sections.count && !tableView.isEditing ? sections[section].identifier : nil
+        if section < sections.count {
+            return sections[section].identifier
+        }
+
+        return nil
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
