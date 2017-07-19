@@ -140,89 +140,94 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
 
-        switch (indexPath.section, indexPath.row) {
-        case (0, 0):
+        let (sectionOrNil, rowOrNil) = tableSectionAndRow(for: indexPath)
+
+        guard let section = sectionOrNil, let row = rowOrNil else {
+            fatalError("Invalid index path.")
+        }
+
+        switch (section, row) {
+        case (.day, .display):
             cell.textLabel!.text = "Day"
             cell.detailTextLabel!.text = "\(self.session.day)"
-        case (0, 1):
+        case (.day, .picker):
             cell.contentView.addSubview(dayPicker)
 
             dayPicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
             dayPicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
             dayPicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
             dayPicker.heightAnchor.constraint(equalToConstant: dayPicker.intrinsicContentSize.height).isActive = true
-        case (1, 0):
+        case (.startTime, .display):
             cell.textLabel!.text = "Start Time"
             cell.detailTextLabel!.text = "\(self.session.time.start)"
-        case (1, 1):
+        case (.startTime, .picker):
             cell.contentView.addSubview(startTimePicker)
 
             startTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
             startTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
             startTimePicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
             startTimePicker.heightAnchor.constraint(equalToConstant: startTimePicker.intrinsicContentSize.height).isActive = true
-        case (2, 0):
+        case (.endTime, .display):
             cell.textLabel!.text = "End Time"
             cell.detailTextLabel!.text = "\(self.session.time.end)"
-        case (2, 1):
+        case (.endTime, .picker):
             cell.contentView.addSubview(endTimePicker)
 
             endTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
             endTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
             endTimePicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
             endTimePicker.heightAnchor.constraint(equalToConstant: endTimePicker.intrinsicContentSize.height).isActive = true
-        default:
-            fatalError("Invalid index path.")
         }
 
+        // TODO: Remove this when row height animations are no longer used.
         cell.clipsToBounds = true
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard indexPath.row == 1 else {
+        let (sectionOrNil, _) = tableSectionAndRow(for: indexPath)
+
+        guard let section = sectionOrNil else {
             return UITableViewAutomaticDimension
         }
 
-        switch indexPath.section {
-        case 0:
+        switch section {
+        case .day:
             return shouldDisplayDayPicker ? dayPicker.intrinsicContentSize.height : 0
-        case 1:
+        case .startTime:
             return shouldDisplayStartTimePicker ? startTimePicker.intrinsicContentSize.height : 0
-        case 2:
+        case .endTime:
             return shouldDisplayEndTimePicker ? endTimePicker.intrinsicContentSize.height : 0
-        default:
-            return UITableViewAutomaticDimension
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.row == 0 else {
-            fatalError("Invalid row.")
+        let (sectionOrNil, rowOrNil) = tableSectionAndRow(for: indexPath)
+
+        guard let section = sectionOrNil, let _ = rowOrNil else {
+            fatalError("Cannot select this index path.")
         }
 
-        switch indexPath.section {
-        case 0:
+        switch section {
+        case .day:
             shouldDisplayDayPicker = !shouldDisplayDayPicker
             if shouldDisplayDayPicker {
                 shouldDisplayStartTimePicker = false
                 shouldDisplayEndTimePicker = false
             }
-        case 1:
+        case .startTime:
             shouldDisplayStartTimePicker = !shouldDisplayStartTimePicker
             if shouldDisplayStartTimePicker {
                 shouldDisplayDayPicker = false
                 shouldDisplayEndTimePicker = false
             }
-        case 2:
+        case .endTime:
             shouldDisplayEndTimePicker = !shouldDisplayEndTimePicker
             if shouldDisplayEndTimePicker {
                 shouldDisplayDayPicker = false
                 shouldDisplayStartTimePicker = false
             }
-        default:
-            fatalError("Invalid section.")
         }
 
         // Animate cell heights
@@ -405,5 +410,47 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             IndexPath(row: 0, section: 1),
             IndexPath(row: 0, section: 2)
         ], with: .none)
+    }
+}
+
+// MARK: - Table Cell Identification
+extension SessionDetailViewController {
+    private enum TableSection {
+        case day
+        case startTime
+        case endTime
+    }
+
+    private enum TableRow {
+        case display
+        case picker
+    }
+
+    private func tableSection(at index: Int) -> TableSection? {
+        switch index {
+        case 0:
+            return .day
+        case 1:
+            return .startTime
+        case 2:
+            return .endTime
+        default:
+            return nil
+        }
+    }
+
+    private func tableRow(at index: Int) -> TableRow? {
+        switch index {
+        case 0:
+            return .display
+        case 1:
+            return .picker
+        default:
+            return nil
+        }
+    }
+
+    private func tableSectionAndRow(for indexPath: IndexPath) -> (section: TableSection?, row: TableRow?) {
+        return (tableSection(at: indexPath.section), tableRow(at: indexPath.row))
     }
 }
