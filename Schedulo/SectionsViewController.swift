@@ -49,6 +49,7 @@ class SectionsViewController: UITableViewController {
 
     private func updateEditButtonVisibility() {
         if sections.isEmpty {
+            super.setEditing(false, animated: true)
             navigationItem.setRightBarButton(nil, animated: true)
         } else {
             navigationItem.setRightBarButton(editButtonItem, animated: true)
