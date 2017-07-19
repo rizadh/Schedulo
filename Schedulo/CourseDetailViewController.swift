@@ -40,6 +40,9 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: - Private Properties
 
+    // MARK: Alert Handling
+    private var textFieldChangeHandler: TextFieldChangeHandler!
+
     // MARK: Table Sections
     private struct TableSection {
         static let courseCode = 0
@@ -155,18 +158,18 @@ class CourseDetailViewController: UITableViewController {
     }
 
     private func migrate(ungrouped sections: [Section]) {
-        if sections.isEmpty {
+        guard !sections.isEmpty else {
             course.sections = .grouped([:])
             return
         }
 
-        let alertController = UIAlertController(title: "Enable Grouping", message: "You have \(sections.count) ungrouped course(s). Choose a new group name to store them or discard them if you wish to re-add all courses. The group name cannot be empty.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Enable Grouping", message: "You have existing ungrouped sections. Enter a unique identifier to group them.", preferredStyle: .alert)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let discardAction = UIAlertAction(title: "Discard", style: .destructive, handler: { _ in
-            self.course.sections = .grouped([:])
-        })
-        let continueAction = UIAlertAction(title: "Continue", style: .default, handler: { _ in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            (self.tableView.cellForRow(at: IndexPath(row: 0, section: 1))?.accessoryView as! UISwitch).setOn(false, animated: true)
+        }
+
+        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
             let groupName = alertController.textFields!.first!.text!
 
             guard groupName.isValidGroupName(in: self) else {
@@ -177,12 +180,20 @@ class CourseDetailViewController: UITableViewController {
             self.course.sections = .grouped([groupName: sections])
         })
 
+        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
+            if let groupName = textField.text, groupName.isValidGroupName(in: self) {
+                doneAction.isEnabled = true
+            } else {
+                doneAction.isEnabled = false
+            }
+        }
+
         alertController.addAction(cancelAction)
-        alertController.addAction(discardAction)
-        alertController.addAction(continueAction)
+        alertController.addAction(doneAction)
         alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "e.g. Lecture"
             textField.autocapitalizationType = .words
+            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
         })
 
         present(alertController, animated: true, completion: nil)

@@ -33,10 +33,12 @@ private extension String {
 }
 
 class SectionsViewController: UITableViewController {
-    var textFieldChangeHandler: TextFieldChangeHandler!
-
     // MARK: - Private Properties
 
+    // MARK: Alert Handling
+    private var textFieldChangeHandler: TextFieldChangeHandler!
+
+    // MARK: Sections Management
     fileprivate var sections: [Section] {
         didSet {
             updateEditButtonVisibility()
@@ -59,7 +61,7 @@ class SectionsViewController: UITableViewController {
     private func addSection() {
         let alertController = UIAlertController(title: "New Section", message: "Enter a unique identifier for the section.", preferredStyle: .alert)
 
-        let addAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
+        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
             let identifier = alertController.textFields!.first!.text!
 
             if identifier.isValidIdentifier {
@@ -70,15 +72,13 @@ class SectionsViewController: UITableViewController {
             }
         })
 
-        addAction.isEnabled = false
-
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         self.textFieldChangeHandler = TextFieldChangeHandler { textField in
             if textField.text!.isValidIdentifier {
-                addAction.isEnabled = true
+                doneAction.isEnabled = true
             } else {
-                addAction.isEnabled = false
+                doneAction.isEnabled = false
             }
         }
 
@@ -87,7 +87,7 @@ class SectionsViewController: UITableViewController {
             textField.autocapitalizationType = .allCharacters
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
         })
-        alertController.addAction(addAction)
+        alertController.addAction(doneAction)
         alertController.addAction(cancelAction)
 
         present(alertController, animated: true, completion: nil)
