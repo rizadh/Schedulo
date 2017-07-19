@@ -33,6 +33,8 @@ private extension String {
 }
 
 class SectionsViewController: UITableViewController {
+    var textFieldChangeHandler: TextFieldChangeHandler!
+
     // MARK: - Private Properties
 
     fileprivate var sections: [Section] {
@@ -54,9 +56,9 @@ class SectionsViewController: UITableViewController {
     }
 
     private func addSection() {
-        let alertController = UIAlertController(title: "Add Section", message: "Enter a uniquely identifying name for the section. It cannot be blank.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "New Section", message: "Enter a unique identifier for the section.", preferredStyle: .alert)
 
-        let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
+        let addAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
             let identifier = alertController.textFields!.first!.text!
 
             if identifier.isValidIdentifier {
@@ -67,11 +69,22 @@ class SectionsViewController: UITableViewController {
             }
         })
 
+        addAction.isEnabled = false
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
+            if textField.text!.isValidIdentifier {
+                addAction.isEnabled = true
+            } else {
+                addAction.isEnabled = false
+            }
+        }
 
         alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "e.g. LEC001"
             textField.autocapitalizationType = .allCharacters
+            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
         })
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
