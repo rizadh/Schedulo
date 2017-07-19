@@ -92,9 +92,9 @@ class SessionDetailViewController: UITableViewController {
 
     private func updateDisplays() {
         tableView.reloadRows(at: [
-            indexPathFor(.day, .display),
-            indexPathFor(.startTime, .display),
-            indexPathFor(.endTime, .display)
+            indexPath(for: .day, .display),
+            indexPath(for: .startTime, .display),
+            indexPath(for: .endTime, .display)
         ], with: .none)
     }
 
@@ -149,11 +149,11 @@ class SessionDetailViewController: UITableViewController {
     }
 
     private func expand(_ section: TableSection, _ row: TableRow) {
-        self.tableView.insertRows(at: [indexPathFor(section, row)], with: .fade)
+        self.tableView.insertRows(at: [indexPath(for: section, row)], with: .fade)
     }
 
     private func collapse(_ section: TableSection, _ row: TableRow) {
-        self.tableView.deleteRows(at: [indexPathFor(section, row)], with: .fade)
+        self.tableView.deleteRows(at: [indexPath(for: section, row)], with: .fade)
     }
 
     // MARK: Initializers
@@ -374,7 +374,7 @@ extension SessionDetailViewController {
         return (tableSection(at: indexPath.section), tableRow(at: indexPath.row))
     }
 
-    private func indexPathFor(_ section: TableSection, _ row: TableRow) -> IndexPath {
+    private func indexPath(for section: TableSection, _ row: TableRow) -> IndexPath {
         let sectionIndex: Int
         let rowIndex: Int
 
