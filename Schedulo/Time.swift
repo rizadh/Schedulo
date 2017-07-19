@@ -38,26 +38,8 @@ struct Time: Codable {
         self.minute = minute
     }
 
-    init(fromMinutes: Int) {
-        guard fromMinutes > 0 else {
-            fatalError("Cannot create a Time instance with negative minutes.")
-        }
-
-        guard fromMinutes < 24 * 60 else {
-            fatalError("Cannot create a Time instance with more than 24 hours.")
-        }
-
-        var minutes = fromMinutes
-
-        var hours = 0
-
-        while minutes >= 60 {
-            hours += 1
-            minutes -= 60
-        }
-
-        self.hour = hours
-        self.minute = minutes
+    static func fromMinutes(_ minutes: Int) -> Time {
+        return Time(hour: minutes / 60, minute: minutes % 60)
     }
 
     var minutes: Int {

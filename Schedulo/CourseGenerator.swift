@@ -72,7 +72,7 @@ struct CourseGenerator {
     }
 
     private static func getTime(for interval: Int) -> Time {
-        return Time(fromMinutes: interval * INTERVAL_TIME)
+        return Time.fromMinutes(interval * INTERVAL_TIME)
     }
 
     private static func randomIdentifier() -> String {
