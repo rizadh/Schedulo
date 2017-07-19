@@ -21,9 +21,42 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     private let saveHandler: (Session) -> Void
 
     // MARK: Picker Visibility
-    private var shouldDisplayDayPicker = false
-    private var shouldDisplayStartTimePicker = false
-    private var shouldDisplayEndTimePicker = false
+    private var shouldDisplayDayPicker = false {
+        didSet {
+            switch (oldValue, shouldDisplayDayPicker) {
+            case (false, true):
+                expand(.day, .picker)
+            case (true, false):
+                collapse(.day, .picker)
+            default:
+                break
+            }
+        }
+    }
+    private var shouldDisplayStartTimePicker = false {
+        didSet {
+            switch (oldValue, shouldDisplayStartTimePicker) {
+            case (false, true):
+                expand(.startTime, .picker)
+            case (true, false):
+                collapse(.startTime, .picker)
+            default:
+                break
+            }
+        }
+    }
+    private var shouldDisplayEndTimePicker = false {
+        didSet {
+            switch (oldValue, shouldDisplayEndTimePicker) {
+            case (false, true):
+                expand(.endTime, .picker)
+            case (true, false):
+                collapse(.endTime, .picker)
+            default:
+                break
+            }
+        }
+    }
 
     // MARK: Pickers
     private lazy var dayPicker: UIPickerView = {
@@ -68,6 +101,16 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         let timeRange = TimeRange(from: startTime, to: endTime)
 
         return Session(day: .Wednesday, time: timeRange)
+    }
+
+    // MARK: - Private Methods
+
+    private func expand(_ section: TableSection, _ row: TableRow) {
+        self.tableView.insertRows(at: [indexPathFor(section, row)], with: .fade)
+    }
+
+    private func collapse(_ section: TableSection, _ row: TableRow) {
+        self.tableView.deleteRows(at: [indexPathFor(section, row)], with: .fade)
     }
 
     // MARK: - Initializers
@@ -134,7 +177,18 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        guard let tableSection = tableSection(at: section) else {
+            return 0
+        }
+
+        switch tableSection {
+        case .day:
+            return shouldDisplayDayPicker ? 2 : 1
+        case .startTime:
+            return shouldDisplayStartTimePicker ? 2 : 1
+        case .endTime:
+            return shouldDisplayEndTimePicker ? 2 : 1
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -194,11 +248,11 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
 
         switch section {
         case .day:
-            return shouldDisplayDayPicker ? dayPicker.intrinsicContentSize.height : 0
+            return dayPicker.intrinsicContentSize.height
         case .startTime:
-            return shouldDisplayStartTimePicker ? startTimePicker.intrinsicContentSize.height : 0
+            return startTimePicker.intrinsicContentSize.height
         case .endTime:
-            return shouldDisplayEndTimePicker ? endTimePicker.intrinsicContentSize.height : 0
+            return endTimePicker.intrinsicContentSize.height
         }
     }
 
@@ -229,10 +283,6 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
                 shouldDisplayStartTimePicker = false
             }
         }
-
-        // Animate cell heights
-        tableView.beginUpdates()
-        tableView.endUpdates()
 
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -452,5 +502,28 @@ extension SessionDetailViewController {
 
     private func tableSectionAndRow(for indexPath: IndexPath) -> (section: TableSection?, row: TableRow?) {
         return (tableSection(at: indexPath.section), tableRow(at: indexPath.row))
+    }
+
+    private func indexPathFor(_ section: TableSection, _ row: TableRow) -> IndexPath {
+        let sectionIndex: Int
+        let rowIndex: Int
+
+        switch section {
+        case .day:
+            sectionIndex = 0
+        case .startTime:
+            sectionIndex = 1
+        case .endTime:
+            sectionIndex = 2
+        }
+
+        switch row {
+        case .display:
+            rowIndex = 0
+        case .picker:
+            rowIndex = 1
+        }
+
+        return IndexPath(row: rowIndex, section: sectionIndex)
     }
 }
