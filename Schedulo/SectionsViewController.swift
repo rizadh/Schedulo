@@ -311,6 +311,14 @@ extension SectionsViewController {
 
         return true
     }
+
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        guard let (_, row) = tableSectionAndRow(for: indexPath), case .identifier = row else {
+            return true
+        }
+
+        return false
+    }
 }
 
 // MARK: - Cell Identification
