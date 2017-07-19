@@ -153,21 +153,6 @@ class SectionsViewController: UITableViewController {
         return sections[section].sessions.count + 3
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard indexPath.section < sections.count else {
-            return UITableViewAutomaticDimension
-        }
-
-        switch indexPath.row {
-        case 0:
-            return tableView.isEditing ? UITableViewAutomaticDimension : 0
-        case sections[indexPath.section].sessions.count + 2:
-            return tableView.isEditing ? UITableViewAutomaticDimension : 0
-        default:
-            return UITableViewAutomaticDimension
-        }
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
 
