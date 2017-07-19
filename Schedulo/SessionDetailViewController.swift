@@ -31,25 +31,15 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
         return picker
     }()
 
-    private lazy var startTimePicker: UIPickerView = {
-        let picker = UIPickerView()
-
+    private lazy var startTimePicker: TimePickerView = {
+        let picker = TimePickerView(with: session.time.start, changeHandler: self.setStartTime)
         picker.translatesAutoresizingMaskIntoConstraints = false
-
-        picker.dataSource = self
-        picker.delegate = self
-
         return picker
     }()
 
-    private lazy var endTimePicker: UIPickerView = {
-        let picker = UIPickerView()
-
+    private lazy var endTimePicker: TimePickerView = {
+        let picker = TimePickerView(with: session.time.end, changeHandler: self.setEndTime)
         picker.translatesAutoresizingMaskIntoConstraints = false
-
-        picker.dataSource = self
-        picker.delegate = self
-
         return picker
     }()
 
@@ -104,6 +94,58 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     }
 
     // MARK: Private Methods
+
+    private func updateDisplays() {
+        tableView.reloadRows(at: [
+            indexPathFor(.day, .display),
+            indexPathFor(.startTime, .display),
+            indexPathFor(.endTime, .display)
+        ], with: .none)
+    }
+
+    private func setStartTime(_ newStartTime: Time) {
+        if newStartTime < session.time.end {
+            session.time.start = newStartTime
+        } else if session.time.end == Time(hour: Time.maxHour, minute: Time.maxMinute) {
+            startTimePicker.select(time: Time(hour: Time.maxHour, minute: Time.maxMinute - 1), animated: true)
+        } else {
+            while newStartTime >= session.time.end {
+                if session.time.end.hour < Time.maxHour {
+                    session.time.end.hour += 1
+                } else if session.time.end.minute < Time.maxMinute {
+                    session.time.end.minute += 1
+                } else {
+                    fatalError()
+                }
+            }
+
+            endTimePicker.select(time: session.time.end)
+        }
+
+        updateDisplays()
+    }
+
+    private func setEndTime(_ newEndTime: Time) {
+        if session.time.start < newEndTime {
+            session.time.end = newEndTime
+        } else if session.time.end == Time(hour: Time.minHour, minute: Time.minMinute) {
+            startTimePicker.select(time: Time(hour: Time.minHour, minute: Time.minMinute + 1), animated: true)
+        } else {
+            while session.time.start >= newEndTime {
+                if session.time.start.hour >= Time.minHour {
+                    session.time.start.hour -= 1
+                } else if session.time.start.minute <= Time.minMinute {
+                    session.time.start.minute -= 1
+                } else {
+                    fatalError()
+                }
+            }
+
+            startTimePicker.select(time: session.time.start)
+        }
+
+        updateDisplays()
+    }
 
     private func expand(_ section: TableSection, _ row: TableRow) {
         self.tableView.insertRows(at: [indexPathFor(section, row)], with: .fade)
@@ -307,12 +349,6 @@ extension SessionDetailViewController {
         switch (pickerView, component) {
         case (dayPicker, 0):
             return 5
-        case (startTimePicker, 0), (endTimePicker, 0):
-            return 12
-        case (startTimePicker, 1), (endTimePicker, 1):
-            return 60
-        case (startTimePicker, 2), (endTimePicker, 2):
-            return 2
         default:
             fatalError("Invalid picker component.")
         }
@@ -325,144 +361,20 @@ extension SessionDetailViewController {
         switch (pickerView, component) {
         case (dayPicker, 0):
             return Day(rawValue: row + 1)!.description
-        case (startTimePicker, 0), (endTimePicker, 0):
-            if row == 0 {
-                return "12"
-            }
-
-            return String(row)
-        case (startTimePicker, 1), (endTimePicker, 1):
-            if row < 10 {
-                return "0" + String(row)
-            } else {
-                return String(row)
-            }
-        case (startTimePicker, 2), (endTimePicker, 2):
-            switch row {
-            case 0:
-                return "AM"
-            case 1:
-                return "PM"
-            default:
-                fatalError("Invalid picker row.")
-            }
         default:
             fatalError("Invalid picker component.")
         }
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        var startTime = session.time.start
-        var endTime = session.time.end
-
         switch (pickerView, component) {
         case (dayPicker, 0):
             session.day = Day(rawValue: row + 1)!
-        case (startTimePicker, 0):
-            if pickerView.selectedRow(inComponent: 2) == 0 {
-                startTime.hour = row
-            } else {
-                startTime.hour = row + 12
-            }
-        case (endTimePicker, 0):
-            if pickerView.selectedRow(inComponent: 2) == 0 {
-                endTime.hour = row
-            } else {
-                endTime.hour = row + 12
-            }
-        case (startTimePicker, 1):
-            startTime.minute = row
-        case (endTimePicker, 1):
-            endTime.minute = row
-        case (startTimePicker, 2):
-            let rawHour = pickerView.selectedRow(inComponent: 0)
-
-            switch row {
-            case 0:
-                startTime.hour = rawHour
-            case 1:
-                startTime.hour = rawHour + 12
-            default:
-                fatalError("Invalid picker row.")
-            }
-        case (endTimePicker, 2):
-            let rawHour = pickerView.selectedRow(inComponent: 0)
-
-            switch row {
-            case 0:
-                endTime.hour = rawHour
-            case 1:
-                endTime.hour = rawHour + 12
-            default:
-                fatalError("Invalid picker row.")
-            }
         default:
             fatalError("Invalid picker component.")
         }
 
-        if startTime == Time(hour: Time.maxHour, minute: Time.maxMinute) {
-            startTime = Time(hour: Time.maxHour, minute: Time.maxMinute - 1)
-        }
-
-        if endTime == Time(hour: Time.minHour, minute: Time.minMinute) {
-            endTime = Time(hour: Time.minHour, minute: Time.minMinute + 1)
-        }
-
-        if startTime >= endTime {
-            if startTime == session.time.start {
-                if endTime.hour > Time.minHour {
-                    startTime = Time(hour: endTime.hour - 1, minute: Time.minMinute)
-                } else {
-                    startTime = Time(hour: Time.minHour, minute: Time.minMinute)
-                }
-            }
-
-            if endTime == session.time.end {
-                if startTime.hour < Time.maxHour {
-                    endTime = Time(hour: startTime.hour + 1, minute: Time.minMinute)
-                } else {
-                    endTime = Time(hour: Time.maxHour, minute: Time.maxMinute)
-                }
-            }
-        }
-
-        do {
-            let startHour = startTime.hour
-            let startMinute = startTime.minute
-
-            if startHour < 12 {
-                startTimePicker.selectRow(startHour, inComponent: 0, animated: true)
-                startTimePicker.selectRow(0, inComponent: 2, animated: true)
-            } else {
-                startTimePicker.selectRow(startHour - 12, inComponent: 0, animated: true)
-                startTimePicker.selectRow(1, inComponent: 2, animated: true)
-            }
-
-            startTimePicker.selectRow(startMinute, inComponent: 1, animated: true)
-        }
-
-        do {
-            let endHour = endTime.hour
-            let endMinute = endTime.minute
-
-            if endHour < 12 {
-                endTimePicker.selectRow(endHour, inComponent: 0, animated: true)
-                endTimePicker.selectRow(0, inComponent: 2, animated: true)
-            } else {
-                endTimePicker.selectRow(endHour - 12, inComponent: 0, animated: true)
-                endTimePicker.selectRow(1, inComponent: 2, animated: true)
-            }
-
-            endTimePicker.selectRow(endMinute, inComponent: 1, animated: true)
-        }
-
-        session.time = TimeRange(from: startTime, to: endTime)
-
-        self.tableView.reloadRows(at: [
-            IndexPath(row: 0, section: 0),
-            IndexPath(row: 0, section: 1),
-            IndexPath(row: 0, section: 2)
-        ], with: .none)
+        updateDisplays()
     }
 }
 
