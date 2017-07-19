@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SessionDetailViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class SessionDetailViewController: UITableViewController {
 
     // MARK: Private Properties
 
@@ -21,13 +21,8 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
     private let saveHandler: (Session) -> Void
 
     private lazy var dayPicker: UIPickerView = {
-        let picker = UIPickerView()
-
+        let picker = DayPickerView(with: session.day, changeHandler: self.setDay)
         picker.translatesAutoresizingMaskIntoConstraints = false
-
-        picker.dataSource = self
-        picker.delegate = self
-
         return picker
     }()
 
@@ -101,6 +96,12 @@ class SessionDetailViewController: UITableViewController, UIPickerViewDataSource
             indexPathFor(.startTime, .display),
             indexPathFor(.endTime, .display)
         ], with: .none)
+    }
+
+    private func setDay(_ newDay: Day) {
+        session.day = newDay
+
+        updateDisplays()
     }
 
     private func setStartTime(_ newStartTime: Time) {
@@ -329,52 +330,6 @@ extension SessionDetailViewController {
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-// MARK: - UIPickerViewDataSource Conformance
-extension SessionDetailViewController {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        switch pickerView {
-        case dayPicker:
-            return 1
-        case startTimePicker, endTimePicker:
-            return 3
-        default:
-            fatalError("Invalid picker.")
-        }
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch (pickerView, component) {
-        case (dayPicker, 0):
-            return 5
-        default:
-            fatalError("Invalid picker component.")
-        }
-    }
-}
-
-// MARK: - UIPickerViewDelegate Conformance
-extension SessionDetailViewController {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch (pickerView, component) {
-        case (dayPicker, 0):
-            return Day(rawValue: row + 1)!.description
-        default:
-            fatalError("Invalid picker component.")
-        }
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch (pickerView, component) {
-        case (dayPicker, 0):
-            session.day = Day(rawValue: row + 1)!
-        default:
-            fatalError("Invalid picker component.")
-        }
-
-        updateDisplays()
     }
 }
 
