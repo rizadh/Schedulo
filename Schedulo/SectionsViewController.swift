@@ -33,6 +33,9 @@ private extension String {
 }
 
 class SectionsViewController: UITableViewController {
+    // MARK: - Public Properties
+    var sectionType: String?
+
     // MARK: - Private Properties
 
     // MARK: Alert Handling
@@ -59,17 +62,17 @@ class SectionsViewController: UITableViewController {
     }
 
     private func addSection() {
+        func addSection(with identifier: String) {
+            self.sections.append(Section(identifier: identifier, sessions: []))
+            self.tableView.insertSections([self.sections.count - 1], with: .fade)
+        }
+
         let alertController = UIAlertController(title: "New Section", message: "Enter a unique identifier for the section.", preferredStyle: .alert)
 
         let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
             let identifier = alertController.textFields!.first!.text!
 
-            if identifier.isValidIdentifier {
-                self.sections.append(Section(identifier: identifier, sessions: []))
-                self.tableView.insertSections([self.sections.count - 1], with: .fade)
-            } else {
-                self.addSection()
-            }
+            addSection(with: identifier)
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -86,6 +89,17 @@ class SectionsViewController: UITableViewController {
             textField.placeholder = "e.g. LEC001"
             textField.autocapitalizationType = .allCharacters
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
+
+            let validIdentifiers = self.generateIdentifierSuggestions().filter {
+                $0.isValidIdentifier
+            }
+
+            if !validIdentifiers.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: validIdentifiers) { selectedOption in
+                    addSection(with: selectedOption)
+                    alertController.dismiss(animated: true, completion: nil)
+                }
+            }
         })
         alertController.addAction(doneAction)
         alertController.addAction(cancelAction)
@@ -133,6 +147,49 @@ class SectionsViewController: UITableViewController {
 
         self.sections[sectionIndex].sessions.remove(at: sessionIndex)
         self.tableView.deleteRows(at: [indexPath], with: .left)
+    }
+
+    private func generateIdentifierSuggestions() -> [String] {
+        let parsedIdentifiers = sections.flatMap {
+            return parseIdentifier($0.identifier)
+        }
+
+        let prefixes = Set(parsedIdentifiers.map({ $0.prefix }))
+
+        let suggestionsBasedOnExistingSections: [String] = prefixes.map { prefix in
+            let maxValue = parsedIdentifiers.filter { $0.prefix == prefix }.map { $0.value }.reduce(0, max)
+            let maxDigits = parsedIdentifiers.filter { $0.prefix == prefix }.map { $0.digits }.reduce(0, max)
+
+            let suffix = String(format: "%0\(maxDigits)d", maxValue + 1)
+
+            return prefix + suffix
+        }
+
+        if suggestionsBasedOnExistingSections.isEmpty {
+            return [String((sectionType ?? "Section").prefix(3)).uppercased() + "01"]
+        } else {
+            return suggestionsBasedOnExistingSections
+        }
+    }
+
+    private func parseIdentifier(_ identifier: String) -> (prefix: String, digits: Int, value: Int)? {
+        let pattern = "^(.*?)(\\d+)$"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+
+        guard let match = regex.firstMatch(in: identifier, options: [], range: NSRange(location: 0, length: identifier.count)) else {
+            return nil
+        }
+
+        let prefixRange = match.range(at: 1)
+        let valueRange = match.range(at: 2)
+
+        let prefix = String((identifier as NSString).substring(with: prefixRange))
+        let valueAsString = String((identifier as NSString).substring(with: valueRange))
+
+        let digits = valueAsString.count
+        let value = Int(valueAsString)!
+
+        return (prefix, digits, value)
     }
 
     // MARK: - Initializers

@@ -280,6 +280,7 @@ class CourseDetailViewController: UITableViewController {
         }
 
         let contoller = SectionsViewController(for: existingSections, saveHandler: saveHandler)
+        contoller.sectionType = sectionTypeOrNil
         navigationController?.pushViewController(contoller, animated: true)
     }
 
