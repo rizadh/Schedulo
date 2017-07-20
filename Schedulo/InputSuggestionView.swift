@@ -23,7 +23,10 @@ class InputSuggestionView: UIInputView {
             button.setTitleColor(UIColor.darkText.withAlphaComponent(0.5), for: .highlighted)
 
             button.backgroundColor = .white
-            button.layer.cornerRadius = 5
+            button.layer.shadowOpacity = 0.1
+            button.layer.shadowOffset = CGSize(width: 0, height: 1)
+            button.layer.shadowRadius = 1
+            button.layer.cornerRadius = 4
 
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(optionWasPressed))
 
