@@ -71,5 +71,13 @@ class InputSuggestionView: UIInputView {
         let totalWidth = buttons.map({ button in 18 + button.intrinsicContentSize.width }).reduce(0, +)
         stackView.frame = CGRect(x: 3, y: 12, width: totalWidth, height: scrollView.bounds.height - 16)
         scrollView.contentSize = CGSize(width: stackView.bounds.width + 6, height: stackView.bounds.height)
+
+        // Center suggestions if extra space is present
+        if scrollView.contentSize.width < self.bounds.width {
+            let padding = (self.bounds.width - totalWidth) / 2
+
+            stackView.frame = CGRect(x: padding, y: 12, width: totalWidth, height: scrollView.bounds.height - 16)
+            scrollView.contentSize = CGSize(width: stackView.bounds.width + 2 * padding, height: stackView.bounds.height)
+        }
     }
 }
