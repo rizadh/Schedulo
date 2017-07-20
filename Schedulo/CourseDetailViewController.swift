@@ -38,6 +38,10 @@ private extension String {
 
 class CourseDetailViewController: UITableViewController {
 
+    // MARK: - Static Private Properties
+
+    static let possibleGroupNames = ["Lecture", "Practical", "Tutorial", "Lab"]
+
     // MARK: - Private Properties
 
     // MARK: Alert Handling
@@ -165,6 +169,17 @@ class CourseDetailViewController: UITableViewController {
             textField.placeholder = "e.g. Lecture"
             textField.autocapitalizationType = .words
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
+
+            let validNames = CourseDetailViewController.possibleGroupNames.filter { name in
+                return name.isValidGroupName(in: self)
+            }
+
+            if !validNames.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: validNames, suggestionHandler: { selectedOption in
+                    self.course.sections = .grouped([selectedOption: sections])
+                    alertController.dismiss(animated: true, completion: nil)
+                })
+            }
         })
 
         present(alertController, animated: true, completion: nil)
@@ -209,9 +224,7 @@ class CourseDetailViewController: UITableViewController {
             textField.placeholder = "e.g. Lecture"
             textField.autocapitalizationType = .words
 
-            let possibleNames = ["Lecture", "Practical", "Tutorial", "Lab"]
-
-            let validNames = possibleNames.filter { name in
+            let validNames = CourseDetailViewController.possibleGroupNames.filter { name in
                 return name.isValidGroupName(in: self)
             }
 
