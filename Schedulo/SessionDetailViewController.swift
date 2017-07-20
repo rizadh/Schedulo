@@ -107,13 +107,17 @@ class SessionDetailViewController: UITableViewController {
     private func setStartTime(_ newStartTime: Time) {
         if newStartTime < session.time.end {
             session.time.start = newStartTime
-        } else if session.time.end == Time(hour: Time.maxHour, minute: Time.maxMinute) {
-            startTimePicker.select(time: Time(hour: Time.maxHour, minute: Time.maxMinute - 1), animated: true)
+        } else if newStartTime == Time.maxTime {
+            let adjustedStartTime = Time.fromMinutes(Time.maxTime.asMinutes - 1)
+            session.time = TimeRange(from: adjustedStartTime, to: Time.maxTime)
+
+            startTimePicker.select(time: adjustedStartTime, animated: true)
+            endTimePicker.select(time: Time.maxTime)
         } else {
             while newStartTime >= session.time.end {
-                if session.time.end.hour < Time.maxHour {
+                if session.time.end.hour + 1 < Time.maxHour {
                     session.time.end.hour += 1
-                } else if session.time.end.minute < Time.maxMinute {
+                } else if session.time.end.minute + 1 < Time.maxMinute {
                     session.time.end.minute += 1
                 } else {
                     fatalError()
@@ -129,13 +133,17 @@ class SessionDetailViewController: UITableViewController {
     private func setEndTime(_ newEndTime: Time) {
         if session.time.start < newEndTime {
             session.time.end = newEndTime
-        } else if session.time.end == Time(hour: Time.minHour, minute: Time.minMinute) {
-            startTimePicker.select(time: Time(hour: Time.minHour, minute: Time.minMinute + 1), animated: true)
+        } else if newEndTime == Time.minTime {
+            let adjustedEndTime = Time.fromMinutes(Time.minTime.asMinutes + 1)
+            session.time = TimeRange(from: Time.minTime, to: adjustedEndTime)
+
+            endTimePicker.select(time: adjustedEndTime, animated: true)
+            startTimePicker.select(time: Time.minTime)
         } else {
             while session.time.start >= newEndTime {
-                if session.time.start.hour >= Time.minHour {
+                if session.time.start.hour > Time.minHour {
                     session.time.start.hour -= 1
-                } else if session.time.start.minute <= Time.minMinute {
+                } else if session.time.start.minute > Time.minMinute {
                     session.time.start.minute -= 1
                 } else {
                     fatalError()

@@ -132,7 +132,7 @@ extension Schedule {
         for session in sessions.sorted(by: { $0.time < $1.time }) {
             if let lastSession = lastSessions[session.day] {
                 let lastValue = gaps[session.day] ?? 0
-                let delta = session.time.start.minutes - lastSession.time.end.minutes
+                let delta = session.time.start.asMinutes - lastSession.time.end.asMinutes
 
                 gaps[session.day] = lastValue + delta
             }

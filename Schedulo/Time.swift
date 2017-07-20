@@ -9,29 +9,32 @@
 import Foundation
 
 struct Time: Codable {
-    static let maxHour = 23
     static let minHour = 0
-    static let maxMinute = 59
+    static let maxHour = 24
     static let minMinute = 0
+    static let maxMinute = 60
+
+    static let minTime = Time(hour: Time.minHour, minute: Time.minMinute)
+    static let maxTime = Time(hour: Time.maxHour - 1, minute: Time.maxMinute - 1)
 
     var hour: Int
     var minute: Int
 
     init(hour: Int, minute: Int) {
         guard hour >= Time.minHour else {
-            fatalError("Cannot create a Time instance with an hour less than \(Time.minHour).")
+            fatalError("Hour must be at least \(Time.minHour)")
         }
 
-        guard hour <= Time.maxHour else {
-            fatalError("Cannot create a Time instance with an hour greater than \(Time.maxHour)")
+        guard hour < Time.maxHour else {
+            fatalError("Hour must be less than \(Time.maxHour)")
         }
 
         guard minute >= Time.minMinute else {
-            fatalError("Cannot create a Time instance with a minute less than \(Time.minMinute).")
+            fatalError("Minute must be at least \(Time.minMinute)")
         }
 
-        guard minute <= Time.maxMinute else {
-            fatalError("Cannot create a Time instance with a minute greater than \(Time.maxMinute)")
+        guard minute < Time.maxMinute else {
+            fatalError("Minute must be lower than \(Time.maxMinute)")
         }
 
         self.hour = hour
@@ -42,20 +45,20 @@ struct Time: Codable {
         return Time(hour: minutes / 60, minute: minutes % 60)
     }
 
-    var minutes: Int {
+    var asMinutes: Int {
         return 60 * self.hour + self.minute
     }
 }
 
 extension Time: Equatable {
     static func == (lhs: Time, rhs: Time) -> Bool {
-        return lhs.minutes == rhs.minutes
+        return lhs.asMinutes == rhs.asMinutes
     }
 }
 
 extension Time: Comparable {
     static func < (lhs: Time, rhs: Time) -> Bool {
-        return lhs.minutes < rhs.minutes
+        return lhs.asMinutes < rhs.asMinutes
     }
 }
 

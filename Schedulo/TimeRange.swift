@@ -28,7 +28,7 @@ struct TimeRange: Codable {
     }
 
     var duration: Int {
-        return end.minutes - start.minutes
+        return end.asMinutes - start.asMinutes
     }
 }
 
