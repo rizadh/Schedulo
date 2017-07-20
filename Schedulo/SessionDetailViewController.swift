@@ -124,6 +124,7 @@ class SessionDetailViewController: UITableViewController {
                 }
             }
 
+            session.time.start = newStartTime
             endTimePicker.select(time: session.time.end)
         }
 
@@ -150,6 +151,7 @@ class SessionDetailViewController: UITableViewController {
                 }
             }
 
+            session.time.end = newEndTime
             startTimePicker.select(time: session.time.start)
         }
 
