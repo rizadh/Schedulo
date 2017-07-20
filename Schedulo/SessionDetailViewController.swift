@@ -80,8 +80,8 @@ class SessionDetailViewController: UITableViewController {
     // MARK: Private Static Methods
 
     private static func generateSession() -> Session {
-        let startTime = Time(hour: 6, minute: 0)
-        let endTime = Time(hour: 7, minute: 0)
+        let startTime = Time(hour: 9, minute: 0)
+        let endTime = Time(hour: 11, minute: 0)
 
         let timeRange = TimeRange(from: startTime, to: endTime)
 
