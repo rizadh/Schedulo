@@ -168,6 +168,7 @@ class CourseDetailViewController: UITableViewController {
         alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "e.g. Lecture"
             textField.autocapitalizationType = .words
+
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
 
             let validNames = CourseDetailViewController.possibleGroupNames.filter { name in
@@ -218,11 +219,21 @@ class CourseDetailViewController: UITableViewController {
             addGroup(named: groupName)
         })
 
+        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
+            if let groupName = textField.text, groupName.isValidGroupName(in: self) {
+                addAction.isEnabled = true
+            } else {
+                addAction.isEnabled = false
+            }
+        }
+
         alertController.addAction(cancelAction)
         alertController.addAction(addAction)
         alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "e.g. Lecture"
             textField.autocapitalizationType = .words
+
+            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
 
             let validNames = CourseDetailViewController.possibleGroupNames.filter { name in
                 return name.isValidGroupName(in: self)
