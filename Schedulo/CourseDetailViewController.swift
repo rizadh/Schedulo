@@ -292,10 +292,16 @@ class CourseDetailViewController: UITableViewController {
                 if $0.isValidCourseCode {
                     self.course.code = $0
                     lastValidCourseName = $0
+
+                    if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
+                        textFieldCell.textField.placeholder = $0
+                    }
                 } else {
                     self.course.code = lastValidCourseName
+
                     if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
                         textFieldCell.textField.text = self.course.code
+                        textFieldCell.textField.placeholder = self.course.code
                     }
                 }
 
@@ -311,7 +317,7 @@ class CourseDetailViewController: UITableViewController {
                 }
             }
             cell.textField.text = course.code
-            cell.textField.placeholder = "e.g. AAAB01"
+            cell.textField.placeholder = course.code.isEmpty ? "e.g. AAAB01" : course.code
 
             courseCodeTextField = cell.textField
 
