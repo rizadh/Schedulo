@@ -130,6 +130,8 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: Section Grouping
     @objc private func toggleSectionGrouping() {
+        self.setEditing(false, animated: true)
+
         switch course.sections {
         case .ungrouped(let sections):
             migrate(ungrouped: sections)
