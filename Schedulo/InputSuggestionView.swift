@@ -32,6 +32,7 @@ class InputSuggestionView: UIInputView {
     }
 
     private func addSubviews() {
+        // Create buttons
         let buttons: [UIButton] = options.map { buttonTitle in
             let button = UIButton()
 
@@ -51,25 +52,26 @@ class InputSuggestionView: UIInputView {
             return button
         }
 
+        // Create and configure UIScrollView
         let scrollView = UIScrollView()
-
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.clipsToBounds = false
         scrollView.alwaysBounceHorizontal = true
 
+        // Create and configure UIStackView
         let stackView = UIStackView(arrangedSubviews: buttons)
-
         stackView.distribution = .fillProportionally
         stackView.spacing = 8
-        
 
-        scrollView.addSubview(stackView)
+        // Add UIScrollView as subview
         self.addSubview(scrollView)
+        scrollView.frame = self.bounds
 
-        scrollView.frame = CGRect(x: 8, y: 8, width: self.bounds.width - 16, height: self.bounds.height - 16)
-
+        // Add UIStackView as subview
+        scrollView.addSubview(stackView)
         let totalWidth = buttons.map({ button in 32 + button.intrinsicContentSize.width }).reduce(0, +)
         stackView.frame = CGRect(x: 0, y: 0, width: totalWidth, height: scrollView.bounds.height)
-        scrollView.contentSize = stackView.frame.size
+        scrollView.contentSize = stackView.bounds.size
+
+        print(scrollView.contentSize)
     }
 }
