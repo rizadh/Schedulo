@@ -175,6 +175,18 @@ class CourseDetailViewController: UITableViewController {
     }
 
     private func addSectionGroup() {
+        func addGroup(named name: String) {
+            guard case .grouped(var groups) = self.course.sections else {
+                fatalError("Cannot add section group to ungrouped course.")
+            }
+
+            groups[name] = []
+            self.course.sections = .grouped(groups)
+            let newIndex = groups.keys.sorted().index(of: name)!
+
+            self.tableView.insertRows(at: [IndexPath(row: newIndex + 1, section: TableSection.sections)], with: .top)
+        }
+
         tableView.deselectRow(at: IndexPath(row: self.sectionTypes!.count + 1, section: TableSection.sections), animated: true)
 
         let alertController = UIAlertController(title: "Add Section Group", message: "Choose a name for the new section group. The name must not be blank.", preferredStyle: .alert)
@@ -188,15 +200,7 @@ class CourseDetailViewController: UITableViewController {
                 return
             }
 
-            guard case .grouped(var groups) = self.course.sections else {
-                fatalError("Cannot add section group to ungrouped course.")
-            }
-
-            groups[groupName] = []
-            self.course.sections = .grouped(groups)
-            let newIndex = groups.keys.sorted().index(of: groupName)!
-
-            self.tableView.insertRows(at: [IndexPath(row: newIndex + 1, section: TableSection.sections)], with: .top)
+            addGroup(named: groupName)
         })
 
         alertController.addAction(cancelAction)
@@ -204,6 +208,19 @@ class CourseDetailViewController: UITableViewController {
         alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "e.g. Lecture"
             textField.autocapitalizationType = .words
+
+            let possibleNames = ["Lecture", "Practical", "Tutorial", "Lab"]
+
+            let validNames = possibleNames.filter { name in
+                return name.isValidGroupName(in: self)
+            }
+
+            if !validNames.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: validNames, suggestionHandler: { selectedOption in
+                    addGroup(named: selectedOption)
+                    alertController.dismiss(animated: true, completion: nil)
+                })
+            }
         })
 
         present(alertController, animated: true, completion: nil)
