@@ -177,6 +177,7 @@ class SessionDetailViewController: UITableViewController {
         } else {
             isNewSession = true
             self.session = SessionDetailViewController.generateSession()
+            saveHandler(self.session)
         }
 
         self.saveHandler = saveHandler
