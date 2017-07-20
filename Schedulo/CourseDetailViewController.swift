@@ -53,28 +53,7 @@ class CourseDetailViewController: UITableViewController {
     var courseCodeTextField: UITextField?
 
     // MARK: Course Properties
-    private var courseItem: AutoSavingItem<Course> {
-        didSet {
-            func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
-                tableView.beginUpdates()
-                if !groups.keys.isEmpty {
-                    let indexPaths = (1...groups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
-                    updateFunc(indexPaths, .top)
-                }
-                tableView.reloadRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .fade)
-                tableView.endUpdates()
-            }
-
-            switch (oldValue.value?.sections ?? .ungrouped([]), course.sections) {
-            case (.ungrouped, .grouped(let newGroups)):
-                updateRows(groups: newGroups, updateFunc: tableView.insertRows(at: with:))
-            case (.grouped(let oldGroups), .ungrouped):
-                updateRows(groups: oldGroups, updateFunc: tableView.deleteRows(at: with:))
-            default:
-                break
-            }
-        }
-    }
+    private var courseItem: AutoSavingItem<Course>
     private var isNewCourse: Bool {
         return courseItem.isNewItem
     }
@@ -86,21 +65,19 @@ class CourseDetailViewController: UITableViewController {
                 courseItem.value = nil
             }
 
-            func updateRows(groups: [String: [Section]], updateFunc: ([IndexPath], UITableViewRowAnimation) -> Void) {
-                tableView.beginUpdates()
-                if !groups.keys.isEmpty {
-                    let indexPaths = (1...groups.keys.count).map { IndexPath(row: $0 + 1, section: TableSection.sections) }
-                    updateFunc(indexPaths, .top)
-                }
-                tableView.reloadRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .fade)
-                tableView.endUpdates()
-            }
-
             switch (oldValue.sections, course.sections) {
             case (.ungrouped, .grouped(let newGroups)):
-                updateRows(groups: newGroups, updateFunc: tableView.insertRows(at: with:))
+                let indexPaths = (1..<newGroups.keys.count + 2).map { IndexPath(row: $0, section: TableSection.sections) }
+                tableView.beginUpdates()
+                tableView.insertRows(at: indexPaths, with: .left)
+                tableView.deleteRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .right)
+                tableView.endUpdates()
             case (.grouped(let oldGroups), .ungrouped):
-                updateRows(groups: oldGroups, updateFunc: tableView.deleteRows(at: with:))
+                let indexPaths = (1..<oldGroups.keys.count + 2).map { IndexPath(row: $0, section: TableSection.sections) }
+                tableView.beginUpdates()
+                tableView.deleteRows(at: indexPaths, with: .left)
+                tableView.insertRows(at: [IndexPath(row: 1, section: TableSection.sections)], with: .right)
+                tableView.endUpdates()
             default:
                 break
             }
@@ -171,12 +148,6 @@ class CourseDetailViewController: UITableViewController {
 
         let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
             let groupName = alertController.textFields!.first!.text!
-
-            guard groupName.isValidGroupName(in: self) else {
-                self.migrate(ungrouped: sections)
-                return
-            }
-
             self.course.sections = .grouped([groupName: sections])
         })
 
