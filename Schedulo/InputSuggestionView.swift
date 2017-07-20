@@ -16,7 +16,7 @@ class InputSuggestionView: UIInputView {
         self.suggestionHandler = suggestionHandler
         self.options = options
 
-        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50), inputViewStyle: .default)
+        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 54), inputViewStyle: .default)
 
         addSubviews()
     }
@@ -41,10 +41,10 @@ class InputSuggestionView: UIInputView {
             button.setTitleColor(UIColor.darkText.withAlphaComponent(0.5), for: .highlighted)
 
             button.backgroundColor = .white
-            button.layer.shadowOpacity = 0.1
-            button.layer.shadowOffset = CGSize(width: 0, height: 1)
-            button.layer.shadowRadius = 1
             button.layer.cornerRadius = 4
+            button.layer.shadowOffset = CGSize(width: 0, height: 1)
+            button.layer.shadowOpacity = 0.25
+            button.layer.shadowRadius = 0
 
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(optionWasPressed))
 
@@ -60,7 +60,7 @@ class InputSuggestionView: UIInputView {
         // Create and configure UIStackView
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.distribution = .fillProportionally
-        stackView.spacing = 8
+        stackView.spacing = 6
 
         // Add UIScrollView as subview
         self.addSubview(scrollView)
@@ -68,10 +68,8 @@ class InputSuggestionView: UIInputView {
 
         // Add UIStackView as subview
         scrollView.addSubview(stackView)
-        let totalWidth = buttons.map({ button in 32 + button.intrinsicContentSize.width }).reduce(0, +)
-        stackView.frame = CGRect(x: 0, y: 0, width: totalWidth, height: scrollView.bounds.height)
-        scrollView.contentSize = stackView.bounds.size
-
-        print(scrollView.contentSize)
+        let totalWidth = buttons.map({ button in 18 + button.intrinsicContentSize.width }).reduce(0, +)
+        stackView.frame = CGRect(x: 3, y: 12, width: totalWidth, height: scrollView.bounds.height - 16)
+        scrollView.contentSize = CGSize(width: stackView.bounds.width + 6, height: stackView.bounds.height)
     }
 }
