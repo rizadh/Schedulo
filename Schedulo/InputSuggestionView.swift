@@ -71,7 +71,5 @@ class InputSuggestionView: UIInputView {
         let totalWidth = buttons.map({ button in 32 + button.intrinsicContentSize.width }).reduce(0, +)
         stackView.frame = CGRect(x: 0, y: 0, width: totalWidth, height: scrollView.bounds.height)
         scrollView.contentSize = stackView.frame.size
-
-        print(scrollView.contentSize)
     }
 }
