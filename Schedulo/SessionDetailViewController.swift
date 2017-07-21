@@ -115,9 +115,9 @@ class SessionDetailViewController: UITableViewController {
             endTimePicker.select(time: TimePickerView.maxTime)
         } else {
             while newStartTime >= session.time.end {
-                if session.time.end.hour + 1 < TimePickerView.maxTime.hour {
+                if session.time.end.hour < TimePickerView.maxTime.hour {
                     session.time.end.hour += 1
-                } else if session.time.end.minute + TimePickerView.minuteInterval < TimePickerView.maxTime.minute {
+                } else if session.time.end.minute < TimePickerView.maxTime.minute {
                     session.time.end.minute += TimePickerView.minuteInterval
                 } else {
                     fatalError()

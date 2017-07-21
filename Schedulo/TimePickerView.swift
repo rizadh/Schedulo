@@ -9,9 +9,9 @@
 import UIKit
 
 class TimePickerView: UIPickerView {
-    static let minTime = Time(hour: 0, minute: 0)
-    static let maxTime = Time(hour: 23, minute: 50)
     static let minuteInterval = 10
+    static let minTime = Time.fromMinutes(0)
+    static let maxTime = Time.fromMinutes(24 * 60 - minuteInterval)
 
     private let changeHandler: (Time) -> Void
 
@@ -31,10 +31,10 @@ class TimePickerView: UIPickerView {
     }
 
     func select(time: Time, animated: Bool = false) {
-        precondition(time.minute % 10 == 0, "Cannot set picker to a minute that is not a multiple of 10.")
+        precondition(time.minute % TimePickerView.minuteInterval == 0, "Cannot set picker to a minute that is not a multiple of \(TimePickerView.minuteInterval).")
 
         let hourRow = time.hour % 12
-        let minuteRow = time.minute / 10
+        let minuteRow = time.minute / TimePickerView.minuteInterval
         let timeOfDayRow = time.hour < 12 ? 0 : 1
 
         self.selectRow(hourRow, inComponent: 0, animated: animated)
@@ -55,7 +55,7 @@ extension TimePickerView: UIPickerViewDataSource {
         case 0:
             return 12
         case 1:
-            return 6
+            return 60 / TimePickerView.minuteInterval
         case 2:
             return 2
         default:
@@ -78,25 +78,16 @@ extension TimePickerView: UIPickerViewDelegate {
     }
 
     private func minute(at row: Int) -> String? {
-        switch row {
-        case 0:
-            return "00"
-        case 1..<6:
-            return "\(row * 10)"
+        switch row * TimePickerView.minuteInterval {
+        case 0...9:
+            return "0\(row * TimePickerView.minuteInterval)"
         default:
-            return nil
+            return "\(row * TimePickerView.minuteInterval)"
         }
     }
 
     private func timeOfDay(at row: Int) -> String? {
-        switch row {
-        case 0:
-            return "AM"
-        case 1:
-            return "PM"
-        default:
-            return nil
-        }
+        return row == 0 ? "AM" : "PM"
     }
 
     private func time(from picker: UIPickerView) -> Time {
@@ -105,7 +96,7 @@ extension TimePickerView: UIPickerViewDelegate {
         let timeOfDayRow = picker.selectedRow(inComponent: 2)
 
         let hour = hourRow + 12 * timeOfDayRow
-        let minute = minuteRow * 10
+        let minute = minuteRow * TimePickerView.minuteInterval
 
         return Time(hour: hour, minute: minute)
     }
