@@ -79,5 +79,43 @@ class InputSuggestionView: UIInputView {
             stackView.frame = CGRect(x: padding, y: 12, width: totalWidth, height: scrollView.bounds.height - 16)
             scrollView.contentSize = CGSize(width: stackView.bounds.width + 2 * padding, height: stackView.bounds.height)
         }
+
+        let gradient = CAGradientLayer()
+        gradient.frame = scrollView.bounds
+        gradient.startPoint = CGPoint(x: 0.8, y: 0)
+        gradient.endPoint = CGPoint(x: 1, y: 0)
+
+        scrollView.layer.mask = gradient
+
+        scrollView.delegate = self
+        scrollViewDidScroll(scrollView)
+    }
+}
+
+extension InputSuggestionView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let mask = scrollView.layer.mask as? CAGradientLayer else {
+            return
+        }
+
+        let newX = scrollView.layer.position.x + scrollView.contentOffset.x
+        let newY = scrollView.layer.position.y + scrollView.contentOffset.y
+
+        let distanceToEnd = scrollView.contentSize.width - (scrollView.contentOffset.x + scrollView.bounds.width)
+
+        var maskStrength: CGFloat = 1
+        let fadeWidth: CGFloat = 10
+
+        if distanceToEnd < fadeWidth {
+            maskStrength = CGFloat(max(distanceToEnd, 0)) / fadeWidth
+        }
+
+        let maskOpacity = 1 - maskStrength
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        mask.colors = [UIColor.black.cgColor, UIColor.black.withAlphaComponent(maskOpacity).cgColor]
+        mask.position = CGPoint(x: newX, y: newY)
+        CATransaction.commit()
     }
 }
