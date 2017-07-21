@@ -273,8 +273,8 @@ extension SessionDetailViewController {
         case (.startTime, .picker):
             cell.contentView.addSubview(startTimePicker)
 
-            startTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
-            startTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
+            startTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor).isActive = true
+            startTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor).isActive = true
             startTimePicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
             startTimePicker.heightAnchor.constraint(equalToConstant: startTimePicker.intrinsicContentSize.height).isActive = true
         case (.endTime, .display):
@@ -283,8 +283,8 @@ extension SessionDetailViewController {
         case (.endTime, .picker):
             cell.contentView.addSubview(endTimePicker)
 
-            endTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
-            endTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
+            endTimePicker.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor).isActive = true
+            endTimePicker.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor).isActive = true
             endTimePicker.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
             endTimePicker.heightAnchor.constraint(equalToConstant: endTimePicker.intrinsicContentSize.height).isActive = true
         }

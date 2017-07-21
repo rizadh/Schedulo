@@ -114,6 +114,10 @@ extension TimePickerView: UIPickerViewDelegate {
         }
     }
 
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return 64
+    }
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         changeHandler(time(from: pickerView))
     }
