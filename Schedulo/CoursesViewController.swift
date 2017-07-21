@@ -10,7 +10,7 @@ import UIKit
 
 class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
-    private let stateController: StateController
+    let stateController: StateController
 
     // MARK: - Initializers
     init(using stateController: StateController) {

@@ -9,16 +9,38 @@
 import UIKit
 
 private extension String {
-    var isValidCourseCode: Bool {
+    private var isValidCourseCode: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    var isValidGroupName: Bool {
+    func isValidCourseCode(in controller: CourseDetailViewController) -> Bool {
+        guard self.isValidCourseCode else {
+            return false
+        }
+
+        guard let coursesViewController = (controller.parent as? UINavigationController)?.viewControllers.first as? CoursesViewController else {
+            return false
+        }
+
+        for course in coursesViewController.stateController.courses {
+            if course == controller.course {
+                continue
+            }
+
+            if self.caseInsensitiveCompare(course.code) == .orderedSame {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private var isValidGroupName: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     func isValidGroupName(in controller: CourseDetailViewController) -> Bool {
-        if !self.isValidGroupName {
+        guard self.isValidGroupName else {
             return false
         }
 
@@ -63,7 +85,7 @@ class CourseDetailViewController: UITableViewController {
     }
     var course = Course(code: "", sections: .ungrouped([])) {
         didSet {
-            if course.code.isValidCourseCode {
+            if course.code.isValidCourseCode(in: self) {
                 courseItem.value = course
             } else {
                 courseItem.value = nil
@@ -288,10 +310,10 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: - UIViewController Overrides
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        if !course.code.isValidCourseCode {
+        if !course.code.isValidCourseCode(in: self) {
             courseCodeTextField?.becomeFirstResponder()
         }
     }
@@ -299,7 +321,7 @@ class CourseDetailViewController: UITableViewController {
     // MARK: - UITableViewController Overrides
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return course.code.isValidCourseCode ? 2 : 1
+        return course.code.isValidCourseCode(in: self) ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -333,9 +355,9 @@ class CourseDetailViewController: UITableViewController {
         case (TableSection.courseCode, 0):
             var lastValidCourseName = course.code
             let cell = TextFieldCell {
-                let wasValidCourseName = self.course.code.isValidCourseCode
+                let wasValidCourseName = self.course.code.isValidCourseCode(in: self)
 
-                if $0.isValidCourseCode {
+                if $0.isValidCourseCode(in: self) {
                     self.course.code = $0
                     lastValidCourseName = $0
 
@@ -346,12 +368,17 @@ class CourseDetailViewController: UITableViewController {
                     self.course.code = lastValidCourseName
 
                     if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
-                        textFieldCell.textField.text = self.course.code
-                        textFieldCell.textField.placeholder = self.course.code
+                        if self.course.code.isValidGroupName(in: self) {
+                            textFieldCell.textField.text = self.course.code
+                            textFieldCell.textField.placeholder = self.course.code
+                        } else {
+                            textFieldCell.textField.text = nil
+                            textFieldCell.textField.placeholder = "Invalid course name"
+                        }
                     }
                 }
 
-                let isValidCoursename = self.course.code.isValidCourseCode
+                let isValidCoursename = self.course.code.isValidCourseCode(in: self)
 
                 switch (wasValidCourseName, isValidCoursename) {
                 case (false, true):
