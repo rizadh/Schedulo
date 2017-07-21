@@ -67,7 +67,7 @@ class SectionsViewController: UITableViewController {
             self.tableView.insertSections([self.sections.count - 1], with: .fade)
         }
 
-        let alertController = UIAlertController(title: "New Section", message: "Enter a unique identifier for the section.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "New Section", message: nil, preferredStyle: .alert)
 
         let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
             let identifier = alertController.textFields!.first!.text!
@@ -86,8 +86,10 @@ class SectionsViewController: UITableViewController {
         }
 
         alertController.addTextField(configurationHandler: { textField in
-            textField.placeholder = "e.g. LEC001"
+            textField.placeholder = "Enter a new name for the section"
             textField.autocapitalizationType = .allCharacters
+            textField.clearButtonMode = .always
+
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
 
             let validIdentifiers = self.generateIdentifierSuggestions().filter {

@@ -146,7 +146,7 @@ class CourseDetailViewController: UITableViewController {
             return
         }
 
-        let alertController = UIAlertController(title: "Enable Grouping", message: "You have existing ungrouped sections. Enter a unique identifier to group them.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Enable Grouping", message: "You have existing ungrouped sections. They will be placed in a new group.", preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             (self.tableView.cellForRow(at: IndexPath(row: 0, section: 1))?.accessoryView as! UISwitch).setOn(false, animated: true)
@@ -168,7 +168,8 @@ class CourseDetailViewController: UITableViewController {
         alertController.addAction(cancelAction)
         alertController.addAction(doneAction)
         alertController.addTextField(configurationHandler: { textField in
-            textField.placeholder = "e.g. Lecture"
+            textField.placeholder = "Enter a new name for the group"
+            textField.clearButtonMode = .always
             textField.autocapitalizationType = .words
 
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
@@ -207,7 +208,7 @@ class CourseDetailViewController: UITableViewController {
 
         tableView.deselectRow(at: IndexPath(row: self.sectionTypes!.count + 1, section: TableSection.sections), animated: true)
 
-        let alertController = UIAlertController(title: "Add Section Group", message: "Choose a name for the new section group. The name must not be blank.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add Section Group", message: nil, preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
@@ -232,7 +233,8 @@ class CourseDetailViewController: UITableViewController {
         alertController.addAction(cancelAction)
         alertController.addAction(addAction)
         alertController.addTextField(configurationHandler: { textField in
-            textField.placeholder = "e.g. Lecture"
+            textField.placeholder = "Enter a new name for the group"
+            textField.clearButtonMode = .always
             textField.autocapitalizationType = .words
 
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
