@@ -58,6 +58,18 @@ private extension String {
     }
 }
 
+private extension Array where Element: Hashable {
+    func orderedByFrequency() -> [Element] {
+        var frequencies = [Element: Int]()
+
+        self.forEach {
+            frequencies[$0] = (frequencies[$0] ?? 0) + 1
+        }
+
+        return frequencies.sorted { $0.value > $1.value }.map { $0.key }
+    }
+}
+
 class CourseDetailViewController: UITableViewController {
 
     // MARK: - Static Private Properties
@@ -148,7 +160,34 @@ class CourseDetailViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Private Functions
+    // MARK: - Private Methods
+
+    // MARK: Course Name Suggestions
+    func parseCourseSuffix(_ name: String) -> [String] {
+        let pattern = try! NSRegularExpression(pattern: "^[A-Za-z]+", options: [])
+        guard let matchRange = pattern.firstMatch(in: name, options: [], range: NSRange(location: 0, length: name.count))?.range else {
+            return []
+        }
+
+        var nameSuffix = String((name as NSString).substring(with: matchRange))
+
+        var possibleSuffixes = [String]()
+
+        repeat {
+            possibleSuffixes.append(nameSuffix)
+            nameSuffix.removeLast()
+        } while (nameSuffix.count >= 3)
+
+        return possibleSuffixes
+    }
+
+    func generateSuggestedCourseNames() -> [String] {
+        guard let coursesViewController = (self.parent as? UINavigationController)?.viewControllers.first as? CoursesViewController else {
+            return []
+        }
+
+        return coursesViewController.stateController.courses.flatMap { parseCourseSuffix($0.code) }.orderedByFrequency().filter { $0.isValidCourseCode(in: self) }
+    }
 
     // MARK: Section Grouping
     @objc private func toggleSectionGrouping() {
@@ -377,6 +416,14 @@ class CourseDetailViewController: UITableViewController {
             }
             cell.textField.text = course.code
             cell.textField.placeholder = course.code.isEmpty ? "e.g. AAAB01" : course.code
+
+            let suggestedCourseNames = generateSuggestedCourseNames()
+
+            if !course.code.isValidCourseCode && !suggestedCourseNames.isEmpty {
+                cell.textField.inputAccessoryView = InputSuggestionView(with: suggestedCourseNames) { selectedOption in
+                    cell.textField.text = selectedOption
+                }
+            }
 
             courseCodeTextField = cell.textField
 
