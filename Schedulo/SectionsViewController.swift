@@ -166,7 +166,21 @@ class SectionsViewController: UITableViewController {
         }
 
         if suggestionsBasedOnExistingSections.isEmpty {
-            return [String((sectionType ?? "Section").prefix(3)).uppercased() + "01"]
+            var defaultSuggestions = [String]()
+
+            if let sectionType = sectionType {
+                defaultSuggestions.append(String(sectionType.prefix(3)).uppercased() + "0001")
+                defaultSuggestions.append(String(sectionType.prefix(4)).uppercased() + "001")
+                defaultSuggestions.append(sectionType + " 1")
+            } else {
+                defaultSuggestions.append("SEC0001")
+                defaultSuggestions.append("SECT001")
+                defaultSuggestions.append("Section 1")
+            }
+
+            defaultSuggestions.append("1")
+
+            return defaultSuggestions
         } else {
             return suggestionsBasedOnExistingSections
         }
