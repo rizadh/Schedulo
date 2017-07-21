@@ -65,6 +65,7 @@ class InputSuggestionView: UIInputView {
         // Add UIScrollView as subview
         self.addSubview(scrollView)
         scrollView.frame = self.bounds
+        scrollView.delegate = self
 
         // Add UIStackView as subview
         scrollView.addSubview(stackView)
@@ -80,6 +81,7 @@ class InputSuggestionView: UIInputView {
             scrollView.contentSize = CGSize(width: stackView.bounds.width + 2 * padding, height: stackView.bounds.height)
         }
 
+        // Add mask
         let gradient = CAGradientLayer()
         gradient.frame = scrollView.bounds
         gradient.startPoint = CGPoint(x: 0.8, y: 0)
@@ -87,13 +89,12 @@ class InputSuggestionView: UIInputView {
 
         scrollView.layer.mask = gradient
 
-        scrollView.delegate = self
-        scrollViewDidScroll(scrollView)
+        InputSuggestionView.adjustScrollViewMask(scrollView)
     }
 }
 
-extension InputSuggestionView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+extension InputSuggestionView {
+    static private func adjustScrollViewMask(_ scrollView: UIScrollView) {
         guard let mask = scrollView.layer.mask as? CAGradientLayer else {
             return
         }
@@ -117,5 +118,11 @@ extension InputSuggestionView: UIScrollViewDelegate {
         mask.colors = [UIColor.black.cgColor, UIColor.black.withAlphaComponent(maskOpacity).cgColor]
         mask.position = CGPoint(x: newX, y: newY)
         CATransaction.commit()
+    }
+}
+
+extension InputSuggestionView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        InputSuggestionView.adjustScrollViewMask(scrollView)
     }
 }
