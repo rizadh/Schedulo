@@ -9,7 +9,7 @@
 import UIKit
 
 private extension String {
-    var isValidIdentifier: Bool {
+    private var isValidIdentifier: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
@@ -23,6 +23,20 @@ private extension String {
                 continue
             }
 
+            if self.caseInsensitiveCompare(section.identifier) == .orderedSame {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    func isValidIdentifier(in controller: SectionsViewController) -> Bool {
+        if !self.isValidIdentifier {
+            return false
+        }
+
+        for section in controller.sections {
             if self.caseInsensitiveCompare(section.identifier) == .orderedSame {
                 return false
             }
@@ -78,7 +92,7 @@ class SectionsViewController: UITableViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         self.textFieldChangeHandler = TextFieldChangeHandler { textField in
-            if textField.text!.isValidIdentifier {
+            if textField.text!.isValidIdentifier(in: self) {
                 doneAction.isEnabled = true
             } else {
                 doneAction.isEnabled = false
@@ -93,7 +107,7 @@ class SectionsViewController: UITableViewController {
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
 
             let validIdentifiers = self.generateIdentifierSuggestions().filter {
-                $0.isValidIdentifier
+                $0.isValidIdentifier(in: self)
             }
 
             if !validIdentifiers.isEmpty {
