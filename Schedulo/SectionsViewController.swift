@@ -96,8 +96,8 @@ class SectionsViewController: UITableViewController {
 
             if !validIdentifiers.isEmpty {
                 textField.inputAccessoryView = InputSuggestionView(with: validIdentifiers) { selectedOption in
-                    addSection(with: selectedOption)
-                    alertController.dismiss(animated: true, completion: nil)
+                    textField.text = selectedOption
+                    self.textFieldChangeHandler.textFieldDidChange(textField)
                 }
             }
         })

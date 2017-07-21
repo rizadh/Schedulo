@@ -179,8 +179,8 @@ class CourseDetailViewController: UITableViewController {
 
             if !validNames.isEmpty {
                 textField.inputAccessoryView = InputSuggestionView(with: validNames, suggestionHandler: { selectedOption in
-                    self.course.sections = .grouped([selectedOption: sections])
-                    alertController.dismiss(animated: true, completion: nil)
+                    textField.text = selectedOption
+                    self.textFieldChangeHandler.textFieldDidChange(textField)
                 })
             }
         })
@@ -243,8 +243,8 @@ class CourseDetailViewController: UITableViewController {
 
             if !validNames.isEmpty {
                 textField.inputAccessoryView = InputSuggestionView(with: validNames, suggestionHandler: { selectedOption in
-                    addGroup(named: selectedOption)
-                    alertController.dismiss(animated: true, completion: nil)
+                    textField.text = selectedOption
+                    self.textFieldChangeHandler.textFieldDidChange(textField)
                 })
             }
         })
