@@ -405,6 +405,18 @@ extension SectionsViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        guard let (section, row) = tableSectionAndRow(for: indexPath), case .section = section, case .session = row else {
+            return .none
+        }
+
+        if tableView.isEditing {
+            return .delete
+        } else {
+            return .none
+        }
+    }
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard let (section, row) = tableSectionAndRow(for: indexPath), case .section = section, case .session = row else {
             return false
