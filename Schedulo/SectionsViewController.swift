@@ -260,7 +260,7 @@ extension SectionsViewController {
                 let originalIdentifier = sections[indexPath.section].identifier
                 let sectionIdentifierCell = TextFieldCell {
                     if $0.isValidIndentifier(forSection: sectionIndex, in: self) {
-                        self.sections[sectionIndex].identifier = $0.uppercased()
+                        self.sections[sectionIndex].identifier = $0
                     } else {
                         self.sections[sectionIndex].identifier = originalIdentifier
                     }
