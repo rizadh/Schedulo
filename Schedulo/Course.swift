@@ -9,7 +9,7 @@
 import Foundation
 
 struct Course: Codable {
-    var code: String
+    var name: String
     var sections: Keyable<String, [Section]>
     var allSections: [Section] {
         switch sections {
@@ -23,7 +23,7 @@ struct Course: Codable {
 
 extension Course: Equatable {
     static func == (lhs: Course, rhs: Course) -> Bool {
-        guard lhs.code == rhs.code else {
+        guard lhs.name == rhs.name else {
             return false
         }
 
@@ -52,12 +52,12 @@ extension Course: Equatable {
 
 extension Course: Comparable {
     static func < (lhs: Course, rhs: Course) -> Bool {
-        return lhs.code < rhs.code
+        return lhs.name < rhs.name
     }
 }
 
 extension Course: Hashable {
     var hashValue: Int {
-        return code.hashValue
+        return name.hashValue
     }
 }

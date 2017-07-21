@@ -132,7 +132,7 @@ class CoursesViewController: UITableViewController {
         }
 
         let cell = UITableViewCell()
-        cell.textLabel!.text = stateController.courses[indexPath.row].code
+        cell.textLabel!.text = stateController.courses[indexPath.row].name
         cell.accessoryType = .disclosureIndicator
         return cell
     }

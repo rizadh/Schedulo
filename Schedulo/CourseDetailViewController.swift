@@ -9,12 +9,12 @@
 import UIKit
 
 private extension String {
-    var isValidCourseCode: Bool {
+    var isValidCourseName: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    func isValidCourseCode(in controller: CourseDetailViewController) -> Bool {
-        guard self.isValidCourseCode else {
+    func isValidCourseName(in controller: CourseDetailViewController) -> Bool {
+        guard self.isValidCourseName else {
             return false
         }
 
@@ -27,7 +27,7 @@ private extension String {
                 continue
             }
 
-            if self.caseInsensitiveCompare(course.code) == .orderedSame {
+            if self.caseInsensitiveCompare(course.name) == .orderedSame {
                 return false
             }
         }
@@ -83,21 +83,21 @@ class CourseDetailViewController: UITableViewController {
 
     // MARK: Table Sections
     private struct TableSection {
-        static let courseCode = 0
+        static let courseName = 0
         static let sections = 1
     }
 
     // MARK: TableCells
-    var courseCodeTextField: UITextField?
+    var courseNameTextField: UITextField?
 
     // MARK: Course Properties
     private var courseItem: AutoSavingItem<Course>
     private var isNewCourse: Bool {
         return courseItem.isNewItem
     }
-    var course = Course(code: "", sections: .ungrouped([])) {
+    var course = Course(name: "", sections: .ungrouped([])) {
         didSet {
-            if course.code.isValidCourseCode {
+            if course.name.isValidCourseName {
                 courseItem.value = course
             } else {
                 courseItem.value = nil
@@ -186,7 +186,7 @@ class CourseDetailViewController: UITableViewController {
             return []
         }
 
-        return coursesViewController.stateController.courses.flatMap { parseCourseSuffix($0.code) }.orderedByFrequency().filter { $0.isValidCourseCode(in: self) }
+        return coursesViewController.stateController.courses.flatMap { parseCourseSuffix($0.name) }.orderedByFrequency().filter { $0.isValidCourseName(in: self) }
     }
 
     // MARK: Section Grouping
@@ -352,20 +352,20 @@ class CourseDetailViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !course.code.isValidCourseCode(in: self) {
-            courseCodeTextField?.becomeFirstResponder()
+        if !course.name.isValidCourseName(in: self) {
+            courseNameTextField?.becomeFirstResponder()
         }
     }
 
     // MARK: - UITableViewController Overrides
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return course.code.isValidCourseCode(in: self) ? 2 : 1
+        return course.name.isValidCourseName(in: self) ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case TableSection.courseCode:
+        case TableSection.courseName:
             return 1
         case TableSection.sections:
             if sectionGroupingIsEnabled {
@@ -380,8 +380,8 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case TableSection.courseCode:
-            return "Course Code"
+        case TableSection.courseName:
+            return "Course Name"
         case TableSection.sections:
             return "Sections"
         default:
@@ -391,41 +391,41 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
-        case (TableSection.courseCode, 0):
+        case (TableSection.courseName, 0):
             let cell = TextFieldCell {
-                if $0.isValidCourseCode(in: self) {
-                    let oldCourseCode = self.course.code
-                    self.course.code = $0
+                if $0.isValidCourseName(in: self) {
+                    let oldCourseName = self.course.name
+                    self.course.name = $0
 
                     if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
                         textFieldCell.textField.placeholder = $0
                     }
 
-                    if !oldCourseCode.isValidCourseCode {
+                    if !oldCourseName.isValidCourseName {
                         tableView.insertSections([TableSection.sections], with: .fade)
                     }
                 } else {
                     if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
-                        if self.course.code.isValidGroupName(in: self) {
-                            textFieldCell.textField.text = self.course.code
+                        if self.course.name.isValidGroupName(in: self) {
+                            textFieldCell.textField.text = self.course.name
                         } else {
                             textFieldCell.textField.text = nil
                         }
                     }
                 }
             }
-            cell.textField.text = course.code
-            cell.textField.placeholder = course.code.isEmpty ? "e.g. AAAB01" : course.code
+            cell.textField.text = course.name
+            cell.textField.placeholder = course.name.isEmpty ? "e.g. AAAB01" : course.name
 
             let suggestedCourseNames = generateSuggestedCourseNames()
 
-            if !course.code.isValidCourseCode && !suggestedCourseNames.isEmpty {
+            if !course.name.isValidCourseName && !suggestedCourseNames.isEmpty {
                 cell.textField.inputAccessoryView = InputSuggestionView(with: suggestedCourseNames) { selectedOption in
                     cell.textField.text = selectedOption
                 }
             }
 
-            courseCodeTextField = cell.textField
+            courseNameTextField = cell.textField
 
             return cell
         case (TableSection.sections, 0):
@@ -477,7 +477,7 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         switch (indexPath.section, indexPath.row) {
-        case (TableSection.courseCode, 0), (TableSection.sections, 0):
+        case (TableSection.courseName, 0), (TableSection.sections, 0):
             return false
         default:
             return true
