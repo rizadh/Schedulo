@@ -251,7 +251,35 @@ class CourseDetailViewController: UITableViewController {
     }
 
     private func migrate(grouped groups: [String: [Section]]) {
-        course.sections = .ungrouped(groups.values.flatMap({ $0 }))
+        var sections = groups.values.flatMap { $0 }
+
+        for sectionName in sections.map({ $0.name }) {
+            var indexes = [Int]()
+
+            for (index, sectionNameToMatch) in sections.map({ $0.name }).enumerated() {
+                if sectionName.caseInsensitiveCompare(sectionNameToMatch) == .orderedSame {
+                    indexes.append(index)
+                }
+            }
+
+            indexes.sort()
+
+            guard indexes.count > 1 else {
+                continue
+            }
+
+            let combinedSessions = Set(indexes.flatMap { sections[$0].sessions })
+
+            let combinedSection = Section(name: sectionName, sessions: Array(combinedSessions))
+
+            for index in indexes.reversed() {
+                sections.remove(at: index)
+            }
+
+            sections.append(combinedSection)
+        }
+
+        course.sections = .ungrouped(sections)
     }
 
     private func addSectionGroup() {
