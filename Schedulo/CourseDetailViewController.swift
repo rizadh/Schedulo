@@ -9,7 +9,7 @@
 import UIKit
 
 private extension String {
-    private var isValidCourseCode: Bool {
+    var isValidCourseCode: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
@@ -85,7 +85,7 @@ class CourseDetailViewController: UITableViewController {
     }
     var course = Course(code: "", sections: .ungrouped([])) {
         didSet {
-            if course.code.isValidCourseCode(in: self) {
+            if course.code.isValidCourseCode {
                 courseItem.value = course
             } else {
                 courseItem.value = nil
@@ -353,40 +353,26 @@ class CourseDetailViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
         case (TableSection.courseCode, 0):
-            var lastValidCourseName = course.code
             let cell = TextFieldCell {
-                let wasValidCourseName = self.course.code.isValidCourseCode(in: self)
-
                 if $0.isValidCourseCode(in: self) {
+                    let oldCourseCode = self.course.code
                     self.course.code = $0
-                    lastValidCourseName = $0
 
                     if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
                         textFieldCell.textField.placeholder = $0
                     }
-                } else {
-                    self.course.code = lastValidCourseName
 
+                    if !oldCourseCode.isValidCourseCode {
+                        tableView.insertSections([TableSection.sections], with: .fade)
+                    }
+                } else {
                     if let textFieldCell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
                         if self.course.code.isValidGroupName(in: self) {
                             textFieldCell.textField.text = self.course.code
-                            textFieldCell.textField.placeholder = self.course.code
                         } else {
                             textFieldCell.textField.text = nil
-                            textFieldCell.textField.placeholder = "Invalid course name"
                         }
                     }
-                }
-
-                let isValidCoursename = self.course.code.isValidCourseCode(in: self)
-
-                switch (wasValidCourseName, isValidCoursename) {
-                case (false, true):
-                    tableView.insertSections([TableSection.sections], with: .fade)
-                case (true, false):
-                    tableView.deleteSections([TableSection.sections], with: .fade)
-                default:
-                    break
                 }
             }
             cell.textField.text = course.code
