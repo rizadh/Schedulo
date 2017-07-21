@@ -9,13 +9,10 @@
 import Foundation
 
 struct Time: Codable {
-    static let minHour = 0
-    static let maxHour = 24
-    static let minMinute = 0
-    static let maxMinute = 60
-
-    static let minTime = Time(hour: Time.minHour, minute: Time.minMinute)
-    static let maxTime = Time(hour: Time.maxHour - 1, minute: Time.maxMinute - 1)
+    private static let minHour = 0
+    private static let maxHour = 24
+    private static let minMinute = 0
+    private static let maxMinute = 60
 
     var hour: Int
     var minute: Int

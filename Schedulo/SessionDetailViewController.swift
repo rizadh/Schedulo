@@ -107,18 +107,18 @@ class SessionDetailViewController: UITableViewController {
     private func setStartTime(_ newStartTime: Time) {
         if newStartTime < session.time.end {
             session.time.start = newStartTime
-        } else if newStartTime == Time.maxTime {
-            let adjustedStartTime = Time.fromMinutes(Time.maxTime.asMinutes - 1)
-            session.time = TimeRange(from: adjustedStartTime, to: Time.maxTime)
+        } else if newStartTime == TimePickerView.maxTime {
+            let adjustedStartTime = Time.fromMinutes(TimePickerView.maxTime.asMinutes - TimePickerView.minuteInterval)
+            session.time = TimeRange(from: adjustedStartTime, to: TimePickerView.maxTime)
 
             startTimePicker.select(time: adjustedStartTime, animated: true)
-            endTimePicker.select(time: Time.maxTime)
+            endTimePicker.select(time: TimePickerView.maxTime)
         } else {
             while newStartTime >= session.time.end {
-                if session.time.end.hour + 1 < Time.maxHour {
+                if session.time.end.hour + 1 < TimePickerView.maxTime.hour {
                     session.time.end.hour += 1
-                } else if session.time.end.minute + 1 < Time.maxMinute {
-                    session.time.end.minute += 1
+                } else if session.time.end.minute + TimePickerView.minuteInterval < TimePickerView.maxTime.minute {
+                    session.time.end.minute += TimePickerView.minuteInterval
                 } else {
                     fatalError()
                 }
@@ -134,18 +134,18 @@ class SessionDetailViewController: UITableViewController {
     private func setEndTime(_ newEndTime: Time) {
         if session.time.start < newEndTime {
             session.time.end = newEndTime
-        } else if newEndTime == Time.minTime {
-            let adjustedEndTime = Time.fromMinutes(Time.minTime.asMinutes + 1)
-            session.time = TimeRange(from: Time.minTime, to: adjustedEndTime)
+        } else if newEndTime == TimePickerView.minTime {
+            let adjustedEndTime = Time.fromMinutes(TimePickerView.minTime.asMinutes + TimePickerView.minuteInterval)
+            session.time = TimeRange(from: TimePickerView.minTime, to: adjustedEndTime)
 
             endTimePicker.select(time: adjustedEndTime, animated: true)
-            startTimePicker.select(time: Time.minTime)
+            startTimePicker.select(time: TimePickerView.minTime)
         } else {
             while session.time.start >= newEndTime {
-                if session.time.start.hour > Time.minHour {
+                if session.time.start.hour > TimePickerView.minTime.hour {
                     session.time.start.hour -= 1
-                } else if session.time.start.minute > Time.minMinute {
-                    session.time.start.minute -= 1
+                } else if session.time.start.minute > TimePickerView.minTime.minute {
+                    session.time.start.minute -= TimePickerView.minuteInterval
                 } else {
                     fatalError()
                 }

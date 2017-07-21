@@ -9,6 +9,10 @@
 import UIKit
 
 class TimePickerView: UIPickerView {
+    static let minTime = Time(hour: 0, minute: 0)
+    static let maxTime = Time(hour: 23, minute: 50)
+    static let minuteInterval = 10
+
     private let changeHandler: (Time) -> Void
 
     init(with time: Time, changeHandler: @escaping (Time) -> Void) {
@@ -27,8 +31,10 @@ class TimePickerView: UIPickerView {
     }
 
     func select(time: Time, animated: Bool = false) {
+        precondition(time.minute % 10 == 0, "Cannot set picker to a minute that is not a multiple of 10.")
+
         let hourRow = time.hour % 12
-        let minuteRow = time.minute
+        let minuteRow = time.minute / 10
         let timeOfDayRow = time.hour < 12 ? 0 : 1
 
         self.selectRow(hourRow, inComponent: 0, animated: animated)
@@ -49,7 +55,7 @@ extension TimePickerView: UIPickerViewDataSource {
         case 0:
             return 12
         case 1:
-            return 60
+            return 6
         case 2:
             return 2
         default:
@@ -73,10 +79,10 @@ extension TimePickerView: UIPickerViewDelegate {
 
     private func minute(at row: Int) -> String? {
         switch row {
-        case 0...9:
-            return "0\(row)"
-        case 10..<60:
-            return String(row)
+        case 0:
+            return "00"
+        case 1..<6:
+            return "\(row * 10)"
         default:
             return nil
         }
@@ -99,7 +105,7 @@ extension TimePickerView: UIPickerViewDelegate {
         let timeOfDayRow = picker.selectedRow(inComponent: 2)
 
         let hour = hourRow + 12 * timeOfDayRow
-        let minute = minuteRow
+        let minute = minuteRow * 10
 
         return Time(hour: hour, minute: minute)
     }
