@@ -9,12 +9,12 @@
 import UIKit
 
 private extension String {
-    private var isValidIdentifier: Bool {
+    private var isValidSectionName: Bool {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    func isValidIndentifier(forSection index: Int, in controller: SectionsViewController) -> Bool {
-        if !self.isValidIdentifier {
+    func isValidSectionName(forSection index: Int, in controller: SectionsViewController) -> Bool {
+        if !self.isValidSectionName {
             return false
         }
 
@@ -23,7 +23,7 @@ private extension String {
                 continue
             }
 
-            if self.caseInsensitiveCompare(section.identifier) == .orderedSame {
+            if self.caseInsensitiveCompare(section.name) == .orderedSame {
                 return false
             }
         }
@@ -31,13 +31,13 @@ private extension String {
         return true
     }
 
-    func isValidIdentifier(in controller: SectionsViewController) -> Bool {
-        if !self.isValidIdentifier {
+    func isValidSectionName(in controller: SectionsViewController) -> Bool {
+        if !self.isValidSectionName {
             return false
         }
 
         for section in controller.sections {
-            if self.caseInsensitiveCompare(section.identifier) == .orderedSame {
+            if self.caseInsensitiveCompare(section.name) == .orderedSame {
                 return false
             }
         }
@@ -76,23 +76,23 @@ class SectionsViewController: UITableViewController {
     }
 
     private func addSection() {
-        func addSection(with identifier: String) {
-            self.sections.append(Section(identifier: identifier, sessions: []))
+        func addSection(with name: String) {
+            self.sections.append(Section(name: name, sessions: []))
             self.tableView.insertSections([self.sections.count - 1], with: .fade)
         }
 
         let alertController = UIAlertController(title: "New Section", message: nil, preferredStyle: .alert)
 
         let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
-            let identifier = alertController.textFields!.first!.text!
+            let sectionName = alertController.textFields!.first!.text!
 
-            addSection(with: identifier)
+            addSection(with: sectionName)
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         self.textFieldChangeHandler = TextFieldChangeHandler { textField in
-            if textField.text!.isValidIdentifier(in: self) {
+            if textField.text!.isValidSectionName(in: self) {
                 doneAction.isEnabled = true
             } else {
                 doneAction.isEnabled = false
@@ -106,12 +106,12 @@ class SectionsViewController: UITableViewController {
 
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler.textFieldDidChange(_:)), for: .allEditingEvents)
 
-            let validIdentifiers = self.generateIdentifierSuggestions().filter {
-                $0.isValidIdentifier(in: self)
+            let suggestedSectionNames = self.generateSectionNameSuggestions().filter {
+                $0.isValidSectionName(in: self)
             }
 
-            if !validIdentifiers.isEmpty {
-                textField.inputAccessoryView = InputSuggestionView(with: validIdentifiers) { selectedOption in
+            if !suggestedSectionNames.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: suggestedSectionNames) { selectedOption in
                     textField.text = selectedOption
                     self.textFieldChangeHandler.textFieldDidChange(textField)
                 }
@@ -165,16 +165,16 @@ class SectionsViewController: UITableViewController {
         self.tableView.deleteRows(at: [indexPath], with: .left)
     }
 
-    private func generateIdentifierSuggestions() -> [String] {
-        let parsedIdentifiers = sections.flatMap {
-            return parseIdentifier($0.identifier)
+    private func generateSectionNameSuggestions() -> [String] {
+        let parsedSectionNames = sections.flatMap {
+            return parseSectionName($0.name)
         }
 
-        let prefixes = Set(parsedIdentifiers.map({ $0.prefix }))
+        let prefixes = Set(parsedSectionNames.map({ $0.prefix }))
 
         let suggestionsBasedOnExistingSections: [String] = prefixes.map { prefix in
-            let maxValue = parsedIdentifiers.filter { $0.prefix == prefix }.map { $0.value }.reduce(0, max)
-            let maxDigits = parsedIdentifiers.filter { $0.prefix == prefix }.map { $0.digits }.reduce(0, max)
+            let maxValue = parsedSectionNames.filter { $0.prefix == prefix }.map { $0.value }.reduce(0, max)
+            let maxDigits = parsedSectionNames.filter { $0.prefix == prefix }.map { $0.digits }.reduce(0, max)
 
             let suffix = String(format: "%0\(maxDigits)d", maxValue + 1)
 
@@ -202,19 +202,19 @@ class SectionsViewController: UITableViewController {
         }
     }
 
-    private func parseIdentifier(_ identifier: String) -> (prefix: String, digits: Int, value: Int)? {
+    private func parseSectionName(_ sectionName: String) -> (prefix: String, digits: Int, value: Int)? {
         let pattern = "^(.*?)(\\d+)$"
         let regex = try! NSRegularExpression(pattern: pattern, options: [])
 
-        guard let match = regex.firstMatch(in: identifier, options: [], range: NSRange(location: 0, length: identifier.count)) else {
+        guard let match = regex.firstMatch(in: sectionName, options: [], range: NSRange(location: 0, length: sectionName.count)) else {
             return nil
         }
 
         let prefixRange = match.range(at: 1)
         let valueRange = match.range(at: 2)
 
-        let prefix = String((identifier as NSString).substring(with: prefixRange))
-        let valueAsString = String((identifier as NSString).substring(with: valueRange))
+        let prefix = String((sectionName as NSString).substring(with: prefixRange))
+        let valueAsString = String((sectionName as NSString).substring(with: valueRange))
 
         let digits = valueAsString.count
         let value = Int(valueAsString)!
@@ -272,20 +272,20 @@ extension SectionsViewController {
         switch section {
         case .section(let sectionIndex):
             switch row {
-            case .identifier:
-                let originalIdentifier = sections[indexPath.section].identifier
-                let sectionIdentifierCell = TextFieldCell {
-                    if $0.isValidIndentifier(forSection: sectionIndex, in: self) {
-                        self.sections[sectionIndex].identifier = $0
+            case .sectionName:
+                let originalSectionName = sections[indexPath.section].name
+                let sectionNameCell = TextFieldCell {
+                    if $0.isValidSectionName(forSection: sectionIndex, in: self) {
+                        self.sections[sectionIndex].name = $0
                     } else {
-                        self.sections[sectionIndex].identifier = originalIdentifier
+                        self.sections[sectionIndex].name = originalSectionName
                     }
 
                     tableView.reloadSections([sectionIndex], with: .none)
                 }
-                sectionIdentifierCell.textField.placeholder = originalIdentifier
-                sectionIdentifierCell.textField.text = originalIdentifier
-                cell = sectionIdentifierCell
+                sectionNameCell.textField.placeholder = originalSectionName
+                sectionNameCell.textField.text = originalSectionName
+                cell = sectionNameCell
             case .session(let sessionIndex):
                 cell.textLabel!.text = sections[sectionIndex].sessions[sessionIndex].description
                 cell.accessoryType = .disclosureIndicator
@@ -334,7 +334,7 @@ extension SectionsViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch tableSection(at: section) {
         case .section(let sectionIndex):
-            return sections[sectionIndex].identifier
+            return sections[sectionIndex].name
         default:
             return nil
         }
@@ -343,20 +343,20 @@ extension SectionsViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         func showEditingRows() {
             for sectionIndex in 0..<sections.count {
-                let identifierIndexPath = indexPath(for: .section(index: sectionIndex), .identifier)!
+                let sectionNameIndexPath = indexPath(for: .section(index: sectionIndex), .sectionName)!
                 let deleteSectionIndexPath = indexPath(for: .section(index: sectionIndex), .deleteSection)!
 
-                tableView.insertRows(at: [identifierIndexPath], with: .bottom)
+                tableView.insertRows(at: [sectionNameIndexPath], with: .bottom)
                 tableView.insertRows(at: [deleteSectionIndexPath], with: .top)
             }
         }
 
         func hideEditingRows() {
             for sectionIndex in 0..<sections.count {
-                let identifierIndexPath = indexPath(for: .section(index: sectionIndex), .identifier)!
+                let sectionNameIndexPath = indexPath(for: .section(index: sectionIndex), .sectionName)!
                 let deleteSectionIndexPath = indexPath(for: .section(index: sectionIndex), .deleteSection)!
 
-                tableView.deleteRows(at: [identifierIndexPath], with: .bottom)
+                tableView.deleteRows(at: [sectionNameIndexPath], with: .bottom)
                 tableView.deleteRows(at: [deleteSectionIndexPath], with: .top)
             }
         }
@@ -414,7 +414,7 @@ extension SectionsViewController {
     }
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        guard let (_, row) = tableSectionAndRow(for: indexPath), case .identifier = row else {
+        guard let (_, row) = tableSectionAndRow(for: indexPath), case .sectionName = row else {
             return true
         }
 
@@ -430,7 +430,7 @@ extension SectionsViewController {
     }
 
     private enum TableRow {
-        case identifier
+        case sectionName
         case session(index: Int)
         case addSession
         case deleteSection
@@ -463,7 +463,7 @@ extension SectionsViewController {
         if tableView.isEditing {
             switch indexPath.row {
             case 0:
-                tableRow = .identifier
+                tableRow = .sectionName
             case 1..<numberOfSessions + 1:
                 tableRow = .session(index: indexPath.row - 1)
             case numberOfSessions + 1:
@@ -495,7 +495,7 @@ extension SectionsViewController {
                 let rowIndexOrNil: Int?
 
                 switch row {
-                case .identifier:
+                case .sectionName:
                     rowIndexOrNil = 0
                 case .session(index: let sessionIndex):
                     if sessionIndex < numberOfSessions {

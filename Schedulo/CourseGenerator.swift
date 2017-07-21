@@ -32,7 +32,7 @@ struct CourseGenerator {
             sections.append(randomSection(sessionsPerSection: numSessions))
         }
 
-        return Course(name: randomIdentifier(), sections: .ungrouped(sections))
+        return Course(name: randomName(), sections: .ungrouped(sections))
     }
 
     private static func randomSection(sessionsPerSection numSessions: Int) -> Section {
@@ -46,7 +46,7 @@ struct CourseGenerator {
             }
         }
 
-        return Section(identifier: randomIdentifier(), sessions: sessions)
+        return Section(name: randomName(), sessions: sessions)
     }
 
     private static func randomSession() -> Session {
@@ -75,7 +75,7 @@ struct CourseGenerator {
         return Time.fromMinutes(interval * INTERVAL_TIME)
     }
 
-    private static func randomIdentifier() -> String {
+    private static func randomName() -> String {
         var characters = [Character]()
 
         for _ in 1...5 {

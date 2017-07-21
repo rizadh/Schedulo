@@ -9,25 +9,25 @@
 import Foundation
 
 struct Section: Codable {
-    var identifier: String
+    var name: String
     var sessions: [Session]
 }
 
 extension Section: Equatable {
     static func == (lhs: Section, rhs: Section) -> Bool {
-        return lhs.identifier == rhs.identifier && lhs.sessions == rhs.sessions
+        return lhs.name == rhs.name && lhs.sessions == rhs.sessions
     }
 }
 
 extension Section: Hashable {
     var hashValue: Int {
-        return self.identifier.hashValue
+        return self.name.hashValue
     }
 }
 
 extension Section: Comparable {
     static func < (lhs: Section, rhs: Section) -> Bool {
-        return lhs.identifier < rhs.identifier
+        return lhs.name < rhs.name
     }
 }
 
