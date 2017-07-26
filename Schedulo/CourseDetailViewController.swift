@@ -18,21 +18,23 @@ private extension String {
             return false
         }
 
-        guard let coursesViewController = (controller.parent as? UINavigationController)?.viewControllers.first as? CoursesViewController else {
-            return false
-        }
+//        guard let coursesViewController = (controller.parent as? UINavigationController)?.viewControllers.first as? CoursesViewController else {
+//            return false
+//        }
 
-        for course in coursesViewController.stateController.courses {
-            if course == controller.course {
-                continue
-            }
+        return false
 
-            if self.caseInsensitiveCompare(course.name) == .orderedSame {
-                return false
-            }
-        }
+//        for course in coursesViewController.stateController.courses {
+//            if course == controller.course {
+//                continue
+//            }
+//
+//            if self.caseInsensitiveCompare(course.name) == .orderedSame {
+//                return false
+//            }
+//        }
 
-        return true
+//        return true
     }
 
     private var isValidGroupName: Bool {
@@ -95,7 +97,7 @@ class CourseDetailViewController: UITableViewController {
     private var isNewCourse: Bool {
         return courseItem.isNewItem
     }
-    var course = Course(name: "", sections: .ungrouped([])) {
+    var course = Course("") {
         didSet {
             if course.name.isValidCourseName {
                 courseItem.value = course
@@ -182,11 +184,13 @@ class CourseDetailViewController: UITableViewController {
     }
 
     func generateSuggestedCourseNames() -> [String] {
-        guard let coursesViewController = (self.parent as? UINavigationController)?.viewControllers.first as? CoursesViewController else {
-            return []
-        }
+//        guard let coursesViewController = (self.parent as? UINavigationController)?.viewControllers.first as? CoursesViewController else {
+//            return []
+//        }
 
-        return coursesViewController.stateController.courses.flatMap { parseCourseSuffix($0.name) }.orderedByFrequency().filter { $0.isValidCourseName(in: self) }
+        return []
+
+//        return coursesViewController.stateController.courses.flatMap { parseCourseSuffix($0.name) }.orderedByFrequency().filter { $0.isValidCourseName(in: self) }
     }
 
     // MARK: Section Grouping

@@ -19,6 +19,23 @@ struct Course: Codable {
             return sections
         }
     }
+
+    init(_ name: String, sections: Groupable<String, [Section]>) {
+        self.name = name
+        self.sections = sections
+    }
+
+    init(_ name: String) {
+        self.init(name, withUngrouped: [])
+    }
+
+    init(_ name: String, withUngrouped sections: [Section]) {
+        self.init(name, sections: .ungrouped(sections))
+    }
+
+    init(_ name: String, withGrouped sections: [String: [Section]]) {
+        self.init(name, sections: .grouped(sections))
+    }
 }
 
 extension Course: Equatable {
