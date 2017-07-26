@@ -8,17 +8,17 @@
 
 import Foundation
 
-enum Keyable<Key, Value> where Key: Hashable, Key: Codable, Value: Codable {
+enum Groupable<Key, Value> where Key: Hashable, Key: Codable, Value: Codable {
     case grouped([Key: Value])
     case ungrouped(Value)
 }
 
-extension Keyable: Codable {
+extension Groupable: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
         if let groups = try? container.decode([Key: Value].self) {
-            self = Keyable<Key, Value>.grouped(groups)
+            self = Groupable<Key, Value>.grouped(groups)
         }
 
         let sections = try container.decode(Value.self)

@@ -9,7 +9,7 @@
 import Foundation
 
 struct Schedule: Codable {
-    private(set) var selectedSections = [Course: Keyable<String, Section>]()
+    private(set) var selectedSections = [Course: Groupable<String, Section>]()
 
     static func getSchedules(for courses: [Course]) -> [Schedule] {
         return courses.reduce([Schedule()]) { (schedules, course) in

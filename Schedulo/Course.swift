@@ -10,7 +10,7 @@ import Foundation
 
 struct Course: Codable {
     var name: String
-    var sections: Keyable<String, [Section]>
+    var sections: Groupable<String, [Section]>
     var allSections: [Section] {
         switch sections {
         case .grouped(let groups):

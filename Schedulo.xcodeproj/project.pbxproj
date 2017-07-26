@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* SectionsViewController.swift */; };
-		4A0865E21F16474C00570D06 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Keyable.swift */; };
+		4A0865E21F16474C00570D06 /* Groupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Groupable.swift */; };
 		4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
 		4A667FB91F20D63500D41E87 /* InputSuggestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */; };
@@ -41,7 +41,7 @@
 
 /* Begin PBXFileReference section */
 		4A0865DF1F1557E800570D06 /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
-		4A0865E11F16474C00570D06 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
+		4A0865E11F16474C00570D06 /* Groupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Groupable.swift; sourceTree = "<group>"; };
 		4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
 		4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSuggestionView.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 				4AC85F7F1EFDC08900062548 /* Overlappable.swift */,
 				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
 				4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */,
-				4A0865E11F16474C00570D06 /* Keyable.swift */,
+				4A0865E11F16474C00570D06 /* Groupable.swift */,
 				4AC85F811EFDC08900062548 /* Schedule.swift */,
 				4AC85F821EFDC08900062548 /* Section.swift */,
 				4AC85F831EFDC08900062548 /* Day.swift */,
@@ -237,7 +237,7 @@
 				4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */,
 				4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */,
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
-				4A0865E21F16474C00570D06 /* Keyable.swift in Sources */,
+				4A0865E21F16474C00570D06 /* Groupable.swift in Sources */,
 				4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */,
 				4ADC50401F196342007284DE /* SchedulesViewController.swift in Sources */,
 			);
