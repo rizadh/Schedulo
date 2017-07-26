@@ -131,8 +131,11 @@ class CoursesViewController: UITableViewController {
             textField.clearButtonMode = .always
             textField.placeholder = "Choose a name"
 
-            textField.inputAccessoryView = InputSuggestionView(with: self.generateSuggestedCourseNames()) { selectedSuggestion in
-                textField.text = selectedSuggestion
+            let suggestedCourseNames = self.generateSuggestedCourseNames()
+            if !suggestedCourseNames.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: self.generateSuggestedCourseNames()) { selectedSuggestion in
+                    textField.text = selectedSuggestion
+                }
             }
 
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
