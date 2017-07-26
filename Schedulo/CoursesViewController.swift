@@ -204,10 +204,35 @@ extension CoursesViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+
+        let course = stateController.courses[indexPath.row]
 
         cell.accessoryType = .detailDisclosureButton
-        cell.textLabel?.text = stateController.courses[indexPath.row].name
+        cell.textLabel?.text = course.name
+
+        switch course.sections {
+        case .ungrouped(let sections):
+            if sections.count == 1 {
+                cell.detailTextLabel?.text = "1 section"
+            } else {
+                cell.detailTextLabel?.text = "\(sections.count) sections"
+            }
+        case .grouped(let groups):
+            if groups.count == 1 {
+                cell.detailTextLabel?.text = "1 group"
+            } else {
+                cell.detailTextLabel?.text = "\(groups.count) groups"
+            }
+
+            let sectionsCount = groups.map { $0.value.count }.reduce(0, +)
+
+            if sectionsCount == 1 {
+                cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • 1 section"
+            } else {
+                cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • \(sectionsCount) sections"
+            }
+        }
 
         return cell
     }
