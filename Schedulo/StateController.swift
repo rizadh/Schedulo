@@ -16,7 +16,6 @@ class StateController {
         private init() { }
     }
 
-    static let stateDidChange = Notification.Name("stateDidChange")
 
     private struct State: Codable {
         var courses = [Course]()
@@ -26,7 +25,6 @@ class StateController {
     private var state = State() {
         didSet {
             StateController.savedState = state
-            StateController.postStateDidChangeNotification()
         }
     }
 
@@ -57,11 +55,6 @@ class StateController {
 
             UserDefaults.standard.setValue(jsonData, forKeyPath: UserDefaultsConstants.key)
         }
-    }
-
-    private static func postStateDidChangeNotification() {
-        let notification = Notification(name: stateDidChange)
-        NotificationCenter.default.post(notification)
     }
 
     var courses: [Course] {
