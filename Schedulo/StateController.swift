@@ -10,12 +10,7 @@ import Foundation
 import os
 
 class StateController {
-    private struct UserDefaultsConstants {
-        static let key = "state"
-
-        private init() { }
-    }
-
+    private static let userDefaultsKey = "state"
 
     private struct State: Codable {
         var courses = [Course]()
@@ -28,20 +23,25 @@ class StateController {
         }
     }
 
-    private static var savedState: State {
+    private static var savedState: State? {
         get {
-            guard let stateData = UserDefaults.standard.data(forKey: UserDefaultsConstants.key) else {
-                return State()
+            guard let stateData = UserDefaults.standard.data(forKey: userDefaultsKey) else {
+                return nil
             }
 
             guard let savedState = try? JSONDecoder().decode(State.self, from: stateData) else {
-                return State()
+                return nil
             }
 
             return savedState
         }
 
         set {
+            guard newValue != nil else {
+                UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+                return
+            }
+
             guard let jsonData = try? JSONEncoder().encode(newValue) else {
                 let message: StaticString = "Could not save application state"
 
@@ -50,10 +50,11 @@ class StateController {
                 } else {
                     NSLog(message.description)
                 }
+
                 return
             }
 
-            UserDefaults.standard.setValue(jsonData, forKeyPath: UserDefaultsConstants.key)
+            UserDefaults.standard.setValue(jsonData, forKeyPath: userDefaultsKey)
         }
     }
 
@@ -66,7 +67,7 @@ class StateController {
     }
 
     init() {
-        state = StateController.savedState
+        state = StateController.savedState ?? State()
     }
 
     func add(_ course: Course) {
