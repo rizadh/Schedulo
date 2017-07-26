@@ -28,9 +28,6 @@ class CoursesViewController: UITableViewController {
         }
 
         self.updateStateBasedViews()
-        NotificationCenter.default.addObserver(forName: StateController.stateDidChange, object: nil, queue: nil) { [weak self] _ in
-            self?.updateStateBasedViews()
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
