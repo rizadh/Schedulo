@@ -186,7 +186,12 @@ class CoursesViewController: UITableViewController {
     }
 
     private func editSectionsForCourse(at courseIndex: Int) {
+        let sections = stateController.courses[courseIndex].sections
+        let sectionsViewController = SectionsViewController(for: sections) { newSections in
+            self.stateController.courses[courseIndex].sections = newSections
+        }
 
+        navigationController?.pushViewController(sectionsViewController, animated: true)
     }
 
     private func deleteCourse(at courseIndex: Int) {
