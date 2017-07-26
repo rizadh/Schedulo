@@ -36,12 +36,15 @@ class CoursesViewController: UITableViewController {
 
     // MARK: - Private Methods
 
-
     private func updateStateBasedViews() {
+        updateEditButtonItem()
+    }
+
+    private func updateEditButtonItem() {
         if stateController.courses.isEmpty {
-            self.navigationItem.setLeftBarButton(nil, animated: true)
+            editButtonItem.isEnabled = false
         } else {
-            self.navigationItem.setLeftBarButton(editButtonItem, animated: true)
+            editButtonItem.isEnabled = true
         }
     }
 
