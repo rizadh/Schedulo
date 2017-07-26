@@ -19,6 +19,14 @@ struct Course: Codable {
             return sections
         }
     }
+    var groupedSections: [String: [Section]] {
+        switch sections {
+        case .grouped(let groups):
+            return groups
+        case .ungrouped(let sections):
+            return ["": sections]
+        }
+    }
 
     init(_ name: String, sections: Groupable<String, [Section]>) {
         self.name = name

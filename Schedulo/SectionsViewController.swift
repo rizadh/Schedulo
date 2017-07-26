@@ -17,6 +17,8 @@ class SectionsViewController: UITableViewController {
         }
     }
 
+    private var expandedSection: (groupName: String?, index: Int)?
+
     init(for sections: Groupable<String, [Section]>, saveHandler: @escaping (Groupable<String, [Section]>) -> Void) {
         self.saveHandler = saveHandler
         self.sections = sections
@@ -46,6 +48,81 @@ extension SectionsViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        switch sections {
+        case .ungrouped(let sections):
+            if section == 0 {
+                return sections.count + 1
+            } else {
+                return 1
+            }
+        case .grouped(let groups):
+            if section < groups.count {
+                let groupName = groups.keys.sorted()[section]
+                return groups[groupName]!.count + 1
+            } else {
+                return 1
+            }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+
+        cell.textLabel?.text = "???"
+
+        print(cellType(for: indexPath))
+
+        return cell
+    }
+}
+
+extension SectionsViewController {
+    enum TableCellType {
+        case section(groupName: String?, index: Int)
+        case addSection(groupName: String?)
+        case session(groupName: String?, sectionIndex: Int, index: Int)
+        case addSession(groupName: String?, sectionIndex: Int)
+        case addGroup
+    }
+
+    private func cellType(for indexPath: IndexPath) -> TableCellType {
+        return tableCellTypeMatrix[indexPath.section][indexPath.row]
+    }
+
+    var tableCellTypeMatrix: [[TableCellType]] {
+        var tableCells = [[TableCellType]]()
+
+        switch sections {
+        case .ungrouped(let sections):
+            tableCells.append(tableSectionCells(groupName: nil, sections: sections))
+        case .grouped(let groups):
+            for (groupName, sections) in groups.sorted(by: { $0.key < $1.key }) {
+                tableCells.append(tableSectionCells(groupName: groupName, sections: sections))
+            }
+        }
+
+        tableCells.append([.addGroup])
+
+        return tableCells
+    }
+
+    private func tableSectionCells(groupName: String?, sections: [Section]) -> [TableCellType] {
+        var cells = [TableCellType]()
+
+        for (sectionIndex, section) in sections.enumerated() {
+            cells.append(.section(groupName: groupName, index: sectionIndex))
+
+            if let expandedSectionIndex = self.expandedSection?.index, expandedSectionIndex == sectionIndex {
+                for (sessionIndex, _) in section.sessions.enumerated() {
+                    cells.append(.session(groupName: groupName, sectionIndex: sectionIndex, index: sessionIndex))
+                }
+
+                cells.append(.addSession(groupName: groupName, sectionIndex: sectionIndex))
+            }
+        }
+
+        cells.append(.addSection(groupName: groupName))
+
+        return cells
     }
 }
