@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Groupable<Key, Value> where Key: Hashable, Key: Codable, Value: Codable {
+enum Groupable<Key, Value> where Key: Hashable & Codable, Value: Codable {
     case grouped([Key: Value])
     case ungrouped(Value)
 }
