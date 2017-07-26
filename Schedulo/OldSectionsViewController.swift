@@ -13,7 +13,7 @@ private extension String {
         return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    func isValidSectionName(forSection index: Int, in controller: SectionsViewController) -> Bool {
+    func isValidSectionName(forSection index: Int, in controller: OldSectionsViewController) -> Bool {
         if !self.isValidSectionName {
             return false
         }
@@ -31,7 +31,7 @@ private extension String {
         return true
     }
 
-    func isValidSectionName(in controller: SectionsViewController) -> Bool {
+    func isValidSectionName(in controller: OldSectionsViewController) -> Bool {
         if !self.isValidSectionName {
             return false
         }
@@ -46,7 +46,7 @@ private extension String {
     }
 }
 
-class SectionsViewController: UITableViewController {
+class OldSectionsViewController: UITableViewController {
     // MARK: - Public Properties
     var sectionType: String?
 
@@ -242,7 +242,7 @@ class SectionsViewController: UITableViewController {
 }
 
 // MARK: - UITableViewController Overrides
-extension SectionsViewController {
+extension OldSectionsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count + 1
     }
@@ -435,7 +435,7 @@ extension SectionsViewController {
 }
 
 // MARK: - Cell Identification
-extension SectionsViewController {
+extension OldSectionsViewController {
     private enum TableSection {
         case section(index: Int)
         case addSection

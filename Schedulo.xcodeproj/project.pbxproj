@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* SectionsViewController.swift */; };
+		4A0865E01F1557E800570D06 /* OldSectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* OldSectionsViewController.swift */; };
 		4A0865E21F16474C00570D06 /* Groupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Groupable.swift */; };
 		4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
@@ -40,7 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4A0865DF1F1557E800570D06 /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
+		4A0865DF1F1557E800570D06 /* OldSectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldSectionsViewController.swift; sourceTree = "<group>"; };
 		4A0865E11F16474C00570D06 /* Groupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Groupable.swift; sourceTree = "<group>"; };
 		4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 				4AAA87921F06F98B00FA1AC2 /* StateController.swift */,
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
 				4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */,
-				4A0865DF1F1557E800570D06 /* SectionsViewController.swift */,
+				4A0865DF1F1557E800570D06 /* OldSectionsViewController.swift */,
 				4A8C8B621F1F880800D317D0 /* TimePickerView.swift */,
 				4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */,
 				4ADC503F1F196342007284DE /* SchedulesViewController.swift */,
@@ -230,7 +230,7 @@
 				4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
 				4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */,
-				4A0865E01F1557E800570D06 /* SectionsViewController.swift in Sources */,
+				4A0865E01F1557E800570D06 /* OldSectionsViewController.swift in Sources */,
 				4AC85F881EFDC08900062548 /* Location.swift in Sources */,
 				4AC85F8D1EFDC08900062548 /* Day.swift in Sources */,
 				4AC85F8C1EFDC08900062548 /* Section.swift in Sources */,
