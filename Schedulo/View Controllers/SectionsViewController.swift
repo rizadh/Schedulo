@@ -291,6 +291,37 @@ class SectionsViewController: UITableViewController {
 
     // MARK: Session Management
 
+    private func addSession(inSection sectionIndex: Int, inGroup groupIndex: Int) {
+        let sessionDetailViewController = SessionDetailViewController(for: nil) { newSession in
+            self.sectionGroups[groupIndex].sections[sectionIndex].sessions.append(newSession)
+
+            let newSessionIndex = self.sectionGroups[groupIndex].sections[sectionIndex].sessions.count - 1
+
+            let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: newSessionIndex))!
+
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadRows(at: [self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!], with: .automatic)
+            self.tableView.endUpdates()
+        }
+
+        navigationController?.pushViewController(sessionDetailViewController, animated: true)
+    }
+
+    private func editSession(at sessionIndex: Int, inSection sectionIndex: Int, inGroup groupIndex: Int) {
+        let session = self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
+
+        let sessionDetailViewController = SessionDetailViewController(for: session) { newSession in
+            self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex] = newSession
+
+            let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
+
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        }
+
+        navigationController?.pushViewController(sessionDetailViewController, animated: true)
+    }
+
     private func deleteSession(at sessionIndex: Int, inSection sectionIndex: Int, inGroup groupIndex: Int) {
         let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
 
@@ -413,32 +444,9 @@ extension SectionsViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             toggleSectionExpansion(at: indexPath)
         case let .addSession(groupIndex, sectionIndex):
-            let sessionDetailViewController = SessionDetailViewController(for: nil) { newSession in
-                self.sectionGroups[groupIndex].sections[sectionIndex].sessions.append(newSession)
-
-                let newSessionIndex = self.sectionGroups[groupIndex].sections[sectionIndex].sessions.count - 1
-
-                let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: newSessionIndex))!
-
-                tableView.beginUpdates()
-                tableView.insertRows(at: [indexPath], with: .automatic)
-                tableView.reloadRows(at: [self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!], with: .automatic)
-                tableView.endUpdates()
-            }
-
-            navigationController?.pushViewController(sessionDetailViewController, animated: true)
+            addSession(inSection: sectionIndex, inGroup: groupIndex)
         case let .session(groupIndex, sectionIndex, sessionIndex):
-            let session = self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
-
-            let sessionDetailViewController = SessionDetailViewController(for: session) { newSession in
-                self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex] = newSession
-
-                let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
-
-                tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-
-            navigationController?.pushViewController(sessionDetailViewController, animated: true)
+            editSession(at: sessionIndex, inSection: sectionIndex, inGroup: groupIndex)
         }
     }
 
