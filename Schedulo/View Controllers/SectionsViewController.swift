@@ -19,7 +19,7 @@ class SectionsViewController: UITableViewController {
         }
     }
 
-    private var expandedSection: (groupName: String?, index: Int)?
+    private var expandedSection: (groupName: String, index: Int)?
 
     init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
@@ -89,7 +89,7 @@ extension SectionsViewController {
         return tableCells
     }
 
-    private func tableSectionCells(groupName: String?, sections: [Section]) -> [TableCellType] {
+    private func tableSectionCells(groupName: String, sections: [Section]) -> [TableCellType] {
         var cells = [TableCellType]()
 
         for (sectionIndex, section) in sections.enumerated() {
