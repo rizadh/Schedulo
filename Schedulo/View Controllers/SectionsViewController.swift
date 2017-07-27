@@ -53,7 +53,7 @@ class SectionsViewController: UITableViewController {
 
             self.sectionGroups.append(newGroup)
 
-            self.tableView.insertSections([self.sectionGroups.count - 1], with: .fade)
+            self.tableView.insertSections([self.sectionGroups.count - 1], with: .automatic)
         })
 
         addAction.isEnabled = false
