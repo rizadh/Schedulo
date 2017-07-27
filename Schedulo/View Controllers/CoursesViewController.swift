@@ -217,18 +217,26 @@ extension CoursesViewController {
         cell.accessoryType = .detailDisclosureButton
         cell.textLabel?.text = course.name
 
-        if course.sectionGroups.count == 1 {
+        let groupsCount = course.sectionGroups.count
+
+        switch groupsCount {
+        case 0:
+            cell.detailTextLabel?.text = "No groups"
+        case 1:
             cell.detailTextLabel?.text = "1 group"
-        } else {
-            cell.detailTextLabel?.text = "\(course.sectionGroups.count) groups"
+        default:
+            cell.detailTextLabel?.text = "\(groupsCount) groups"
         }
 
         let sectionsCount = course.sectionGroups.map { $0.sections.count }.reduce(0, +)
 
-        if sectionsCount == 1 {
-            cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • 1 section"
-        } else {
-            cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • \(sectionsCount) sections"
+        switch sectionsCount {
+        case 0:
+            cell.detailTextLabel!.text! += " • No sections"
+        case 1:
+            cell.detailTextLabel!.text! += " • 1 section"
+        default:
+            cell.detailTextLabel!.text! += " • \(sectionsCount) sections"
         }
 
         return cell
