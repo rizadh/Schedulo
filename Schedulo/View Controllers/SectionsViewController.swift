@@ -179,6 +179,7 @@ extension SectionsViewController {
             let section = sectionGroups[groupIndex].sections[sectionIndex]
 
             cell.textLabel?.text = section.name
+            cell.accessoryType = .detailButton
         case let .session(groupIndex, sectionIndex, sessionIndex):
             let session = sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
 
