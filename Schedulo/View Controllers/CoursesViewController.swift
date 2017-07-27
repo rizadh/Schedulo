@@ -190,6 +190,8 @@ class CoursesViewController: UITableViewController {
         let sections = stateController.courses[courseIndex].sectionGroups
         let sectionsViewController = SectionsViewController(for: sections) { newSectionGroups in
             self.stateController.courses[courseIndex].sectionGroups = newSectionGroups
+
+            self.tableView.reloadRows(at: [IndexPath(row: courseIndex, section: 0)], with: .none)
         }
 
         navigationController?.pushViewController(sectionsViewController, animated: true)
