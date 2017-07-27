@@ -79,6 +79,7 @@ class SectionsViewController: UITableViewController {
             if !groupNameSuggestions.isEmpty {
                 textField.inputAccessoryView = InputSuggestionView(with: groupNameSuggestions) { selectedSuggestion in
                     textField.text = selectedSuggestion
+                    self.textFieldChangeHandler?.textFieldDidChange(textField)
                 }
             }
 
