@@ -191,7 +191,7 @@ class SessionDetailViewController: UITableViewController {
         let cancelButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelButtonHandler))
         let saveButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.saveButtonHandler))
 
-        self.navigationItem.title = isNewSession ? "New Session" : "Edit Session"
+        self.navigationItem.title = isNewSession ? "New Time" : "Edit Time"
         self.navigationItem.leftBarButtonItem = cancelButtonItem
         self.navigationItem.rightBarButtonItem = saveButtonItem
     }
