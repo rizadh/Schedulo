@@ -32,7 +32,7 @@ struct CourseGenerator {
             sections.append(randomSection(sessionsPerSection: numSessions))
         }
 
-        return Course(randomName(), withUngrouped: sections)
+        return Course(randomName(), sectionGroups: ["Lecture": sections])
     }
 
     private static func randomSection(sessionsPerSection numSessions: Int) -> Section {

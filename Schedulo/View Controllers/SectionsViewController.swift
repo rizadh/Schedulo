@@ -9,19 +9,21 @@
 import UIKit
 
 class SectionsViewController: UITableViewController {
+    typealias CourseSectionGroups = [String: [Section]]
+
     // MARK: - Private Properties
-    private let saveHandler: (Groupable<String, [Section]>) -> Void
-    private var sections: Groupable<String, [Section]> {
+    private let saveHandler: (CourseSectionGroups) -> Void
+    private var sectionGroups: CourseSectionGroups {
         didSet {
-            saveHandler(sections)
+            saveHandler(sectionGroups)
         }
     }
 
     private var expandedSection: (groupName: String?, index: Int)?
 
-    init(for sections: Groupable<String, [Section]>, saveHandler: @escaping (Groupable<String, [Section]>) -> Void) {
+    init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
-        self.sections = sections
+        self.sectionGroups = sections
 
         super.init(style: .grouped)
 
@@ -39,29 +41,15 @@ class SectionsViewController: UITableViewController {
 // MARK: - UITableViewController Method Overrides
 extension SectionsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        switch sections {
-        case .ungrouped:
-            return 2
-        case .grouped(let groups):
-            return 1 + groups.count
-        }
+        return sectionGroups.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch sections {
-        case .ungrouped(let sections):
-            if section == 0 {
-                return sections.count + 1
-            } else {
-                return 1
-            }
-        case .grouped(let groups):
-            if section < groups.count {
-                let groupName = groups.keys.sorted()[section]
-                return groups[groupName]!.count + 1
-            } else {
-                return 1
-            }
+        if section < sectionGroups.count {
+            let groupName = sectionGroups.keys.sorted()[section]
+            return sectionGroups[groupName]!.count + 1
+        } else {
+            return 1
         }
     }
 
@@ -92,13 +80,8 @@ extension SectionsViewController {
     var tableCellTypeMatrix: [[TableCellType]] {
         var tableCells = [[TableCellType]]()
 
-        switch sections {
-        case .ungrouped(let sections):
-            tableCells.append(tableSectionCells(groupName: nil, sections: sections))
-        case .grouped(let groups):
-            for (groupName, sections) in groups.sorted(by: { $0.key < $1.key }) {
-                tableCells.append(tableSectionCells(groupName: groupName, sections: sections))
-            }
+        for (groupName, sections) in sectionGroups.sorted(by: { $0.key < $1.key }) {
+            tableCells.append(tableSectionCells(groupName: groupName, sections: sections))
         }
 
         tableCells.append([.addGroup])

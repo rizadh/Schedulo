@@ -9,7 +9,7 @@
 import Foundation
 
 struct Schedule: Codable {
-    private(set) var selectedSections = [Course: Groupable<String, Section>]()
+    private(set) var selectedSections = [Course: [String: Section]]()
 
     static func getSchedules(for courses: [Course]) -> [Schedule] {
         return courses.reduce([Schedule()]) { (schedules, course) in
@@ -22,57 +22,29 @@ struct Schedule: Codable {
     private func generateSchedules(adding course: Course) -> [Schedule] {
         var schedules = [self]
 
-        switch course.sections {
-        case .grouped(let groups):
-            for (sectionType, sections) in groups {
-                schedules = schedules.flatMap { schedule in
-                    sections.map {
-                        schedule.adding($0, ofType: sectionType, from: course)
-                    }
-                }.filter { $0.isValid }
-            }
-        case .ungrouped(let sections):
+        for (groupName, sections) in course.sectionGroups {
             schedules = schedules.flatMap { schedule in
                 sections.map {
-                    schedule.adding($0, ofType: nil, from: course)
+                    schedule.adding($0, from: groupName, in: course)
                 }
-                }.filter { $0.isValid }
+            }.filter { $0.isValid }
         }
 
         return schedules
     }
 
-    private mutating func add(_ section: Section, ofType sectionTypeOrNil: String?, from course: Course) {
-        guard let existing = selectedSections[course] else {
-            if let sectionType = sectionTypeOrNil {
-                selectedSections[course] = .grouped([sectionType: section])
-            } else {
-                selectedSections[course] = .ungrouped(section)
-            }
-
-            return
-        }
-
-        if let sectionType = sectionTypeOrNil {
-            switch existing {
-            case .grouped(var groups):
-                groups.updateValue(section, forKey: sectionType)
-                selectedSections[course] = .grouped(groups)
-            case .ungrouped:
-                fatalError("Cannot add a grouped section to a previously ungrouped course.")
-            }
+    private mutating func add(_ section: Section, from groupName: String, in course: Course) {
+        if var existingSections = selectedSections[course] {
+            existingSections[groupName] = section
+            selectedSections[course] = existingSections
         } else {
-            if case .grouped = existing {
-                fatalError("Cannot add an ungrouped section to a previously grouped course.")
-            }
-
-            selectedSections[course] = .ungrouped(section)
+            selectedSections[course] = [groupName: section]
         }
     }
 
-    private func adding(_ section: Section, ofType sectionType: String?, from course: Course) -> Schedule {
+    private func adding(_ section: Section, from groupName: String, in course: Course) -> Schedule {
         var schedule = self
-        schedule.add(section, ofType: sectionType, from: course)
+        schedule.add(section, from: groupName, in: course)
         return schedule
     }
 
@@ -81,16 +53,7 @@ struct Schedule: Codable {
     }
 
     var sections: [Section] {
-        let sections: [[Section]] = selectedSections.values.map {
-            switch $0 {
-            case .grouped(let groups):
-                return Array(groups.values)
-            case .ungrouped(let section):
-                return [section]
-            }
-        }
-
-        return sections.flatMap { $0 }
+        return selectedSections.values.flatMap { $0.values }
     }
 }
 

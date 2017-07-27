@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A0865E01F1557E800570D06 /* OldSectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865DF1F1557E800570D06 /* OldSectionsViewController.swift */; };
-		4A0865E21F16474C00570D06 /* Groupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E11F16474C00570D06 /* Groupable.swift */; };
 		4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
+		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
 		4A667FB91F20D63500D41E87 /* InputSuggestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */; };
 		4A848A871F28F08400ECCBDD /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A848A861F28F08400ECCBDD /* SectionsViewController.swift */; };
-		4A8C8B611F1CE22E00D317D0 /* AutoSavingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */; };
 		4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B621F1F880800D317D0 /* TimePickerView.swift */; };
 		4A8C8B651F1F9EB600D317D0 /* DayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */; };
 		4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */; };
@@ -23,13 +21,11 @@
 		4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87921F06F98B00FA1AC2 /* StateController.swift */; };
 		4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87941F06FA3900FA1AC2 /* Plan.swift */; };
 		4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */; };
-		4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */; };
 		4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6B1EFDC06300062548 /* AppDelegate.swift */; };
 		4AC85F731EFDC06300062548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F721EFDC06300062548 /* Assets.xcassets */; };
 		4AC85F761EFDC06300062548 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */; };
 		4AC85F871EFDC08900062548 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F7D1EFDC08900062548 /* Course.swift */; };
 		4AC85F881EFDC08900062548 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F7E1EFDC08900062548 /* Location.swift */; };
-		4AC85F891EFDC08900062548 /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F7F1EFDC08900062548 /* Overlappable.swift */; };
 		4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F801EFDC08900062548 /* CourseGenerator.swift */; };
 		4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F811EFDC08900062548 /* Schedule.swift */; };
 		4AC85F8C1EFDC08900062548 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F821EFDC08900062548 /* Section.swift */; };
@@ -41,13 +37,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4A0865DF1F1557E800570D06 /* OldSectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldSectionsViewController.swift; sourceTree = "<group>"; };
-		4A0865E11F16474C00570D06 /* Groupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Groupable.swift; sourceTree = "<group>"; };
 		4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
+		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
 		4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSuggestionView.swift; sourceTree = "<group>"; };
 		4A848A861F28F08400ECCBDD /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
-		4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoSavingItem.swift; sourceTree = "<group>"; };
 		4A8C8B621F1F880800D317D0 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
 		4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
@@ -57,7 +51,6 @@
 		4AAA87921F06F98B00FA1AC2 /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
 		4AAA87941F06FA3900FA1AC2 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
-		4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
 		4AC85F681EFDC06300062548 /* Schedulo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedulo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC85F6B1EFDC06300062548 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AC85F721EFDC06300062548 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -65,7 +58,6 @@
 		4AC85F771EFDC06300062548 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4AC85F7D1EFDC08900062548 /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		4AC85F7E1EFDC08900062548 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		4AC85F7F1EFDC08900062548 /* Overlappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
 		4AC85F801EFDC08900062548 /* CourseGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseGenerator.swift; sourceTree = "<group>"; };
 		4AC85F811EFDC08900062548 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		4AC85F821EFDC08900062548 /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
@@ -87,6 +79,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A5402391F29916800CFDFAE /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
+				4A848A861F28F08400ECCBDD /* SectionsViewController.swift */,
+				4ADC503F1F196342007284DE /* SchedulesViewController.swift */,
+				4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		4A54023C1F2991B400CFDFAE /* Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
+				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
+				4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */,
+			);
+			path = "Table Cells";
+			sourceTree = "<group>";
+		};
+		4A54023D1F29981A00CFDFAE /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */,
+				4A8C8B621F1F880800D317D0 /* TimePickerView.swift */,
+				4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		4A54023E1F299E3400CFDFAE /* Scheduling */ = {
+			isa = PBXGroup;
+			children = (
+				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
+				4AC85F7D1EFDC08900062548 /* Course.swift */,
+				4AC85F7E1EFDC08900062548 /* Location.swift */,
+				4AC85F811EFDC08900062548 /* Schedule.swift */,
+				4AC85F821EFDC08900062548 /* Section.swift */,
+				4AC85F831EFDC08900062548 /* Day.swift */,
+				4AC85F841EFDC08900062548 /* Session.swift */,
+				4AC85F851EFDC08900062548 /* Time.swift */,
+				4AC85F861EFDC08900062548 /* TimeRange.swift */,
+				4AAA87841F0459CC00FA1AC2 /* Season.swift */,
+				4AAA87941F06FA3900FA1AC2 /* Plan.swift */,
+			);
+			path = Scheduling;
+			sourceTree = "<group>";
+		};
+		4A5402411F299F4900CFDFAE /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		4AC85F5F1EFDC06300062548 = {
 			isa = PBXGroup;
 			children = (
@@ -107,34 +156,13 @@
 			isa = PBXGroup;
 			children = (
 				4AC85F6B1EFDC06300062548 /* AppDelegate.swift */,
-				4AC85F7D1EFDC08900062548 /* Course.swift */,
-				4AC85F7E1EFDC08900062548 /* Location.swift */,
-				4AC85F7F1EFDC08900062548 /* Overlappable.swift */,
-				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
-				4A8C8B601F1CE22E00D317D0 /* AutoSavingItem.swift */,
-				4A0865E11F16474C00570D06 /* Groupable.swift */,
-				4AC85F811EFDC08900062548 /* Schedule.swift */,
-				4AC85F821EFDC08900062548 /* Section.swift */,
-				4AC85F831EFDC08900062548 /* Day.swift */,
-				4AC85F841EFDC08900062548 /* Session.swift */,
-				4AC85F851EFDC08900062548 /* Time.swift */,
-				4AC85F861EFDC08900062548 /* TimeRange.swift */,
-				4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */,
-				4AAA87841F0459CC00FA1AC2 /* Season.swift */,
-				4AAA87941F06FA3900FA1AC2 /* Plan.swift */,
 				4AAA87921F06F98B00FA1AC2 /* StateController.swift */,
-				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
-				4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */,
-				4A848A861F28F08400ECCBDD /* SectionsViewController.swift */,
-				4A0865DF1F1557E800570D06 /* OldSectionsViewController.swift */,
-				4A8C8B621F1F880800D317D0 /* TimePickerView.swift */,
-				4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */,
-				4ADC503F1F196342007284DE /* SchedulesViewController.swift */,
-				4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */,
-				4AAA879C1F0857C500FA1AC2 /* CourseDetailViewController.swift */,
-				4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */,
-				4AAA87821F02F9D600FA1AC2 /* SegmentedControlCell.swift */,
-				4AAA87801F02F6B200FA1AC2 /* TextFieldCell.swift */,
+				4A54023F1F299F1100CFDFAE /* Overlappable.swift */,
+				4A5402411F299F4900CFDFAE /* Utility */,
+				4A54023E1F299E3400CFDFAE /* Scheduling */,
+				4A5402391F29916800CFDFAE /* View Controllers */,
+				4A54023D1F29981A00CFDFAE /* Custom Views */,
+				4A54023C1F2991B400CFDFAE /* Table Cells */,
 				4AC85F721EFDC06300062548 /* Assets.xcassets */,
 				4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */,
 				4AC85F771EFDC06300062548 /* Info.plist */,
@@ -220,8 +248,6 @@
 				4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */,
 				4AC85F8F1EFDC08900062548 /* Time.swift in Sources */,
 				4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */,
-				4AC85F891EFDC08900062548 /* Overlappable.swift in Sources */,
-				4A8C8B611F1CE22E00D317D0 /* AutoSavingItem.swift in Sources */,
 				4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */,
 				4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */,
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
@@ -231,18 +257,16 @@
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,
 				4A8C8B651F1F9EB600D317D0 /* DayPickerView.swift in Sources */,
 				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
-				4AAA879D1F0857C500FA1AC2 /* CourseDetailViewController.swift in Sources */,
 				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
 				4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */,
-				4A0865E01F1557E800570D06 /* OldSectionsViewController.swift in Sources */,
 				4AC85F881EFDC08900062548 /* Location.swift in Sources */,
 				4AC85F8D1EFDC08900062548 /* Day.swift in Sources */,
 				4AC85F8C1EFDC08900062548 /* Section.swift in Sources */,
 				4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */,
 				4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */,
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
-				4A0865E21F16474C00570D06 /* Groupable.swift in Sources */,
 				4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */,
+				4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */,
 				4ADC50401F196342007284DE /* SchedulesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

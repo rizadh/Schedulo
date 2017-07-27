@@ -186,9 +186,9 @@ class CoursesViewController: UITableViewController {
     }
 
     private func editSectionsForCourse(at courseIndex: Int) {
-        let sections = stateController.courses[courseIndex].sections
-        let sectionsViewController = SectionsViewController(for: sections) { newSections in
-            self.stateController.courses[courseIndex].sections = newSections
+        let sections = stateController.courses[courseIndex].sectionGroups
+        let sectionsViewController = SectionsViewController(for: sections) { newSectionGroups in
+            self.stateController.courses[courseIndex].sectionGroups = newSectionGroups
         }
 
         navigationController?.pushViewController(sectionsViewController, animated: true)
@@ -216,27 +216,18 @@ extension CoursesViewController {
         cell.accessoryType = .detailDisclosureButton
         cell.textLabel?.text = course.name
 
-        switch course.sections {
-        case .ungrouped(let sections):
-            if sections.count == 1 {
-                cell.detailTextLabel?.text = "1 section"
-            } else {
-                cell.detailTextLabel?.text = "\(sections.count) sections"
-            }
-        case .grouped(let groups):
-            if groups.count == 1 {
-                cell.detailTextLabel?.text = "1 group"
-            } else {
-                cell.detailTextLabel?.text = "\(groups.count) groups"
-            }
+        if course.sectionGroups.count == 1 {
+            cell.detailTextLabel?.text = "1 group"
+        } else {
+            cell.detailTextLabel?.text = "\(course.sectionGroups.count) groups"
+        }
 
-            let sectionsCount = groups.map { $0.value.count }.reduce(0, +)
+        let sectionsCount = course.sectionGroups.map { $0.value.count }.reduce(0, +)
 
-            if sectionsCount == 1 {
-                cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • 1 section"
-            } else {
-                cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • \(sectionsCount) sections"
-            }
+        if sectionsCount == 1 {
+            cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • 1 section"
+        } else {
+            cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • \(sectionsCount) sections"
         }
 
         return cell
