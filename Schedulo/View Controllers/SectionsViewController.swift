@@ -41,7 +41,7 @@ class SectionsViewController: UITableViewController {
 // MARK: - UITableViewController Method Overrides
 extension SectionsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionGroups.count
+        return sectionGroups.count + 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,7 +56,16 @@ extension SectionsViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
 
-        cell.textLabel?.text = "???"
+        let currentCellType = cellType(for: indexPath)
+
+        switch currentCellType {
+        case .addGroup:
+            cell.textLabel?.text = "Add Group"
+            cell.textLabel?.textAlignment = .center
+            cell.textLabel?.textColor = cell.textLabel?.tintColor
+        default:
+            cell.textLabel?.text = "???"
+        }
 
         print(cellType(for: indexPath))
 
