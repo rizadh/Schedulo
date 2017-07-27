@@ -21,7 +21,222 @@ class SectionsViewController: UITableViewController {
 
     private var expandedSection: (groupIndex: Int, sectionIndex: Int)?
 
+    private var textFieldChangeHandler: TextFieldChangeHandler?
+
     // MARK: - Private Methods
+
+    // MARK: Section Group Name Validation
+    private func sectionGroupCanBeNamed(_ groupName: String) -> Bool {
+        return !groupName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func sectionGroupExists(named groupName: String) -> Bool {
+        return sectionGroups.map { $0.name }.contains(groupName)
+    }
+
+    private func newSectionGroupCanBeCreated(named groupName: String) -> Bool {
+        return sectionGroupCanBeNamed(groupName) && !sectionGroupExists(named: groupName)
+    }
+
+    // MARK: Section Group Management
+    private func addSectionGroup() {
+        let alertTitle = "New Group"
+        let alertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
+            guard let groupName = alertController.textFields?.first?.text else {
+                return
+            }
+
+            let newGroup = SectionGroup(name: groupName, sections: [])
+
+            self.sectionGroups.append(newGroup)
+
+            self.tableView.insertSections([self.sectionGroups.count - 1], with: .top)
+        })
+
+        addAction.isEnabled = false
+
+        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
+            guard let groupName = textField.text else {
+                addAction.isEnabled = false
+                return
+            }
+
+            addAction.isEnabled = self.newSectionGroupCanBeCreated(named: groupName)
+        }
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(addAction)
+        alertController.addTextField { textField in
+            textField.autocapitalizationType = .words
+            textField.clearButtonMode = .always
+            textField.placeholder = "Choose a name"
+
+            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // MARK: Section Name Validation
+    private func sectionCanBeNamed(_ sectionName: String) -> Bool {
+        return !sectionName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func sectionExists(in groupIndex: Int, named sectionName: String) -> Bool {
+        return sectionGroups[groupIndex].sections.map { $0.name }.contains(sectionName)
+    }
+
+    private func newSectionCanBeCreated(in groupIndex: Int, named sectionName: String) -> Bool {
+        return sectionCanBeNamed(sectionName) && !sectionExists(in: groupIndex, named: sectionName)
+    }
+
+    // MARK: Section Name Suggestions
+    private func generateSectionNameSuggestions(for groupIndex: Int) -> [String] {
+        let group = sectionGroups[groupIndex]
+
+        let parsedSectionNames = group.sections.flatMap {
+            return parseSectionName($0.name)
+        }
+
+        let prefixes = Set(parsedSectionNames.map({ $0.prefix }))
+
+        let suggestionsBasedOnExistingSections: [String] = prefixes.map { prefix in
+            let maxValue = parsedSectionNames.filter { $0.prefix == prefix }.map { $0.value }.reduce(0, max)
+            let maxDigits = parsedSectionNames.filter { $0.prefix == prefix }.map { $0.digits }.reduce(0, max)
+
+            let suffix = String(format: "%0\(maxDigits)d", maxValue + 1)
+
+            return prefix + suffix
+        }
+
+        if suggestionsBasedOnExistingSections.isEmpty {
+            return [
+                String(group.name.prefix(3)).uppercased() + "0001",
+                String(group.name.prefix(4)).uppercased() + "001",
+                "1"
+            ]
+        } else {
+            return suggestionsBasedOnExistingSections
+        }
+    }
+
+    private func parseSectionName(_ sectionName: String) -> (prefix: String, digits: Int, value: Int)? {
+        let pattern = "^(.*?)(\\d+)$"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+
+        guard let match = regex.firstMatch(in: sectionName, options: [], range: NSRange(location: 0, length: sectionName.count)) else {
+            return nil
+        }
+
+        let prefixRange = match.range(at: 1)
+        let valueRange = match.range(at: 2)
+
+        let prefix = String((sectionName as NSString).substring(with: prefixRange))
+        let valueAsString = String((sectionName as NSString).substring(with: valueRange))
+
+        let digits = valueAsString.count
+        let value = Int(valueAsString)!
+
+        return (prefix, digits, value)
+    }
+
+
+    // MARK: Section Management
+    private func addSection(to groupIndex: Int) {
+        let alertTitle = "New Section"
+        let alertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
+            guard let sectionName = alertController.textFields?.first?.text else {
+                return
+            }
+
+            let newSection = Section(name: sectionName, sessions: [])
+
+            self.sectionGroups[groupIndex].sections.append(newSection)
+
+            let indexPath = self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: self.sectionGroups[groupIndex].sections.count - 1))!
+
+            self.tableView.insertRows(at: [indexPath], with: .top)
+        })
+
+        addAction.isEnabled = false
+
+        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
+            guard let sectionName = textField.text else {
+                addAction.isEnabled = false
+                return
+            }
+
+            addAction.isEnabled = self.newSectionCanBeCreated(in: groupIndex, named: sectionName)
+        }
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(addAction)
+        alertController.addTextField { textField in
+            textField.autocapitalizationType = .words
+            textField.clearButtonMode = .always
+            textField.placeholder = "Choose a name"
+
+            let suggestedSectionNames = self.generateSectionNameSuggestions(for: groupIndex)
+
+            if !suggestedSectionNames.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: suggestedSectionNames) { selectedSuggestion in
+                    textField.text = selectedSuggestion
+                    self.textFieldChangeHandler?.textFieldDidChange(textField)
+                }
+            }
+
+            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func renameSection(in groupIndex: Int, at sectionIndex: Int) {
+        let alertTitle = "Rename Section"
+        let alertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let addAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
+            guard let sectionName = alertController.textFields?.first?.text else {
+                return
+            }
+
+            self.sectionGroups[groupIndex].sections[sectionIndex].name = sectionName
+
+            let indexPath = self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!
+
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        })
+
+        addAction.isEnabled = false
+
+        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
+            guard let sectionName = textField.text else {
+                addAction.isEnabled = false
+                return
+            }
+
+            addAction.isEnabled = self.newSectionCanBeCreated(in: groupIndex, named: sectionName)
+        }
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(addAction)
+        alertController.addTextField { textField in
+            textField.autocapitalizationType = .words
+            textField.clearButtonMode = .always
+            textField.placeholder = "Choose a new name"
+
+            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
 
     private func toggleSectionExpansion(at indexPath: IndexPath) {
         guard case let .section(groupIndex, sectionIndex) = cellType(for: indexPath) else {
@@ -63,55 +278,7 @@ class SectionsViewController: UITableViewController {
     // MARK: - Initializers
     init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
-//        self.sectionGroups = sections
-
-        self.sectionGroups = [
-            SectionGroup(name: "Lecture", sections: [
-                Section(name: "LEC01", sessions: [
-                    Session(
-                        day: .Monday,
-                        time: TimeRange(
-                            from: Time(hour: 10, minute: 0),
-                            to: Time(hour: 11, minute: 30)
-                        )
-                    ),
-                    Session(
-                        day: .Thursday,
-                        time: TimeRange(
-                            from: Time(hour: 15, minute: 30),
-                            to: Time(hour: 17, minute: 0)
-                        )
-                    )
-                ]),
-                Section(name: "LEC02", sessions: [
-                    Session(
-                        day: .Monday,
-                        time: TimeRange(
-                            from: Time(hour: 10, minute: 0),
-                            to: Time(hour: 11, minute: 30)
-                        )
-                    ),
-                    Session(
-                        day: .Thursday,
-                        time: TimeRange(
-                            from: Time(hour: 15, minute: 30),
-                            to: Time(hour: 17, minute: 0)
-                        )
-                    )
-                ])
-            ]),
-            SectionGroup(name: "Tutorial", sections: [
-                Section(name: "TUT05", sessions: [
-                    Session(
-                        day: .Tuesday,
-                        time: TimeRange(
-                            from: Time(hour: 12, minute: 0),
-                            to: Time(hour: 13, minute: 0)
-                        )
-                    )
-                ])
-            ])
-        ]
+        self.sectionGroups = sections
 
         super.init(style: .grouped)
 
@@ -195,11 +362,17 @@ extension SectionsViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch cellType(for: indexPath) {
+        case .addGroup:
+            tableView.deselectRow(at: indexPath, animated: true)
+            addSectionGroup()
+        case let .addSection(groupIndex):
+            tableView.deselectRow(at: indexPath, animated: true)
+            addSection(to: groupIndex)
         case .section:
             tableView.deselectRow(at: indexPath, animated: true)
             toggleSectionExpansion(at: indexPath)
         case let .addSession(groupIndex, sectionIndex):
-            let sessionDetailViewController = SessionDetailViewController(for: nil) {newSession in
+            let sessionDetailViewController = SessionDetailViewController(for: nil) { newSession in
                 self.sectionGroups[groupIndex].sections[sectionIndex].sessions.append(newSession)
 
                 let newSessionIndex = self.sectionGroups[groupIndex].sections[sectionIndex].sessions.count - 1
@@ -213,7 +386,7 @@ extension SectionsViewController {
         case let .session(groupIndex, sectionIndex, sessionIndex):
             let session = self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
 
-            let sessionDetailViewController = SessionDetailViewController(for: session) {newSession in
+            let sessionDetailViewController = SessionDetailViewController(for: session) { newSession in
                 self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex] = newSession
 
                 let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
@@ -222,6 +395,13 @@ extension SectionsViewController {
             }
 
             navigationController?.pushViewController(sessionDetailViewController, animated: true)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        switch cellType(for: indexPath) {
+        case let .section(groupIndex, sectionIndex):
+            renameSection(in: groupIndex, at: sectionIndex)
         default:
             break
         }
@@ -300,3 +480,4 @@ extension SectionsViewController {
         return tableCells
     }
 }
+

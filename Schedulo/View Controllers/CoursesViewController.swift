@@ -135,6 +135,7 @@ class CoursesViewController: UITableViewController {
             if !suggestedCourseNames.isEmpty {
                 textField.inputAccessoryView = InputSuggestionView(with: self.generateSuggestedCourseNames()) { selectedSuggestion in
                     textField.text = selectedSuggestion
+                    self.textFieldChangeHandler?.textFieldDidChange(textField)
                 }
             }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 struct SectionGroup: Codable {
-    var name: String?
+    var name: String
     var sections: [Section]
 }
 
