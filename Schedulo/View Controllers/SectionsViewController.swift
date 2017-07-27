@@ -352,10 +352,24 @@ extension SectionsViewController {
             cell.textLabel?.text = "Add Section"
             cell.textLabel?.textColor = cell.textLabel?.tintColor
         case let .section(groupIndex, sectionIndex):
+            let sectionCell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
             let section = sectionGroups[groupIndex].sections[sectionIndex]
 
-            cell.textLabel?.text = section.name
-            cell.accessoryType = .detailButton
+            sectionCell.textLabel?.text = section.name
+            sectionCell.accessoryType = .detailButton
+
+            let sessionCount = section.sessions.count
+
+            switch sessionCount {
+            case 0:
+                sectionCell.detailTextLabel?.text = "No sessions"
+            case 1:
+                sectionCell.detailTextLabel?.text = "1 session"
+            default:
+                sectionCell.detailTextLabel?.text = "\(sessionCount) session"
+            }
+
+            return sectionCell
         case let .session(groupIndex, sectionIndex, sessionIndex):
             let session = sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
 
