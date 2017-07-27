@@ -252,6 +252,22 @@ class SectionsViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    private func deleteSection(at sectionIndex: Int, inGroup groupIndex: Int) {
+        if let (expandedGroupIndex, expandedSectionIndex) = expandedSection, expandedGroupIndex == groupIndex, expandedSectionIndex == sectionIndex {
+            expandedSection = nil
+
+            let sessionsCount = sectionGroups[groupIndex].sections[sectionIndex].sessions.count
+            let indexPathsToDelete = (sectionIndex...sectionIndex + sessionsCount + 1).map { IndexPath(row: $0, section: groupIndex) }
+
+            sectionGroups[groupIndex].sections.remove(at: sectionIndex)
+            tableView.deleteRows(at: indexPathsToDelete, with: .automatic)
+        } else {
+            let indexPath = self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!
+            sectionGroups[groupIndex].sections.remove(at: sectionIndex)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+
     private func toggleSectionExpansion(at indexPath: IndexPath) {
         guard case let .section(groupIndex, sectionIndex) = cellType(for: indexPath) else {
             fatalError("Can only expand a section cell")
@@ -466,6 +482,8 @@ extension SectionsViewController {
                 deleteSectionGroup(at: groupIndex)
             case let .session(groupIndex, sectionIndex, sessionIndex):
                 deleteSession(at: sessionIndex, inSection: sectionIndex, inGroup: groupIndex)
+            case let .section(groupIndex, sectionIndex):
+                deleteSection(at: sectionIndex, inGroup: groupIndex)
             default:
                 break
             }
