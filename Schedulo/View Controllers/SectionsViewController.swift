@@ -53,7 +53,7 @@ class SectionsViewController: UITableViewController {
 
             self.sectionGroups.append(newGroup)
 
-            self.tableView.insertSections([self.sectionGroups.count - 1], with: .top)
+            self.tableView.insertSections([self.sectionGroups.count - 1], with: .fade)
         })
 
         addAction.isEnabled = false
@@ -169,7 +169,7 @@ class SectionsViewController: UITableViewController {
 
             let indexPath = self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: self.sectionGroups[groupIndex].sections.count - 1))!
 
-            self.tableView.insertRows(at: [indexPath], with: .top)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
         })
 
         addAction.isEnabled = false
