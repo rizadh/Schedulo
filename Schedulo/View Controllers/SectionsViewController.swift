@@ -21,6 +21,46 @@ class SectionsViewController: UITableViewController {
 
     private var expandedSection: (groupIndex: Int, sectionIndex: Int)?
 
+    // MARK: - Private Methods
+
+    private func toggleSectionExpansion(at indexPath: IndexPath) {
+        guard case let .section(groupIndex, sectionIndex) = cellType(for: indexPath) else {
+            fatalError("Can only expand a section cell")
+        }
+
+        if let (expandedGroupIndex, expandedSectionIndex) = expandedSection {
+            if expandedGroupIndex == groupIndex && expandedSectionIndex == sectionIndex {
+                expandedSection = nil
+
+                let sessionsToCollapse = sectionGroups[groupIndex].sections[sectionIndex].sessions.count
+                let indexPathsToCollapse = (1...sessionsToCollapse + 1).map { IndexPath(row: sectionIndex + $0, section: groupIndex) }
+
+                tableView.deleteRows(at: indexPathsToCollapse, with: .top)
+            } else {
+                expandedSection = (groupIndex, sectionIndex)
+
+                let sessionsToExpand = sectionGroups[groupIndex].sections[sectionIndex].sessions.count
+                let indexPathsToExpand = (1...sessionsToExpand + 1).map { IndexPath(row: sectionIndex + $0, section: groupIndex) }
+
+                let sessionsToCollapse = sectionGroups[expandedGroupIndex].sections[expandedSectionIndex].sessions.count
+                let indexPathsToCollapse = (1...sessionsToCollapse + 1).map { IndexPath(row: expandedSectionIndex + $0, section: expandedGroupIndex) }
+
+                tableView.beginUpdates()
+                tableView.insertRows(at: indexPathsToExpand, with: .top)
+                tableView.deleteRows(at: indexPathsToCollapse, with: .top)
+                tableView.endUpdates()
+            }
+        } else {
+            expandedSection = (groupIndex, sectionIndex)
+
+            let sessionsToExpand = sectionGroups[groupIndex].sections[sectionIndex].sessions.count
+            let indexPathsToExpand = (1...sessionsToExpand + 1).map { IndexPath(row: sectionIndex + $0, section: groupIndex) }
+
+            tableView.insertRows(at: indexPathsToExpand, with: .top)
+        }
+    }
+
+    // MARK: - Initializers
     init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
 //        self.sectionGroups = sections
@@ -150,6 +190,16 @@ extension SectionsViewController {
         }
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch cellType(for: indexPath) {
+        case .section:
+            tableView.deselectRow(at: indexPath, animated: true)
+            toggleSectionExpansion(at: indexPath)
+        default:
+            break
+        }
     }
 }
 
