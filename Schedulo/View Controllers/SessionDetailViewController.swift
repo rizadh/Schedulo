@@ -12,11 +12,7 @@ class SessionDetailViewController: UITableViewController {
 
     // MARK: Private Properties
 
-    private var session: Session {
-        didSet {
-            saveHandler(session)
-        }
-    }
+    private var session: Session
 
     private let saveHandler: (Session) -> Void
 
@@ -166,6 +162,15 @@ class SessionDetailViewController: UITableViewController {
         self.tableView.deleteRows(at: [indexPath(for: section, row)], with: .fade)
     }
 
+    @objc private func cancelButtonHandler() {
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc private func saveButtonHandler() {
+        saveHandler(session)
+        navigationController?.popViewController(animated: true)
+    }
+
     // MARK: Initializers
 
     init(for sessionOrNil: Session?, saveHandler: @escaping (Session) -> Void) {
@@ -177,14 +182,18 @@ class SessionDetailViewController: UITableViewController {
         } else {
             isNewSession = true
             self.session = SessionDetailViewController.generateSession()
-            saveHandler(self.session)
         }
 
         self.saveHandler = saveHandler
 
         super.init(style: .grouped)
 
+        let cancelButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelButtonHandler))
+        let saveButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.saveButtonHandler))
+
         self.navigationItem.title = isNewSession ? "New Session" : "Edit Session"
+        self.navigationItem.leftBarButtonItem = cancelButtonItem
+        self.navigationItem.rightBarButtonItem = saveButtonItem
     }
 
     required init?(coder aDecoder: NSCoder) {

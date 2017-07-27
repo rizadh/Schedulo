@@ -185,7 +185,7 @@ extension SectionsViewController {
             cell.textLabel?.text = "\(session)"
             cell.accessoryType = .disclosureIndicator
         case .addSession:
-            cell.textLabel?.text = "Add Time"
+            cell.textLabel?.text = "New Time"
             cell.accessoryType = .disclosureIndicator
         }
 
@@ -197,6 +197,30 @@ extension SectionsViewController {
         case .section:
             tableView.deselectRow(at: indexPath, animated: true)
             toggleSectionExpansion(at: indexPath)
+        case let .addSession(groupIndex, sectionIndex):
+            let sessionDetailViewController = SessionDetailViewController(for: nil) {newSession in
+                self.sectionGroups[groupIndex].sections[sectionIndex].sessions.append(newSession)
+
+                let newSessionIndex = self.sectionGroups[groupIndex].sections[sectionIndex].sessions.count - 1
+
+                let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: newSessionIndex))!
+
+                tableView.insertRows(at: [indexPath], with: .top)
+            }
+
+            navigationController?.pushViewController(sessionDetailViewController, animated: true)
+        case let .session(groupIndex, sectionIndex, sessionIndex):
+            let session = self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
+
+            let sessionDetailViewController = SessionDetailViewController(for: session) {newSession in
+                self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex] = newSession
+
+                let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
+
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+
+            navigationController?.pushViewController(sessionDetailViewController, animated: true)
         default:
             break
         }
