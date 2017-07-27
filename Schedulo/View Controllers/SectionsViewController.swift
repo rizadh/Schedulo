@@ -74,6 +74,14 @@ class SectionsViewController: UITableViewController {
             textField.clearButtonMode = .always
             textField.placeholder = "Choose a name"
 
+            let groupNameSuggestions = ["Lecture", "Tutorial", "Practical", "Lab"].filter(self.newSectionGroupCanBeCreated)
+
+            if !groupNameSuggestions.isEmpty {
+                textField.inputAccessoryView = InputSuggestionView(with: groupNameSuggestions) { selectedSuggestion in
+                    textField.text = selectedSuggestion
+                }
+            }
+
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
         }
 
