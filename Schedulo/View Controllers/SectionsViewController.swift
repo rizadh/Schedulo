@@ -74,12 +74,29 @@ extension SectionsViewController {
 }
 
 extension SectionsViewController {
-    enum TableCellType {
+    enum TableCellType: Equatable {
         case addGroup
         case addSection(groupIndex: Int)
         case section(groupIndex: Int, sectionIndex: Int)
         case addSession(groupIndex: Int, sectionIndex: Int)
         case session(groupIndex: Int, sectionIndex: Int, sessionIndex: Int)
+
+        static func == (lhs: TableCellType, rhs: TableCellType) -> Bool {
+            switch (lhs, rhs) {
+            case (.addGroup, .addGroup):
+                return true
+            case let (.addSection(lhsGroupIndex), .addSection(rhsGroupIndex)):
+                return lhsGroupIndex == rhsGroupIndex
+            case let (.section(lhsGroupIndex, lhsSectionIndex), .section(rhsGroupIndex, rhsSectionIndex)):
+                return lhsGroupIndex == rhsGroupIndex && lhsSectionIndex == rhsSectionIndex
+            case let (.addSession(lhsGroupIndex, lhsSectionIndex), .addSession(rhsGroupIndex, rhsSectionIndex)):
+                return lhsGroupIndex == rhsGroupIndex && lhsSectionIndex == rhsSectionIndex
+            case let (.session(lhsGroupIndex, lhsSectionIndex, lhsSessionIndex), .session(rhsGroupIndex, rhsSectionIndex, rhsSessionIndex)):
+                return lhsGroupIndex == rhsGroupIndex && lhsSectionIndex == rhsSectionIndex && lhsSessionIndex == rhsSessionIndex
+            default:
+                return false
+            }
+        }
     }
 
     private func cellType(for indexPath: IndexPath) -> TableCellType {
