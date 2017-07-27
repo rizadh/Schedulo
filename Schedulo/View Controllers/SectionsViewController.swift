@@ -109,6 +109,15 @@ extension SectionsViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        switch cellType(for: indexPath) {
+        case .session, .addSession:
+            return 1
+        default:
+            return 0
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         let cellType = self.cellType(for: indexPath)
