@@ -94,8 +94,13 @@ extension SectionsViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section < sectionGroups.count {
-            // TODO: Handle expanded section case
-            return sectionGroups[section].sections.count + 1
+            if let (groupIndex, sectionIndex) = expandedSection, groupIndex == section {
+                let sessionCount = sectionGroups[groupIndex].sections[sectionIndex].sessions.count
+
+                return sectionGroups[section].sections.count + sessionCount + 2
+            } else {
+                return sectionGroups[section].sections.count + 1
+            }
         } else {
             return 1
         }
