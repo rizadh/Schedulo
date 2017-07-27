@@ -31,7 +31,7 @@ class SectionsViewController: UITableViewController {
     }
 
     private func sectionGroupExists(named groupName: String) -> Bool {
-        return sectionGroups.map { $0.name }.contains(groupName)
+        return sectionGroups.map { $0.name.lowercased() }.contains(groupName.lowercased())
     }
 
     private func newSectionGroupCanBeCreated(named groupName: String) -> Bool {
