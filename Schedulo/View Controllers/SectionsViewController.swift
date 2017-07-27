@@ -249,6 +249,7 @@ class SectionsViewController: UITableViewController {
             textField.autocapitalizationType = .words
             textField.clearButtonMode = .always
             textField.placeholder = self.sectionGroups[groupIndex].sections[sectionIndex].name
+            textField.text = self.sectionGroups[groupIndex].sections[sectionIndex].name
 
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
         }
