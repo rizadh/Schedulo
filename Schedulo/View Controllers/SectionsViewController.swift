@@ -89,6 +89,11 @@ class SectionsViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    private func deleteSectionGroup(at groupIndex: Int) {
+        sectionGroups.remove(at: groupIndex)
+        tableView.deleteSections([groupIndex], with: .automatic)
+    }
+
     // MARK: Section Name Validation
     private func sectionCanBeNamed(_ sectionName: String) -> Bool {
         return !sectionName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -284,6 +289,19 @@ class SectionsViewController: UITableViewController {
         }
     }
 
+    // MARK: Session Management
+
+    private func deleteSession(at sessionIndex: Int, inSection sectionIndex: Int, inGroup groupIndex: Int) {
+        let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
+
+        sectionGroups[groupIndex].sections[sectionIndex].sessions.remove(at: sessionIndex)
+
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.reloadRows(at: [self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!], with: .fade)
+        tableView.endUpdates()
+    }
+
     // MARK: - Initializers
     init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
@@ -402,7 +420,10 @@ extension SectionsViewController {
 
                 let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: newSessionIndex))!
 
-                tableView.insertRows(at: [indexPath], with: .top)
+                tableView.beginUpdates()
+                tableView.insertRows(at: [indexPath], with: .automatic)
+                tableView.reloadRows(at: [self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!], with: .automatic)
+                tableView.endUpdates()
             }
 
             navigationController?.pushViewController(sessionDetailViewController, animated: true)
@@ -429,8 +450,32 @@ extension SectionsViewController {
             break
         }
     }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if case .delete = editingStyle {
+            switch cellType(for: indexPath) {
+            case let .addSection(groupIndex):
+                deleteSectionGroup(at: groupIndex)
+            case let .session(groupIndex, sectionIndex, sessionIndex):
+                deleteSession(at: sessionIndex, inSection: sectionIndex, inGroup: groupIndex)
+            default:
+                break
+            }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        switch cellType(for: indexPath) {
+        case .addSection, .section, .session:
+            return true
+        case .addGroup, .addSession:
+            return false
+        }
+    }
 }
 
+
+// MARK: - Cell Type Identification
 extension SectionsViewController {
     enum TableCellType: Equatable {
         case addGroup
