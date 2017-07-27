@@ -222,7 +222,7 @@ extension CoursesViewController {
             cell.detailTextLabel?.text = "\(course.sectionGroups.count) groups"
         }
 
-        let sectionsCount = course.sectionGroups.map { $0.value.count }.reduce(0, +)
+        let sectionsCount = course.sectionGroups.map { $0.sections.count }.reduce(0, +)
 
         if sectionsCount == 1 {
             cell.detailTextLabel?.text = (cell.detailTextLabel?.text ?? "") + " • 1 section"

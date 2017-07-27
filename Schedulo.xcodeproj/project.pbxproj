@@ -10,6 +10,7 @@
 		4A0865E41F17C2BD00570D06 /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
 		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
+		4A5402441F2A19D200CFDFAE /* SectionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5402431F2A19D200CFDFAE /* SectionGroup.swift */; };
 		4A667FB91F20D63500D41E87 /* InputSuggestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */; };
 		4A848A871F28F08400ECCBDD /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A848A861F28F08400ECCBDD /* SectionsViewController.swift */; };
 		4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B621F1F880800D317D0 /* TimePickerView.swift */; };
@@ -40,6 +41,7 @@
 		4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
 		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
+		4A5402431F2A19D200CFDFAE /* SectionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionGroup.swift; sourceTree = "<group>"; };
 		4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSuggestionView.swift; sourceTree = "<group>"; };
 		4A848A861F28F08400ECCBDD /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
 		4A8C8B621F1F880800D317D0 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			children = (
 				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
 				4AC85F7D1EFDC08900062548 /* Course.swift */,
+				4A5402431F2A19D200CFDFAE /* SectionGroup.swift */,
 				4AC85F7E1EFDC08900062548 /* Location.swift */,
 				4AC85F811EFDC08900062548 /* Schedule.swift */,
 				4AC85F821EFDC08900062548 /* Section.swift */,
@@ -260,6 +263,7 @@
 				4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */,
 				4AAA87831F02F9D600FA1AC2 /* SegmentedControlCell.swift in Sources */,
 				4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */,
+				4A5402441F2A19D200CFDFAE /* SectionGroup.swift in Sources */,
 				4A848A871F28F08400ECCBDD /* SectionsViewController.swift in Sources */,
 				4A667FB91F20D63500D41E87 /* InputSuggestionView.swift in Sources */,
 				4AAA87811F02F6B200FA1AC2 /* TextFieldCell.swift in Sources */,

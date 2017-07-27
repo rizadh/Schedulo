@@ -9,7 +9,7 @@
 import UIKit
 
 class SectionsViewController: UITableViewController {
-    typealias CourseSectionGroups = [String: [Section]]
+    typealias CourseSectionGroups = [SectionGroup]
 
     // MARK: - Private Properties
     private let saveHandler: (CourseSectionGroups) -> Void
@@ -19,7 +19,7 @@ class SectionsViewController: UITableViewController {
         }
     }
 
-    private var expandedSection: (groupName: String, index: Int)?
+    private var expandedSection: (groupIndex: Int, sectionIndex: Int)?
 
     init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
@@ -46,8 +46,8 @@ extension SectionsViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section < sectionGroups.count {
-            let groupName = sectionGroups.keys.sorted()[section]
-            return sectionGroups[groupName]!.count + 1
+            // TODO: Handle expanded section case
+            return sectionGroups[section].sections.count + 1
         } else {
             return 1
         }
@@ -75,11 +75,11 @@ extension SectionsViewController {
 
 extension SectionsViewController {
     enum TableCellType {
-        case section(groupName: String?, index: Int)
-        case addSection(groupName: String?)
-        case session(groupName: String?, sectionIndex: Int, index: Int)
-        case addSession(groupName: String?, sectionIndex: Int)
         case addGroup
+        case addSection(groupIndex: Int)
+        case section(groupIndex: Int, sectionIndex: Int)
+        case addSession(groupIndex: Int, sectionIndex: Int)
+        case session(groupIndex: Int, sectionIndex: Int, sessionIndex: Int)
     }
 
     private func cellType(for indexPath: IndexPath) -> TableCellType {
@@ -89,32 +89,28 @@ extension SectionsViewController {
     var tableCellTypeMatrix: [[TableCellType]] {
         var tableCells = [[TableCellType]]()
 
-        for (groupName, sections) in sectionGroups.sorted(by: { $0.key < $1.key }) {
-            tableCells.append(tableSectionCells(groupName: groupName, sections: sections))
+        for (groupIndex, group) in sectionGroups.enumerated() {
+            var sectionCells = [TableCellType]()
+
+            for (sectionIndex, section) in group.sections.enumerated() {
+                sectionCells.append(.section(groupIndex: groupIndex, sectionIndex: sectionIndex))
+
+                if let expandedSection = self.expandedSection, expandedSection.groupIndex == groupIndex, expandedSection.sectionIndex == sectionIndex {
+                    for (sessionIndex, _) in section.sessions.enumerated() {
+                        sectionCells.append(.session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))
+                    }
+
+                    sectionCells.append(.addSession(groupIndex: groupIndex, sectionIndex: sectionIndex))
+                }
+            }
+
+            sectionCells.append(.addSection(groupIndex: groupIndex))
+
+            tableCells.append(sectionCells)
         }
 
         tableCells.append([.addGroup])
 
         return tableCells
-    }
-
-    private func tableSectionCells(groupName: String, sections: [Section]) -> [TableCellType] {
-        var cells = [TableCellType]()
-
-        for (sectionIndex, section) in sections.enumerated() {
-            cells.append(.section(groupName: groupName, index: sectionIndex))
-
-            if let expandedSectionIndex = self.expandedSection?.index, expandedSectionIndex == sectionIndex {
-                for (sessionIndex, _) in section.sessions.enumerated() {
-                    cells.append(.session(groupName: groupName, sectionIndex: sectionIndex, index: sessionIndex))
-                }
-
-                cells.append(.addSession(groupName: groupName, sectionIndex: sectionIndex))
-            }
-        }
-
-        cells.append(.addSection(groupName: groupName))
-
-        return cells
     }
 }

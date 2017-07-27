@@ -9,7 +9,7 @@
 import Foundation
 
 struct Schedule: Codable {
-    private(set) var selectedSections = [Course: [String: Section]]()
+    private(set) var selectedSections = [Course: [Section]]()
 
     static func getSchedules(for courses: [Course]) -> [Schedule] {
         return courses.reduce([Schedule()]) { (schedules, course) in
@@ -22,10 +22,12 @@ struct Schedule: Codable {
     private func generateSchedules(adding course: Course) -> [Schedule] {
         var schedules = [self]
 
-        for (groupName, sections) in course.sectionGroups {
+        for group in course.sectionGroups {
             schedules = schedules.flatMap { schedule in
-                sections.map {
-                    schedule.adding($0, from: groupName, in: course)
+                group.sections.map {
+                    var branchingSchedule = schedule
+                    branchingSchedule.add($0, in: course)
+                    return branchingSchedule
                 }
             }.filter { $0.isValid }
         }
@@ -33,19 +35,13 @@ struct Schedule: Codable {
         return schedules
     }
 
-    private mutating func add(_ section: Section, from groupName: String, in course: Course) {
+    private mutating func add(_ section: Section, in course: Course) {
         if var existingSections = selectedSections[course] {
-            existingSections[groupName] = section
+            existingSections.append(section)
             selectedSections[course] = existingSections
         } else {
-            selectedSections[course] = [groupName: section]
+            selectedSections[course] = [section]
         }
-    }
-
-    private func adding(_ section: Section, from groupName: String, in course: Course) -> Schedule {
-        var schedule = self
-        schedule.add(section, from: groupName, in: course)
-        return schedule
     }
 
     var sessions: [Session] {
@@ -53,16 +49,16 @@ struct Schedule: Codable {
     }
 
     var sections: [Section] {
-        return selectedSections.values.flatMap { $0.values }
+        return selectedSections.flatMap { $0.value }
     }
 }
 
 // MARK: - Validity
 extension Schedule {
     var isValid: Bool {
-        for outerSection in sections {
-            for innerSection in sections {
-                if (outerSection == innerSection) {
+        for (outerIndex, outerSection) in sections.enumerated() {
+            for (innerIndex, innerSection) in sections.enumerated() {
+                if outerIndex == innerIndex {
                     continue
                 }
 
@@ -71,8 +67,6 @@ extension Schedule {
                 }
             }
         }
-
-
 
         return true
     }
