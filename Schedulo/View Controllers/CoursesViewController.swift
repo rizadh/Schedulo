@@ -257,10 +257,6 @@ extension CoursesViewController {
             deleteCourse(at: indexPath.row)
         }
     }
-
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
 }
 
 // MARK: - Array Extensions
