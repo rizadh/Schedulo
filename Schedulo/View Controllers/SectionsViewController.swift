@@ -103,19 +103,29 @@ extension SectionsViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+        let cellType = self.cellType(for: indexPath)
 
-        let currentCellType = cellType(for: indexPath)
-
-        switch currentCellType {
+        switch cellType {
         case .addGroup:
             cell.textLabel?.text = "Add Group"
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = cell.textLabel?.tintColor
-        default:
-            cell.textLabel?.text = "???"
-        }
+        case .addSection:
+            cell.textLabel?.text = "Add Section"
+            cell.textLabel?.textColor = cell.textLabel?.tintColor
+        case let .section(groupIndex, sectionIndex):
+            let section = sectionGroups[groupIndex].sections[sectionIndex]
 
-        print(cellType(for: indexPath))
+            cell.textLabel?.text = section.name
+        case let .session(groupIndex, sectionIndex, sessionIndex):
+            let session = sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex]
+
+            cell.textLabel?.text = "\(session)"
+            cell.accessoryType = .disclosureIndicator
+        case .addSession:
+            cell.textLabel?.text = "Add Session"
+            cell.accessoryType = .disclosureIndicator
+        }
 
         return cell
     }
