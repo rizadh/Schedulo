@@ -104,7 +104,7 @@ class SectionsViewController: UITableViewController {
     }
 
     private func sectionExists(in groupIndex: Int, named sectionName: String) -> Bool {
-        return sectionGroups[groupIndex].sections.map { $0.name }.contains(sectionName)
+        return sectionGroups[groupIndex].sections.map { $0.name.lowercased() }.contains(sectionName.lowercased())
     }
 
     private func newSectionCanBeCreated(in groupIndex: Int, named sectionName: String) -> Bool {
