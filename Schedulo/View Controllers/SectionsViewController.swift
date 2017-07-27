@@ -480,6 +480,15 @@ extension SectionsViewController {
             return false
         }
     }
+
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        switch cellType(for: indexPath) {
+        case .addSection:
+            return "Delete Group"
+        default:
+            return "Delete"
+        }
+    }
 }
 
 
