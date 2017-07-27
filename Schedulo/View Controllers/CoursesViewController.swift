@@ -43,7 +43,7 @@ class CoursesViewController: UITableViewController {
     }
 
     private func courseExists(named courseName: String) -> Bool {
-        return stateController.courses.map { $0.name }.contains(courseName)
+        return stateController.courses.map { $0.name.lowercased() }.contains(courseName.lowercased())
     }
 
     private func newCourseCanBeCreated(named courseName: String) -> Bool {
