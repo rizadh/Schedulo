@@ -90,6 +90,10 @@ class SectionsViewController: UITableViewController {
     }
 
     private func deleteSectionGroup(at groupIndex: Int) {
+        if let expandedGroupIndex = expandedSection?.groupIndex, expandedGroupIndex == groupIndex {
+            expandedSection = nil
+        }
+
         sectionGroups.remove(at: groupIndex)
         tableView.deleteSections([groupIndex], with: .automatic)
     }
