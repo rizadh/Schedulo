@@ -178,7 +178,8 @@ class CoursesViewController: UITableViewController {
         alertController.addTextField { textField in
             textField.autocapitalizationType = .allCharacters
             textField.clearButtonMode = .always
-            textField.placeholder = "Choose a new name"
+            textField.placeholder = self.stateController.courses[courseIndex].name
+
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
         }
 

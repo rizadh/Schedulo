@@ -239,7 +239,7 @@ class SectionsViewController: UITableViewController {
         alertController.addTextField { textField in
             textField.autocapitalizationType = .words
             textField.clearButtonMode = .always
-            textField.placeholder = "Choose a new name"
+            textField.placeholder = self.sectionGroups[groupIndex].sections[sectionIndex].name
 
             textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
         }
