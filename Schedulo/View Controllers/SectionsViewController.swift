@@ -23,7 +23,55 @@ class SectionsViewController: UITableViewController {
 
     init(for sections: CourseSectionGroups, saveHandler: @escaping (CourseSectionGroups) -> Void) {
         self.saveHandler = saveHandler
-        self.sectionGroups = sections
+//        self.sectionGroups = sections
+
+        self.sectionGroups = [
+            SectionGroup(name: "Lecture", sections: [
+                Section(name: "LEC01", sessions: [
+                    Session(
+                        day: .Monday,
+                        time: TimeRange(
+                            from: Time(hour: 10, minute: 0),
+                            to: Time(hour: 11, minute: 30)
+                        )
+                    ),
+                    Session(
+                        day: .Thursday,
+                        time: TimeRange(
+                            from: Time(hour: 15, minute: 30),
+                            to: Time(hour: 17, minute: 0)
+                        )
+                    )
+                ]),
+                Section(name: "LEC02", sessions: [
+                    Session(
+                        day: .Monday,
+                        time: TimeRange(
+                            from: Time(hour: 10, minute: 0),
+                            to: Time(hour: 11, minute: 30)
+                        )
+                    ),
+                    Session(
+                        day: .Thursday,
+                        time: TimeRange(
+                            from: Time(hour: 15, minute: 30),
+                            to: Time(hour: 17, minute: 0)
+                        )
+                    )
+                ])
+            ]),
+            SectionGroup(name: "Tutorial", sections: [
+                Section(name: "TUT05", sessions: [
+                    Session(
+                        day: .Tuesday,
+                        time: TimeRange(
+                            from: Time(hour: 12, minute: 0),
+                            to: Time(hour: 13, minute: 0)
+                        )
+                    )
+                ])
+            ])
+        ]
 
         super.init(style: .grouped)
 
