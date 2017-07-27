@@ -185,7 +185,7 @@ extension SectionsViewController {
             cell.textLabel?.text = "\(session)"
             cell.accessoryType = .disclosureIndicator
         case .addSession:
-            cell.textLabel?.text = "Add Session"
+            cell.textLabel?.text = "Add Time"
             cell.accessoryType = .disclosureIndicator
         }
 
