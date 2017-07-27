@@ -103,6 +103,20 @@ extension SectionsViewController {
         return tableCellTypeMatrix[indexPath.section][indexPath.row]
     }
 
+    private func indexPath(for cellType: TableCellType) -> IndexPath? {
+        let matrix = tableCellTypeMatrix
+
+        for (sectionIndex, section) in matrix.enumerated() {
+            for (rowIndex, row) in section.enumerated() {
+                if row == cellType {
+                    return IndexPath(row: rowIndex, section: sectionIndex)
+                }
+            }
+        }
+
+        return nil
+    }
+
     var tableCellTypeMatrix: [[TableCellType]] {
         var tableCells = [[TableCellType]]()
 
