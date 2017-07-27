@@ -101,6 +101,14 @@ extension SectionsViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section < sectionGroups.count {
+            return sectionGroups[section].name
+        } else {
+            return nil
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         let cellType = self.cellType(for: indexPath)
