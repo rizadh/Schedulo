@@ -22,7 +22,6 @@ class CoursesViewController: UITableViewController {
         let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonItemHandler))
 
         self.navigationItem.title = "Courses"
-        self.navigationItem.leftBarButtonItem = editButtonItem
         self.navigationItem.rightBarButtonItem = addButtomItem
 
         if #available(iOS 11.0, *) {
