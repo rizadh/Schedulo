@@ -19,7 +19,7 @@ struct Plan: Codable {
         }
     }
 
-    var schedules = [Schedule]()
+    private(set) var schedules = [Schedule]()
 
     init(_ name: String, in season: Season, _ year: Int) {
         self.name = name
