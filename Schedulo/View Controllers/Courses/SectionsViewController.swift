@@ -335,9 +335,10 @@ class SectionsViewController: UITableViewController {
         let sessionDetailViewController = SessionDetailViewController(for: session) { newSession in
             self.sectionGroups[groupIndex].sections[sectionIndex].sessions[sessionIndex] = newSession
 
-            let indexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
+            let sessionIndexPath = self.indexPath(for: .session(groupIndex: groupIndex, sectionIndex: sectionIndex, sessionIndex: sessionIndex))!
+            let sectionIndexPath = self.indexPath(for: .section(groupIndex: groupIndex, sectionIndex: sectionIndex))!
 
-            self.tableView.reloadRows(at: [indexPath], with: .fade)
+            self.tableView.reloadRows(at: [sessionIndexPath, sectionIndexPath], with: .fade)
         }
 
         navigationController?.pushViewController(sessionDetailViewController, animated: true)
