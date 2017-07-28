@@ -133,3 +133,14 @@ extension Schedule {
     }
 }
 
+// MARK: - CustomStringConvertible Conformance
+extension Schedule: CustomStringConvertible {
+    var description: String {
+        return selectedSections.map { (course, sections) in
+            sections.map { section in
+                "\(course.name) -> \(section.name)"
+            }.joined(separator: "\n")
+        }.joined(separator: "\n")
+    }
+}
+

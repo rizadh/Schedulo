@@ -9,7 +9,9 @@
 import Foundation
 
 struct Plan: Codable {
+
     // MARK:- Public Properties
+
     var name: String
     var season: Season
     var year: Int
@@ -21,9 +23,20 @@ struct Plan: Codable {
 
     private(set) var schedules = [Schedule]()
 
+    // MARK: - Initializers
+
     init(_ name: String, in season: Season, _ year: Int) {
         self.name = name
         self.season = season
         self.year = year
+    }
+}
+
+// MARK: - CustomStringConvertible Conformance
+extension Plan: CustomStringConvertible {
+    var description: String {
+        return schedules.map { schedule in
+            "\(name) \(season) \(year):\n\(schedule)"
+        }.joined(separator: "\n\n")
     }
 }
