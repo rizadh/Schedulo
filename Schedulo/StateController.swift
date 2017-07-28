@@ -14,7 +14,7 @@ class StateController {
 
     private struct State: Codable {
         var courses = [Course]()
-        var schedules = [Schedule]()
+        var plans = [Plan]()
     }
 
     private var state = State() {
@@ -68,13 +68,13 @@ class StateController {
         }
     }
 
-    var schedules: [Schedule] {
+    var schedules: [Plan] {
         get {
-            return state.schedules
+            return state.plans
         }
 
         set {
-            state.schedules = newValue
+            state.plans = newValue
         }
     }
 
@@ -90,12 +90,12 @@ class StateController {
         state.courses.insert(course, at: index)
     }
 
-    func add(_ schedule: Schedule) {
-        state.schedules.append(schedule)
+    func add(_ plan: Plan) {
+        state.plans.append(plan)
     }
 
-    func add(_ schedule: Schedule, at index: Int) {
-        state.schedules.insert(schedule, at: index)
+    func add(_ plan: Plan, at index: Int) {
+        state.plans.insert(plan, at: index)
     }
 
     func removeCourse(at index: Int) {
@@ -103,14 +103,14 @@ class StateController {
     }
 
     func removeSchedule(at index: Int) {
-        state.schedules.remove(at: index)
+        state.plans.remove(at: index)
     }
 
     func replaceCourse(at index: Int, with course: Course) {
         state.courses[index] = course
     }
 
-    func replaceSchedule(at index: Int, with schedule: Schedule) {
-        state.schedules[index] = schedule
+    func replaceSchedule(at index: Int, with plan: Plan) {
+        state.plans[index] = plan
     }
 }
