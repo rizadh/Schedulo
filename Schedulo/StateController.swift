@@ -68,7 +68,7 @@ class StateController {
         }
     }
 
-    var schedules: [Plan] {
+    var plans: [Plan] {
         get {
             return state.plans
         }
