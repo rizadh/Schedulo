@@ -436,7 +436,7 @@ extension SectionsViewController {
             case 1:
                 sectionCell.detailTextLabel?.text = "1 session"
             default:
-                sectionCell.detailTextLabel?.text = "\(sessionCount) session"
+                sectionCell.detailTextLabel?.text = "\(sessionCount) sessions"
             }
 
             return sectionCell
