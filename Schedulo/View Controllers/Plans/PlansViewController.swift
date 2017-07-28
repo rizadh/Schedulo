@@ -48,3 +48,18 @@ class PlansViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+// MARK: - UITableViewController Method Overrides
+extension PlansViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return stateController.plans.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+
+        cell.textLabel?.text = stateController.plans[indexPath.row].name
+
+        return cell
+    }
+}
