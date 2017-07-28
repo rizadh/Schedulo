@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
 
         let navigationControllers = [
-            UINavigationController(rootViewController: SchedulesViewController(using: self.stateController)),
+            UINavigationController(rootViewController: PlansViewController(using: self.stateController)),
             UINavigationController(rootViewController: CoursesViewController(using: self.stateController))
         ]
 

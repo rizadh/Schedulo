@@ -34,7 +34,7 @@
 		4AC85F8E1EFDC08900062548 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F841EFDC08900062548 /* Session.swift */; };
 		4AC85F8F1EFDC08900062548 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F851EFDC08900062548 /* Time.swift */; };
 		4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F861EFDC08900062548 /* TimeRange.swift */; };
-		4ADC50401F196342007284DE /* SchedulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADC503F1F196342007284DE /* SchedulesViewController.swift */; };
+		4ADC50401F196342007284DE /* PlansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADC503F1F196342007284DE /* PlansViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,7 +67,7 @@
 		4AC85F841EFDC08900062548 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		4AC85F851EFDC08900062548 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		4AC85F861EFDC08900062548 /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
-		4ADC503F1F196342007284DE /* SchedulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesViewController.swift; sourceTree = "<group>"; };
+		4ADC503F1F196342007284DE /* PlansViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +86,7 @@
 			children = (
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
 				4A848A861F28F08400ECCBDD /* SectionsViewController.swift */,
-				4ADC503F1F196342007284DE /* SchedulesViewController.swift */,
+				4ADC503F1F196342007284DE /* PlansViewController.swift */,
 				4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */,
 			);
 			path = "View Controllers";
@@ -279,7 +279,7 @@
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
 				4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */,
 				4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */,
-				4ADC50401F196342007284DE /* SchedulesViewController.swift in Sources */,
+				4ADC50401F196342007284DE /* PlansViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

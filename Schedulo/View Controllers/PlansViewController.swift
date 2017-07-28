@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SchedulesViewController: UITableViewController {
+class PlansViewController: UITableViewController {
     // MARK: - Private Properties
 
     private let stateController: StateController
