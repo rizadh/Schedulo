@@ -22,7 +22,7 @@ class PlansViewController: UITableViewController {
 
         plan.courses = stateController.courses
 
-        print(plan.schedules)
+        print(plan)
 
         stateController.add(plan)
     }
