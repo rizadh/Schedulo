@@ -20,4 +20,10 @@ struct Plan: Codable {
     }
 
     var schedules = [Schedule]()
+
+    init(_ name: String, in season: Season, _ year: Int) {
+        self.name = name
+        self.season = season
+        self.year = year
+    }
 }
