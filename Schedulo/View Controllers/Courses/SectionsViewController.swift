@@ -432,11 +432,11 @@ extension SectionsViewController {
 
             switch sessionCount {
             case 0:
-                sectionCell.detailTextLabel?.text = "No sessions"
+                sectionCell.detailTextLabel?.text = "No times"
             case 1:
-                sectionCell.detailTextLabel?.text = "1 session"
+                sectionCell.detailTextLabel?.text = "1 time"
             default:
-                sectionCell.detailTextLabel?.text = "\(sessionCount) sessions"
+                sectionCell.detailTextLabel?.text = "\(sessionCount) times"
             }
 
             return sectionCell
