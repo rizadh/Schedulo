@@ -434,7 +434,7 @@ extension SectionsViewController {
             case 0:
                 sectionCell.detailTextLabel?.text = "No times"
             case 1:
-                sectionCell.detailTextLabel?.text = "1 time"
+                sectionCell.detailTextLabel?.text = "\(section.sessions.first!)"
             default:
                 sectionCell.detailTextLabel?.text = "\(sessionCount) times"
             }
