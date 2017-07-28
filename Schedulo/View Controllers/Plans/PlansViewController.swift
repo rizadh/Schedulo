@@ -15,8 +15,8 @@ class PlansViewController: UITableViewController {
 
     // MARK: - Private Methods
 
-    @objc private func addSchedule() {
-        print("Adding schedule")
+    @objc private func addPlan() {
+        print("Adding plan")
     }
 
     // MARK: - Initializers
@@ -26,9 +26,9 @@ class PlansViewController: UITableViewController {
 
         super.init(style: .plain)
 
-        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addSchedule))
+        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
 
-        self.navigationItem.title = "Schedules"
+        self.navigationItem.title = "Plan"
         self.navigationItem.rightBarButtonItem = addButtonItem
 
         if #available(iOS 11, *) {
