@@ -17,6 +17,14 @@ class PlansViewController: UITableViewController {
 
     @objc private func addPlan() {
         print("Adding plan")
+
+        var plan = Plan("TEST", in: .Fall, 2017)
+
+        plan.courses = stateController.courses
+
+        print(plan.schedules)
+
+        stateController.add(plan)
     }
 
     // MARK: - Initializers
