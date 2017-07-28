@@ -73,19 +73,6 @@ class CoursesViewController: UITableViewController {
         return stateController.courses.map { $0.name }.flatMap(parseCourseSuffix).orderedByFrequency().filter(newCourseCanBeCreated)
     }
 
-    // MARK: UI Updates
-    private func updateStateBasedViews() {
-        updateEditButtonItem()
-    }
-
-    private func updateEditButtonItem() {
-        if stateController.courses.isEmpty {
-            editButtonItem.isEnabled = false
-        } else {
-            editButtonItem.isEnabled = true
-        }
-    }
-
     // MARK: Button Handlers
     @objc private func addButtonItemHandler() {
         addCourse()
@@ -108,8 +95,6 @@ class CoursesViewController: UITableViewController {
 
             let indexPath = IndexPath(row: self.stateController.courses.count - 1, section: 0)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
-
-            self.updateStateBasedViews()
         })
 
         addAction.isEnabled = false
