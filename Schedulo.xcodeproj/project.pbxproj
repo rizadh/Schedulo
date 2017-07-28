@@ -81,13 +81,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4A5402391F29916800CFDFAE /* View Controllers */ = {
+		4A464F5E1F2B6F030079FC29 /* Courses */ = {
 			isa = PBXGroup;
 			children = (
 				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
 				4A848A861F28F08400ECCBDD /* SectionsViewController.swift */,
-				4ADC503F1F196342007284DE /* PlansViewController.swift */,
 				4A0865E31F17C2BD00570D06 /* SessionDetailViewController.swift */,
+			);
+			path = Courses;
+			sourceTree = "<group>";
+		};
+		4A464F5F1F2B6F090079FC29 /* Plans */ = {
+			isa = PBXGroup;
+			children = (
+				4ADC503F1F196342007284DE /* PlansViewController.swift */,
+			);
+			path = Plans;
+			sourceTree = "<group>";
+		};
+		4A5402391F29916800CFDFAE /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4A464F5E1F2B6F030079FC29 /* Courses */,
+				4A464F5F1F2B6F090079FC29 /* Plans */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
