@@ -36,7 +36,7 @@ class PlansViewController: UITableViewController {
 
         let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
 
-        self.navigationItem.title = "Plan"
+        self.navigationItem.title = "Plans"
         self.navigationItem.rightBarButtonItem = addButtonItem
 
         if #available(iOS 11, *) {
