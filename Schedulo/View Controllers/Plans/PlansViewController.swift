@@ -66,6 +66,7 @@ extension PlansViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
 
+        cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = stateController.plans[indexPath.row].name
 
         let plan = stateController.plans[indexPath.row]
