@@ -12,6 +12,7 @@ class PlansViewController: UITableViewController {
     // MARK: - Private Properties
 
     private let stateController: StateController
+    private var textFieldChangeHandler: TextFieldChangeHandler?
 
     // MARK: - Private Methods
 
