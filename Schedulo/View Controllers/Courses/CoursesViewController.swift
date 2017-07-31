@@ -89,7 +89,7 @@ class CoursesViewController: UITableViewController {
 
             let newCourse = Course(courseName)
 
-            self.stateController.courses.append(newCourse)
+            self.stateController.add(newCourse)
 
             let indexPath = IndexPath(row: self.stateController.courses.count - 1, section: 0)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
@@ -137,7 +137,10 @@ class CoursesViewController: UITableViewController {
                 return
             }
 
-            self.stateController.courses[courseIndex].name = newName
+            var course = self.stateController.courses[courseIndex]
+            course.name = newName
+
+            self.stateController.replaceCourse(at: courseIndex, with: course)
 
             let indexPath = IndexPath(row: courseIndex, section: 0)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -171,7 +174,10 @@ class CoursesViewController: UITableViewController {
     private func editSectionsForCourse(at courseIndex: Int) {
         let sections = stateController.courses[courseIndex].sectionGroups
         let sectionsViewController = SectionsViewController(for: sections) { newSectionGroups in
-            self.stateController.courses[courseIndex].sectionGroups = newSectionGroups
+            var course = self.stateController.courses[courseIndex]
+            course.sectionGroups = newSectionGroups
+
+            self.stateController.replaceCourse(at: courseIndex, with: course)
 
             self.tableView.reloadRows(at: [IndexPath(row: courseIndex, section: 0)], with: .none)
         }

@@ -59,23 +59,11 @@ class StateController {
     }
 
     var courses: [Course] {
-        get {
-            return state.courses
-        }
-
-        set {
-            state.courses = newValue
-        }
+        return state.courses
     }
 
     var plans: [Plan] {
-        get {
-            return state.plans
-        }
-
-        set {
-            state.plans = newValue
-        }
+        return state.plans
     }
 
     init() {
