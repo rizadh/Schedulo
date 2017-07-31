@@ -56,9 +56,31 @@ extension PlansViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
 
         cell.textLabel?.text = stateController.plans[indexPath.row].name
+
+        let plan = stateController.plans[indexPath.row]
+        let coursesCount = plan.courses.count
+        let schedulesCount = plan.schedules.count
+
+        switch coursesCount {
+        case 0:
+            cell.detailTextLabel?.text = "No courses"
+        case 1:
+            cell.detailTextLabel?.text = "1 course"
+        default:
+            cell.detailTextLabel?.text = "\(coursesCount) courses"
+        }
+
+        switch schedulesCount {
+        case 0:
+            cell.detailTextLabel!.text! += " • No schedules"
+        case 1:
+            cell.detailTextLabel!.text! += " • 1 schedule"
+        default:
+            cell.detailTextLabel!.text! += " • \(schedulesCount) schedules"
+        }
 
         return cell
     }
