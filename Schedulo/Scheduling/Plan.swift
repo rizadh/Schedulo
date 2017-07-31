@@ -36,6 +36,10 @@ struct Plan: Codable {
         self.season = season
         self.year = year
     }
+
+    mutating func useDefaultName() {
+        self.name = "\(season) \(year)"
+    }
 }
 
 // MARK: - CustomStringConvertible Conformance
