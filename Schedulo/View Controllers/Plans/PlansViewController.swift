@@ -23,6 +23,12 @@ class PlansViewController: UITableViewController {
 
     // MARK: Plan Management
     private func addPlan() {
+
+    }
+
+    private func deletePlan(at index: Int) {
+        stateController.removePlan(at: index)
+        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
     // MARK: - Initializers
@@ -81,5 +87,11 @@ extension PlansViewController {
         }
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if case .delete = editingStyle {
+            deletePlan(at: indexPath.row)
+        }
     }
 }
