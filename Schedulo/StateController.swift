@@ -90,7 +90,7 @@ class StateController {
         state.courses.remove(at: index)
     }
 
-    func removeSchedule(at index: Int) {
+    func removePlan(at index: Int) {
         state.plans.remove(at: index)
     }
 
@@ -98,7 +98,7 @@ class StateController {
         state.courses[index] = course
     }
 
-    func replaceSchedule(at index: Int, with plan: Plan) {
+    func replacePlan(at index: Int, with plan: Plan) {
         state.plans[index] = plan
     }
 }
