@@ -42,7 +42,7 @@ struct Plan: Codable {
 extension Plan: CustomStringConvertible {
     var description: String {
         return schedules.map { schedule in
-            "\(name) \(season) \(year):\n\(schedule)"
+            "\(name):\n\(schedule)"
         }.joined(separator: "\n\n")
     }
 }
