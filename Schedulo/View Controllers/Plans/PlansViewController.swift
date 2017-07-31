@@ -15,16 +15,13 @@ class PlansViewController: UITableViewController {
 
     // MARK: - Private Methods
 
-    @objc private func addPlan() {
-        print("Adding plan")
+    // MARK: Button Handlers
+    @objc private func addButtonItemHandler() {
+        addPlan()
+    }
 
-        var plan = Plan("TEST", in: .Fall, 2017)
-
-        plan.courses = stateController.courses
-
-        print(plan)
-
-        stateController.add(plan)
+    // MARK: Plan Management
+    private func addPlan() {
     }
 
     // MARK: - Initializers
@@ -34,7 +31,7 @@ class PlansViewController: UITableViewController {
 
         super.init(style: .plain)
 
-        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
+        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonItemHandler))
 
         self.navigationItem.title = "Plans"
         self.navigationItem.rightBarButtonItem = addButtonItem
