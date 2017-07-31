@@ -26,6 +26,10 @@ class PlansViewController: UITableViewController {
 
     }
 
+    private func editPlan(at index: Int) {
+
+    }
+
     private func deletePlan(at index: Int) {
         stateController.removePlan(at: index)
         tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
@@ -93,5 +97,9 @@ extension PlansViewController {
         if case .delete = editingStyle {
             deletePlan(at: indexPath.row)
         }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        editPlan(at: indexPath.row)
     }
 }
