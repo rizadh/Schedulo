@@ -23,7 +23,12 @@ class PlansViewController: UITableViewController {
 
     // MARK: Plan Management
     private func addPlan() {
+        var plan = Plan(for: .Fall, 2017)
 
+        plan.courses = stateController.courses
+
+        stateController.add(plan)
+        tableView.insertRows(at: [IndexPath(row: stateController.plans.count - 1, section: 0)], with: .automatic)
     }
 
     private func editPlan(at index: Int) {
