@@ -30,6 +30,12 @@ struct Plan: Codable {
         self.season = season
         self.year = year
     }
+
+    init(for season: Season, _ year: Int) {
+        self.name = "\(season) \(year)"
+        self.season = season
+        self.year = year
+    }
 }
 
 // MARK: - CustomStringConvertible Conformance
