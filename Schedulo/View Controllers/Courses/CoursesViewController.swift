@@ -27,8 +27,6 @@ class CoursesViewController: UITableViewController {
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .always
         }
-
-        self.updateStateBasedViews()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -143,8 +141,6 @@ class CoursesViewController: UITableViewController {
 
             let indexPath = IndexPath(row: courseIndex, section: 0)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
-
-            self.updateStateBasedViews()
         })
 
         renameAction.isEnabled = false
@@ -186,8 +182,6 @@ class CoursesViewController: UITableViewController {
     private func deleteCourse(at courseIndex: Int) {
         stateController.removeCourse(at: courseIndex)
         self.tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .left)
-
-        updateStateBasedViews()
     }
 }
 
