@@ -9,7 +9,7 @@
 import UIKit
 
 class SectionsViewController: UITableViewController {
-    typealias CourseSectionGroups = [SectionGroup]
+    typealias CourseSectionGroups = [Section]
 
     // MARK: - Private Properties
     private let saveHandler: (CourseSectionGroups) -> Void

@@ -11,7 +11,6 @@ import UIKit
 class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     private let stateController: StateController
-    private var textFieldChangeHandler: TextFieldChangeHandler?
 
     // MARK: - Initializers
     init(using stateController: StateController) {
@@ -19,7 +18,7 @@ class CoursesViewController: UITableViewController {
 
         super.init(style: .plain)
 
-        let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonItemHandler))
+        let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
 
         self.navigationItem.title = "Courses"
         self.navigationItem.rightBarButtonItem = addButtomItem
@@ -35,159 +34,22 @@ class CoursesViewController: UITableViewController {
 
     // MARK: - Private Methods
 
-    // MARK: Course Name Validation
-    private func courseCanBeNamed(_ courseName: String) -> Bool {
-        return !courseName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    private func courseExists(named courseName: String) -> Bool {
-        return stateController.courses.map { $0.name.lowercased() }.contains(courseName.lowercased())
-    }
-
-    private func newCourseCanBeCreated(named courseName: String) -> Bool {
-        return courseCanBeNamed(courseName) && !courseExists(named: courseName)
-    }
-
-    // MARK: Course Name Suggestions
-    private func parseCourseSuffix(_ name: String) -> [String] {
-        let pattern = try! NSRegularExpression(pattern: "^([A-Za-z]+).+", options: [])
-        guard let matchRange = pattern.firstMatch(in: name, options: [], range: NSRange(location: 0, length: name.count))?.range(at: 1) else {
-            return []
-        }
-
-        var nameSuffix = String((name as NSString).substring(with: matchRange))
-
-        var possibleSuffixes = [String]()
-
-        while (nameSuffix.count >= 3) {
-            possibleSuffixes.append(nameSuffix)
-            nameSuffix.removeLast()
-        }
-
-        return possibleSuffixes
-    }
-
-    private func generateSuggestedCourseNames() -> [String] {
-        return stateController.courses.map { $0.name }.flatMap(parseCourseSuffix).orderedByFrequency().filter(newCourseCanBeCreated)
-    }
-
-    // MARK: Button Handlers
-    @objc private func addButtonItemHandler() {
-        addCourse()
-    }
-
     // MARK: Course Management
-    private func addCourse() {
-        let alertTitle = "New Course"
-        let alertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+    @objc private func addCourse() {
+        let newCourse = Course("New Course")
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
-            guard let courseName = alertController.textFields?.first?.text else {
-                return
-            }
+        self.stateController.add(newCourse)
 
-            let newCourse = Course(courseName)
-
-            self.stateController.add(newCourse)
-
-            let indexPath = IndexPath(row: self.stateController.courses.count - 1, section: 0)
-            self.tableView.insertRows(at: [indexPath], with: .automatic)
-        })
-
-        addAction.isEnabled = false
-
-        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
-            guard let courseName = textField.text else {
-                addAction.isEnabled = false
-                return
-            }
-
-            addAction.isEnabled = self.newCourseCanBeCreated(named: courseName)
-        }
-
-        alertController.addAction(cancelAction)
-        alertController.addAction(addAction)
-        alertController.addTextField { textField in
-            textField.autocapitalizationType = .allCharacters
-            textField.clearButtonMode = .always
-            textField.placeholder = "Choose a name"
-
-            let suggestedCourseNames = self.generateSuggestedCourseNames()
-            if !suggestedCourseNames.isEmpty {
-                textField.inputAccessoryView = InputSuggestionView(with: self.generateSuggestedCourseNames()) { selectedSuggestion in
-                    textField.text = selectedSuggestion
-                    self.textFieldChangeHandler?.textFieldDidChange(textField)
-                }
-            }
-
-            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
-        }
-
-        present(alertController, animated: true, completion: nil)
-    }
-
-    private func renameCourse(at courseIndex: Int) {
-        let alertTitle = "Rename Course"
-        let alertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let renameAction = UIAlertAction(title: "Rename", style: .default, handler: { _ in
-            guard let newName = alertController.textFields?.first?.text else {
-                return
-            }
-
-            var course = self.stateController.courses[courseIndex]
-            course.name = newName
-
-            self.stateController.replaceCourse(at: courseIndex, with: course)
-
-            let indexPath = IndexPath(row: courseIndex, section: 0)
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-        })
-
-        renameAction.isEnabled = false
-
-        self.textFieldChangeHandler = TextFieldChangeHandler { textField in
-            guard let courseName = textField.text else {
-                renameAction.isEnabled = false
-                return
-            }
-
-            renameAction.isEnabled = self.newCourseCanBeCreated(named: courseName)
-        }
-
-        alertController.addAction(cancelAction)
-        alertController.addAction(renameAction)
-        alertController.addTextField { textField in
-            textField.autocapitalizationType = .allCharacters
-            textField.clearButtonMode = .always
-            textField.placeholder = self.stateController.courses[courseIndex].name
-            textField.text = self.stateController.courses[courseIndex].name
-
-            textField.addTarget(self.textFieldChangeHandler, action: #selector(self.textFieldChangeHandler?.textFieldDidChange(_:)), for: .editingChanged)
-        }
-
-        present(alertController, animated: true, completion: nil)
+        let indexPath = IndexPath(row: self.stateController.courses.count - 1, section: 0)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
 
     private func editSectionsForCourse(at courseIndex: Int) {
-        let sections = stateController.courses[courseIndex].sectionGroups
-        let sectionsViewController = SectionsViewController(for: sections) { newSectionGroups in
-            var course = self.stateController.courses[courseIndex]
-            course.sectionGroups = newSectionGroups
-
-            self.stateController.replaceCourse(at: courseIndex, with: course)
-
-            self.tableView.reloadRows(at: [IndexPath(row: courseIndex, section: 0)], with: .none)
-        }
-
-        navigationController?.pushViewController(sectionsViewController, animated: true)
     }
 
     private func deleteCourse(at courseIndex: Int) {
         stateController.removeCourse(at: courseIndex)
-        self.tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .left)
+        self.tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .automatic)
     }
 }
 
@@ -202,36 +64,10 @@ extension CoursesViewController {
 
         let course = stateController.courses[indexPath.row]
 
-        cell.accessoryType = .detailDisclosureButton
+        cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = course.name
 
-        let groupsCount = course.sectionGroups.count
-
-        switch groupsCount {
-        case 0:
-            cell.detailTextLabel?.text = "No groups"
-        case 1:
-            cell.detailTextLabel?.text = "1 group"
-        default:
-            cell.detailTextLabel?.text = "\(groupsCount) groups"
-        }
-
-        let sectionsCount = course.sectionGroups.map { $0.sections.count }.reduce(0, +)
-
-        switch sectionsCount {
-        case 0:
-            cell.detailTextLabel!.text! += " • No sections"
-        case 1:
-            cell.detailTextLabel!.text! += " • 1 section"
-        default:
-            cell.detailTextLabel!.text! += " • \(sectionsCount) sections"
-        }
-
         return cell
-    }
-
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        renameCourse(at: indexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -242,18 +78,5 @@ extension CoursesViewController {
         if case .delete = editingStyle {
             deleteCourse(at: indexPath.row)
         }
-    }
-}
-
-// MARK: - Array Extensions
-private extension Array where Element: Hashable {
-    func orderedByFrequency() -> [Element] {
-        var frequencies = [Element: Int]()
-
-        self.forEach {
-            frequencies[$0] = (frequencies[$0] ?? 0) + 1
-        }
-
-        return frequencies.sorted { $0.value > $1.value }.map { $0.key }
     }
 }

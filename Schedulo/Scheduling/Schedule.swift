@@ -22,13 +22,11 @@ struct Schedule: Codable {
     private func generateSchedules(adding course: Course) -> [Schedule] {
         var schedules = [self]
 
-        for group in course.sectionGroups {
+        for section in course.sections {
             schedules = schedules.flatMap { schedule in
-                group.sections.map {
-                    var branchingSchedule = schedule
-                    branchingSchedule.add($0, in: course)
-                    return branchingSchedule
-                }
+                var branchingSchedule = schedule
+                branchingSchedule.add(section, in: course)
+                return branchingSchedule
             }.filter { $0.isValid }
         }
 

@@ -10,32 +10,21 @@ import Foundation
 
 struct Course: Codable {
     var name: String
-    var sectionGroups: [SectionGroup]
-    var ungroupedSections: [Section] {
-        return sectionGroups.flatMap { $0.sections }
-    }
+    var sections: [Section]
 
-    init(_ name: String, sectionGroups: [SectionGroup]) {
+    init(_ name: String, sections: [Section]) {
         self.name = name
-        self.sectionGroups = sectionGroups
+        self.sections = sections
     }
 
     init(_ name: String) {
-        self.init(name, sectionGroups: [])
+        self.init(name, sections: [])
     }
 }
 
 extension Course: Equatable {
     static func == (lhs: Course, rhs: Course) -> Bool {
-        guard lhs.name == rhs.name else {
-            return false
-        }
-
-        guard lhs.sectionGroups == rhs.sectionGroups else {
-            return false
-        }
-
-        return true
+        return (lhs.name == rhs.name) && (lhs.sections == rhs.sections)
     }
 }
 
