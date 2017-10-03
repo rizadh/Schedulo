@@ -44,8 +44,7 @@ class CoursesViewController: UITableViewController {
         self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
 
-    private func editSectionsForCourse(at courseIndex: Int) {
-    }
+    private func editCourse(at index: Int) {    }
 
     private func deleteCourse(at courseIndex: Int) {
         stateController.removeCourse(at: courseIndex)
@@ -71,7 +70,7 @@ extension CoursesViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        editSectionsForCourse(at: indexPath.row)
+        editCourse(at: indexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
