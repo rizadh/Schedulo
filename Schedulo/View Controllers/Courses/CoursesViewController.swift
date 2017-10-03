@@ -10,21 +10,19 @@ import UIKit
 
 class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
-    private let stateController: StateController
+    var stateController: StateController!
 
     // MARK: - Initializers
-    init(using stateController: StateController) {
-        self.stateController = stateController
-
+    init() {
         super.init(style: .plain)
 
         let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
 
-        self.navigationItem.title = "Courses"
-        self.navigationItem.rightBarButtonItem = addButtomItem
+        navigationItem.title = "Courses"
+        navigationItem.rightBarButtonItem = addButtomItem
 
         if #available(iOS 11.0, *) {
-            self.navigationItem.largeTitleDisplayMode = .always
+            navigationItem.largeTitleDisplayMode = .always
         }
     }
 
@@ -38,17 +36,23 @@ class CoursesViewController: UITableViewController {
     @objc private func addCourse() {
         let newCourse = Course("New Course")
 
-        self.stateController.add(newCourse)
+        stateController.courses.append(newCourse)
 
-        let indexPath = IndexPath(row: self.stateController.courses.count - 1, section: 0)
-        self.tableView.insertRows(at: [indexPath], with: .automatic)
+        let indexPath = IndexPath(row: stateController.courses.count - 1, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
     }
 
-    private func editCourse(at index: Int) {    }
+    private func editCourse(at index: Int) {
+        let courseDetailViewController = CourseDetailViewController(style: .grouped)
+        courseDetailViewController.stateController = stateController
+        courseDetailViewController.courseIndex = index
+
+        navigationController?.pushViewController(courseDetailViewController, animated: true)
+    }
 
     private func deleteCourse(at courseIndex: Int) {
-        stateController.removeCourse(at: courseIndex)
-        self.tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .automatic)
+        stateController.courses.remove(at: courseIndex)
+        tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .automatic)
     }
 }
 

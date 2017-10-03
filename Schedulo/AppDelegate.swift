@@ -20,9 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let tabBarController = UITabBarController()
 
+        let coursesViewController = CoursesViewController()
+        coursesViewController.stateController = stateController
+
         let navigationControllers = [
-            UINavigationController(rootViewController: PlansViewController(using: self.stateController)),
-            UINavigationController(rootViewController: CoursesViewController(using: self.stateController))
+            UINavigationController(rootViewController: coursesViewController)
         ]
 
         if #available(iOS 11, *) {

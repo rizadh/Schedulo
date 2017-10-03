@@ -42,14 +42,14 @@ class PlansViewController: UITableViewController {
 
         plan.courses = stateController.courses
 
-        stateController.add(plan)
+        stateController.plans.append(plan)
         tableView.insertRows(at: [IndexPath(row: stateController.plans.count - 1, section: 0)], with: .automatic)
     }
 
     private func editPlan(at index: Int) { }
 
     private func deletePlan(at index: Int) {
-        stateController.removePlan(at: index)
+        stateController.plans.remove(at: index)
         tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }

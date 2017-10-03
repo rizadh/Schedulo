@@ -59,46 +59,26 @@ class StateController {
     }
 
     var courses: [Course] {
-        return state.courses
+        get {
+            return state.courses
+        }
+
+        set {
+            state.courses = newValue
+        }
     }
 
     var plans: [Plan] {
-        return state.plans
+        get {
+            return state.plans
+        }
+
+        set {
+            state.plans = newValue
+        }
     }
 
     init() {
         state = StateController.savedState ?? State()
-    }
-
-    func add(_ course: Course) {
-        state.courses.append(course)
-    }
-
-    func add(_ course: Course, at index: Int) {
-        state.courses.insert(course, at: index)
-    }
-
-    func add(_ plan: Plan) {
-        state.plans.append(plan)
-    }
-
-    func add(_ plan: Plan, at index: Int) {
-        state.plans.insert(plan, at: index)
-    }
-
-    func removeCourse(at index: Int) {
-        state.courses.remove(at: index)
-    }
-
-    func removePlan(at index: Int) {
-        state.plans.remove(at: index)
-    }
-
-    func replaceCourse(at index: Int, with course: Course) {
-        state.courses[index] = course
-    }
-
-    func replacePlan(at index: Int, with plan: Plan) {
-        state.plans[index] = plan
     }
 }
