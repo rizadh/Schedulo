@@ -12,33 +12,6 @@ class PlansViewController: UITableViewController {
     // MARK: - Private Properties
 
     private let stateController: StateController
-    private var textFieldChangeHandler: TextFieldChangeHandler?
-
-    // MARK: - Private Methods
-
-    // MARK: Button Handlers
-    @objc private func addButtonItemHandler() {
-        addPlan()
-    }
-
-    // MARK: Plan Management
-    private func addPlan() {
-        var plan = Plan(for: .Fall, 2017)
-
-        plan.courses = stateController.courses
-
-        stateController.add(plan)
-        tableView.insertRows(at: [IndexPath(row: stateController.plans.count - 1, section: 0)], with: .automatic)
-    }
-
-    private func editPlan(at index: Int) {
-
-    }
-
-    private func deletePlan(at index: Int) {
-        stateController.removePlan(at: index)
-        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
 
     // MARK: - Initializers
 
@@ -47,7 +20,7 @@ class PlansViewController: UITableViewController {
 
         super.init(style: .plain)
 
-        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonItemHandler))
+        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
 
         self.navigationItem.title = "Plans"
         self.navigationItem.rightBarButtonItem = addButtonItem
@@ -59,6 +32,25 @@ class PlansViewController: UITableViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Private Methods
+
+    // MARK: Plan Management
+    @objc private func addPlan() {
+        var plan = Plan(for: .Fall, 2017)
+
+        plan.courses = stateController.courses
+
+        stateController.add(plan)
+        tableView.insertRows(at: [IndexPath(row: stateController.plans.count - 1, section: 0)], with: .automatic)
+    }
+
+    private func editPlan(at index: Int) { }
+
+    private func deletePlan(at index: Int) {
+        stateController.removePlan(at: index)
+        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }
 
