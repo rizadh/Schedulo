@@ -12,10 +12,7 @@ class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     var stateController: StateController!
 
-    // MARK: - Initializers
-    init() {
-        super.init(style: .plain)
-
+    override func viewDidLoad() {
         let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
 
         navigationItem.title = "Courses"
@@ -24,10 +21,6 @@ class CoursesViewController: UITableViewController {
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .always
         }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {
