@@ -14,6 +14,7 @@
 		4A2A57B51F8484380014CF45 /* SessionDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B41F8484380014CF45 /* SessionDayViewController.swift */; };
 		4A2A57B71F8488E60014CF45 /* SessionStartTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B61F8488E60014CF45 /* SessionStartTimeViewController.swift */; };
 		4A2A57B91F8489EA0014CF45 /* SessionEndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B81F8489EA0014CF45 /* SessionEndTimeViewController.swift */; };
+		4A2A57BB1F848E420014CF45 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
 		4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */; };
 		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
@@ -51,6 +52,7 @@
 		4A2A57B41F8484380014CF45 /* SessionDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDayViewController.swift; sourceTree = "<group>"; };
 		4A2A57B61F8488E60014CF45 /* SessionStartTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartTimeViewController.swift; sourceTree = "<group>"; };
 		4A2A57B81F8489EA0014CF45 /* SessionEndTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEndTimeViewController.swift; sourceTree = "<group>"; };
+		4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
 		4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
 		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				4ADC503F1F196342007284DE /* PlansViewController.swift */,
+				4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */,
 			);
 			path = Plans;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */,
 				4A2A57B91F8489EA0014CF45 /* SessionEndTimeViewController.swift in Sources */,
 				4ADC50401F196342007284DE /* PlansViewController.swift in Sources */,
+				4A2A57BB1F848E420014CF45 /* PlanDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

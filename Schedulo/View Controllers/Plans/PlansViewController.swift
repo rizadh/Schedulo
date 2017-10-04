@@ -9,17 +9,9 @@
 import UIKit
 
 class PlansViewController: UITableViewController {
-    // MARK: - Private Properties
+    var stateController: StateController!
 
-    private let stateController: StateController
-
-    // MARK: - Initializers
-
-    init(using stateController: StateController) {
-        self.stateController = stateController
-
-        super.init(style: .plain)
-
+    override func viewDidLoad() {
         let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
 
         self.navigationItem.title = "Plans"
@@ -30,27 +22,14 @@ class PlansViewController: UITableViewController {
         }
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     // MARK: - Private Methods
 
     // MARK: Plan Management
     @objc private func addPlan() {
-        var plan = Plan(for: .Fall, 2017)
-
-        plan.courses = stateController.courses
+        let plan = Plan(for: .Fall, 2017)
 
         stateController.plans.append(plan)
         tableView.insertRows(at: [IndexPath(row: stateController.plans.count - 1, section: 0)], with: .automatic)
-    }
-
-    private func editPlan(at index: Int) { }
-
-    private func deletePlan(at index: Int) {
-        stateController.plans.remove(at: index)
-        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }
 
@@ -71,11 +50,16 @@ extension PlansViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if case .delete = editingStyle {
-            deletePlan(at: indexPath.row)
+            stateController.plans.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        editPlan(at: indexPath.row)
+        let planDetailViewController = PlanDetailViewController(style: .grouped)
+        planDetailViewController.stateController = stateController
+        planDetailViewController.planIndex = indexPath.row
+
+        navigationController?.pushViewController(planDetailViewController, animated: true)
     }
 }

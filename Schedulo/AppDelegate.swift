@@ -23,7 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let coursesViewController = CoursesViewController()
         coursesViewController.stateController = stateController
 
+        let plansViewController = PlansViewController()
+        plansViewController.stateController = stateController
+
         let navigationControllers = [
+            UINavigationController(rootViewController: plansViewController),
             UINavigationController(rootViewController: coursesViewController)
         ]
 
