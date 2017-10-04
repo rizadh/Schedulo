@@ -20,6 +20,7 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = course.name
         textField.returnKeyType = .done
+        textField.autocapitalizationType = .allCharacters
 
         return textField
     }()
