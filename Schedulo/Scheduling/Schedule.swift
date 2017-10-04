@@ -14,27 +14,13 @@ struct Schedule: Codable {
     static func getSchedules(for courses: [Course]) -> [Schedule] {
         return courses.reduce([Schedule()]) { (schedules, course) in
             schedules.flatMap() { schedule in
-                schedule.generateSchedules(adding: course)
+                course.sections.map { section in
+                    var branchingSchedule = schedule
+                    branchingSchedule.selectedSections[course] = section
+                    return branchingSchedule
+                }
             }
-        }
-    }
-
-    private func generateSchedules(adding course: Course) -> [Schedule] {
-        var schedules = [self]
-
-        for section in course.sections {
-            schedules = schedules.flatMap { schedule in
-                var branchingSchedule = schedule
-                branchingSchedule.add(section, in: course)
-                return branchingSchedule
-            }.filter { $0.isValid }
-        }
-
-        return schedules
-    }
-
-    private mutating func add(_ section: Section, in course: Course) {
-        selectedSections[course] = section
+        }.filter { $0.isValid }
     }
 
     var sessions: [Session] {
