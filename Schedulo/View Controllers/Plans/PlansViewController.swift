@@ -48,8 +48,10 @@ extension PlansViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
 
+        let plan = stateController.plans[indexPath.row]
+
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = stateController.plans[indexPath.row].name
+        cell.textLabel?.text = "\(plan.season) \(plan.year)"
 
         return cell
     }

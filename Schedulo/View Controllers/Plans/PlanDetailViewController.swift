@@ -82,6 +82,11 @@ class PlanDetailViewController: UITableViewController {
 
                 navigationController?.pushViewController(planYearViewController, animated: true)
             } else {
+                let planSeasonViewController = PlanSeasonViewController()
+                planSeasonViewController.stateController = stateController
+                planSeasonViewController.planIndex = planIndex
+
+                navigationController?.pushViewController(planSeasonViewController, animated: true)
             }
         default:
             break

@@ -12,7 +12,6 @@ struct Plan: Codable {
 
     // MARK: - Public Properties
 
-    var name: String
     var season: Season
     var year: Int
     var courses = [Course]() {
@@ -25,28 +24,8 @@ struct Plan: Codable {
 
     // MARK: - Initializers
 
-    init(_ name: String, in season: Season, _ year: Int) {
-        self.name = name
-        self.season = season
-        self.year = year
-    }
-
     init(for season: Season, _ year: Int) {
-        self.name = "\(season) \(year)"
         self.season = season
         self.year = year
-    }
-
-    mutating func useDefaultName() {
-        self.name = "\(season) \(year)"
-    }
-}
-
-// MARK: - CustomStringConvertible Conformance
-extension Plan: CustomStringConvertible {
-    var description: String {
-        return schedules.map { schedule in
-            "\(name):\n\(schedule)"
-        }.joined(separator: "\n\n")
     }
 }
