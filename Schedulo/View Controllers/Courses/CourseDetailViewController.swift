@@ -31,7 +31,7 @@ class CourseDetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Edit Course"
+        title = "Course"
 
         if #available(iOS 11, *) {
             navigationItem.largeTitleDisplayMode = .never
