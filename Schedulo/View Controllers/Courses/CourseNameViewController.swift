@@ -46,22 +46,22 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
 
-        let courseNameField = UITextField()
+        let nameField = UITextField()
 
-        courseNameField.delegate = self
+        nameField.delegate = self
 
-        courseNameField.translatesAutoresizingMaskIntoConstraints = false
-        courseNameField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
-        courseNameField.text = course.name
-        courseNameField.returnKeyType = .done
-        courseNameField.autocapitalizationType = .allCharacters
+        nameField.translatesAutoresizingMaskIntoConstraints = false
+        nameField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+        nameField.text = course.name
+        nameField.returnKeyType = .done
+        nameField.autocapitalizationType = .allCharacters
 
-        cell.contentView.addSubview(courseNameField)
+        cell.contentView.addSubview(nameField)
 
-        courseNameField.leftAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leftAnchor).isActive = true
-        courseNameField.rightAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.rightAnchor).isActive = true
-        courseNameField.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor).isActive = true
-        courseNameField.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor).isActive = true
+        nameField.leftAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leftAnchor).isActive = true
+        nameField.rightAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.rightAnchor).isActive = true
+        nameField.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor).isActive = true
+        nameField.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor).isActive = true
 
         return cell
     }
