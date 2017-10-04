@@ -58,9 +58,9 @@ class SectionDetailViewController: UITableViewController {
             cell.textLabel?.textColor = cell.tintColor
             cell.textLabel?.text = "New Time"
         } else {
-            let sessionTime = section.sessions[indexPath.row].time
+            let session = section.sessions[indexPath.row]
 
-            cell.textLabel?.text = "\(sessionTime.start) to \(sessionTime.end)"
+            cell.textLabel?.text = "\(session.day) \(session.time.start) - \(session.time.end)"
             cell.accessoryType = .disclosureIndicator
         }
 
