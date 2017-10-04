@@ -22,6 +22,8 @@ class ScheduleViewController: UITableViewController {
         super.viewDidLoad()
 
         title = "Schedule"
+
+        tableView.allowsSelection = false
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
