@@ -33,7 +33,7 @@ class CoursesViewController: UITableViewController {
 
     // MARK: Course Management
     @objc private func addCourse() {
-        let newCourse = Course("New Course")
+        let newCourse = Course("NEW101")
 
         stateController.courses.append(newCourse)
 
