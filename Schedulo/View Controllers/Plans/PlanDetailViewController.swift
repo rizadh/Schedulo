@@ -88,6 +88,12 @@ class PlanDetailViewController: UITableViewController {
 
                 navigationController?.pushViewController(planSeasonViewController, animated: true)
             }
+        case 1:
+            let planCoursesViewController = PlanCoursesViewController(style: .grouped)
+            planCoursesViewController.stateController = stateController
+            planCoursesViewController.planIndex = planIndex
+
+            navigationController?.pushViewController(planCoursesViewController, animated: true)
         default:
             break
         }

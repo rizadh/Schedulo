@@ -17,6 +17,7 @@
 		4A2A57BB1F848E420014CF45 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */; };
 		4A2A57BD1F84918E0014CF45 /* PlanYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BC1F84918E0014CF45 /* PlanYearViewController.swift */; };
 		4A2A57BF1F8495DB0014CF45 /* PlanSeasonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */; };
+		4A2A57C11F84996B0014CF45 /* PlanCoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
 		4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */; };
 		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
@@ -57,6 +58,7 @@
 		4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		4A2A57BC1F84918E0014CF45 /* PlanYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanYearViewController.swift; sourceTree = "<group>"; };
 		4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSeasonViewController.swift; sourceTree = "<group>"; };
+		4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCoursesViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
 		4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
 		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				4A2A57BC1F84918E0014CF45 /* PlanYearViewController.swift */,
 				4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */,
 				4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */,
+				4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */,
 			);
 			path = Plans;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
 				4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */,
 				4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */,
+				4A2A57C11F84996B0014CF45 /* PlanCoursesViewController.swift in Sources */,
 				4A2A57B91F8489EA0014CF45 /* SessionEndTimeViewController.swift in Sources */,
 				4ADC50401F196342007284DE /* PlansViewController.swift in Sources */,
 				4A2A57BB1F848E420014CF45 /* PlanDetailViewController.swift in Sources */,
