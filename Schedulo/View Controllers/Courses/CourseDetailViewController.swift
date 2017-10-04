@@ -38,6 +38,12 @@ class CourseDetailViewController: UITableViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tableView.reloadSections([0, 1], with: .none)
+    }
+
     // MARK: - UITableViewController Overrides
 
     override func numberOfSections(in tableView: UITableView) -> Int {

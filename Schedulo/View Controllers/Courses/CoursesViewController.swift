@@ -30,6 +30,12 @@ class CoursesViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tableView.reloadSections([0], with: .none)
+    }
+
     // MARK: - Private Methods
 
     // MARK: Course Management
