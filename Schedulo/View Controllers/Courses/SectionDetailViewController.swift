@@ -89,6 +89,6 @@ class SectionDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 1 && indexPath.row < section.sessions.count
+        return indexPath.section == 0 && indexPath.row < section.sessions.count
     }
 }
