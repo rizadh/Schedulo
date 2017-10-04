@@ -68,7 +68,7 @@ class SectionDetailViewController: UITableViewController {
             let newSession = Session(day: .Monday, time: TimeRange(from: Time(hour: 9, minute: 0), to: Time(hour: 10, minute: 0)))
             section.sessions.append(newSession)
 
-            let indexPath = IndexPath(row: section.sessions.count - 1, section: 1)
+            let indexPath = IndexPath(row: section.sessions.count - 1, section: 0)
 
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.insertRows(at: [indexPath], with: .automatic)
