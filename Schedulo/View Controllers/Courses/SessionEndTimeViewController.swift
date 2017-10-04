@@ -28,7 +28,7 @@ class SessionEndTimeViewController: UIViewController, UIPickerViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Start"
+        title = "End"
 
         view.backgroundColor = .groupTableViewBackground
 
