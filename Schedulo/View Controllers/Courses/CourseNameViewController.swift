@@ -18,6 +18,7 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
         textField.delegate = self
 
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
         textField.text = course.name
         textField.returnKeyType = .done
         textField.autocapitalizationType = .allCharacters
@@ -72,9 +73,7 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
         return false
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        course.name = textField.text!
-
-        return true
+    @objc func editingChanged(_ textField: UITextField) {
+        course.name = textField.text!.trimmingCharacters(in: .whitespaces)
     }
 }
