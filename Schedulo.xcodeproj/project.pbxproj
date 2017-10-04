@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4A2A57AD1F84337C0014CF45 /* CourseNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57AC1F84337C0014CF45 /* CourseNameViewController.swift */; };
 		4A2A57AF1F845E550014CF45 /* SectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57AE1F845E550014CF45 /* SectionDetailViewController.swift */; };
+		4A2A57B11F847DB30014CF45 /* SectionNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B01F847DB30014CF45 /* SectionNameViewController.swift */; };
+		4A2A57B31F84802A0014CF45 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B21F84802A0014CF45 /* SessionViewController.swift */; };
 		4A47ED371F1FE2B6002C2A1F /* TextFieldChangeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */; };
 		4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */; };
 		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
@@ -41,6 +43,8 @@
 /* Begin PBXFileReference section */
 		4A2A57AC1F84337C0014CF45 /* CourseNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseNameViewController.swift; sourceTree = "<group>"; };
 		4A2A57AE1F845E550014CF45 /* SectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDetailViewController.swift; sourceTree = "<group>"; };
+		4A2A57B01F847DB30014CF45 /* SectionNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionNameViewController.swift; sourceTree = "<group>"; };
+		4A2A57B21F84802A0014CF45 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 		4A47ED361F1FE2B6002C2A1F /* TextFieldChangeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldChangeHandler.swift; sourceTree = "<group>"; };
 		4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
 		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 				4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */,
 				4A2A57AC1F84337C0014CF45 /* CourseNameViewController.swift */,
 				4A2A57AE1F845E550014CF45 /* SectionDetailViewController.swift */,
+				4A2A57B01F847DB30014CF45 /* SectionNameViewController.swift */,
+				4A2A57B21F84802A0014CF45 /* SessionViewController.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -276,9 +282,11 @@
 				4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */,
 				4AC85F8E1EFDC08900062548 /* Session.swift in Sources */,
 				4AC85F871EFDC08900062548 /* Course.swift in Sources */,
+				4A2A57B11F847DB30014CF45 /* SectionNameViewController.swift in Sources */,
 				4A2A57AD1F84337C0014CF45 /* CourseNameViewController.swift in Sources */,
 				4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */,
 				4AC85F8F1EFDC08900062548 /* Time.swift in Sources */,
+				4A2A57B31F84802A0014CF45 /* SessionViewController.swift in Sources */,
 				4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */,
 				4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */,
 				4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */,
