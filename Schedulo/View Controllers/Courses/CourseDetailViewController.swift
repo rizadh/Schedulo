@@ -85,15 +85,31 @@ class CourseDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:
+        if indexPath.section == 0 {
             let courseNameViewController = CourseNameViewController(style: .grouped)
             courseNameViewController.stateController = stateController
             courseNameViewController.courseIndex = courseIndex
 
             navigationController?.pushViewController(courseNameViewController, animated: true)
-        default:
-            break
+        } else if indexPath.row == course.sections.count {
+            let newSection = Section(name: "New Section", sessions: [])
+            course.sections.append(newSection)
+
+            let indexPath = IndexPath(row: course.sections.count - 1, section: 1)
+
+            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.insertRows(at: [indexPath], with: .automatic)
+        } else {
+
         }
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        course.sections.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 1 && indexPath.row < course.sections.count
     }
 }
