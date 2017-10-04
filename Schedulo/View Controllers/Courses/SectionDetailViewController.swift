@@ -36,25 +36,17 @@ class SectionDetailViewController: UITableViewController {
 
     // MARK: - UITableViewController Overrides
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else {
-            return self.section.sessions.count + 1
-        }
+        return self.section.sessions.count + 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
 
-        if indexPath.section == 0 {
-            cell.textLabel?.text = "Name"
-            cell.detailTextLabel?.text = section.name
-            cell.accessoryType = .disclosureIndicator
-        } else if indexPath.row == section.sessions.count {
+        if indexPath.row == section.sessions.count {
             cell.textLabel?.textColor = cell.tintColor
             cell.textLabel?.text = "New Time"
         } else {
@@ -68,18 +60,11 @@ class SectionDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 1 ? "Times" : nil
+        return "Times"
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            let sectionNameViewController = SectionNameViewController(style: .grouped)
-            sectionNameViewController.stateController = stateController
-            sectionNameViewController.courseIndex = courseIndex
-            sectionNameViewController.sectionIndex = sectionIndex
-
-            navigationController?.pushViewController(sectionNameViewController, animated: true)
-        } else if indexPath.row == section.sessions.count {
+        if indexPath.row == section.sessions.count {
             let newSession = Session(day: .Monday, time: TimeRange(from: Time(hour: 9, minute: 0), to: Time(hour: 10, minute: 0)))
             section.sessions.append(newSession)
 

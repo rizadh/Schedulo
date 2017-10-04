@@ -69,7 +69,7 @@ class CourseDetailViewController: UITableViewController {
             cell.textLabel?.textColor = cell.tintColor
             cell.textLabel?.text = "New Section"
         } else {
-            cell.textLabel?.text = course.sections[indexPath.row].name
+            cell.textLabel?.text = "Section \(indexPath.row + 1)"
             cell.accessoryType = .disclosureIndicator
         }
 
@@ -92,7 +92,7 @@ class CourseDetailViewController: UITableViewController {
 
             navigationController?.pushViewController(courseNameViewController, animated: true)
         } else if indexPath.row == course.sections.count {
-            let newSection = Section(name: "New Section", sessions: [])
+            let newSection = Section(name: "", sessions: [])
             course.sections.append(newSection)
 
             let indexPath = IndexPath(row: course.sections.count - 1, section: 1)
