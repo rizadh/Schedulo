@@ -23,7 +23,7 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func viewDidLoad() {
-        title = "Course Name"
+        title = "Name"
 
         tableView.allowsSelection = false
     }
