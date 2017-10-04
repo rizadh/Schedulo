@@ -12,19 +12,11 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
     var stateController: StateController!
     var courseIndex: Int!
 
-    lazy var courseNameField: UITextField = {
-        let textField = UITextField()
-
-        textField.delegate = self
-
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
-        textField.text = course.name
-        textField.returnKeyType = .done
-        textField.autocapitalizationType = .allCharacters
-
-        return textField
-    }()
+//    lazy var courseNameField: UITextField = {
+//
+//
+//        return textField
+//    }()
 
     private var course: Course {
         get {
@@ -40,8 +32,12 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
         title = "Course Name"
 
         tableView.allowsSelection = false
+    }
 
-        courseNameField.becomeFirstResponder()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        (tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.contentView.subviews.first as? UITextField)?.becomeFirstResponder()
     }
 
     // MARK: - UITableViewController Overrides
@@ -55,6 +51,16 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+
+        let courseNameField = UITextField()
+
+        courseNameField.delegate = self
+
+        courseNameField.translatesAutoresizingMaskIntoConstraints = false
+        courseNameField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+        courseNameField.text = course.name
+        courseNameField.returnKeyType = .done
+        courseNameField.autocapitalizationType = .allCharacters
 
         cell.contentView.addSubview(courseNameField)
 
