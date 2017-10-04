@@ -51,38 +51,35 @@ class CourseDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
+        if section == 0 {
             return 1
-        case 1:
+        } else {
             return course.sections.count + 1
-        default:
-            return 0
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
 
-        switch indexPath.section {
-        case 0:
+        if indexPath.section == 0 {
             cell.textLabel?.text = "Name"
             cell.detailTextLabel?.text = course.name
             cell.accessoryType = .disclosureIndicator
-        default:
-            break
+        } else if indexPath.row == course.sections.count {
+            cell.textLabel?.textColor = cell.tintColor
+            cell.textLabel?.text = "New Section"
+        } else {
+            cell.textLabel?.text = course.sections[indexPath.row].name
+            cell.accessoryType = .disclosureIndicator
         }
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return nil
-        case 1:
+        if section == 1 {
             return "Sections"
-        default:
+        } else {
             return nil
         }
     }
