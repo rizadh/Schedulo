@@ -71,4 +71,20 @@ class PlanDetailViewController: UITableViewController {
 
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            if indexPath.row == 0 {
+                let planYearViewController = PlanYearViewController()
+                planYearViewController.stateController = stateController
+                planYearViewController.planIndex = planIndex
+
+                navigationController?.pushViewController(planYearViewController, animated: true)
+            } else {
+            }
+        default:
+            break
+        }
+    }
 }
