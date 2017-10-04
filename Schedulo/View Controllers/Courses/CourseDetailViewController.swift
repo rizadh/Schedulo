@@ -100,7 +100,12 @@ class CourseDetailViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.insertRows(at: [indexPath], with: .automatic)
         } else {
+            let sectionDetailViewController = SectionDetailViewController(style: .grouped)
+            sectionDetailViewController.stateController = stateController
+            sectionDetailViewController.courseIndex = courseIndex
+            sectionDetailViewController.sectionIndex = indexPath.row
 
+            navigationController?.pushViewController(sectionDetailViewController, animated: true)
         }
     }
 
