@@ -66,4 +66,35 @@ class SessionViewController: UITableViewController {
 
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            let sessionDayViewController = SessionDayViewController()
+            sessionDayViewController.stateController = stateController
+            sessionDayViewController.courseIndex = courseIndex
+            sessionDayViewController.sectionIndex = sectionIndex
+            sessionDayViewController.sessionIndex = sessionIndex
+
+            navigationController?.pushViewController(sessionDayViewController, animated: true)
+        case 1:
+            let sessionStartTimeViewController = SessionStartTimeViewController()
+            sessionStartTimeViewController.stateController = stateController
+            sessionStartTimeViewController.courseIndex = courseIndex
+            sessionStartTimeViewController.sectionIndex = sectionIndex
+            sessionStartTimeViewController.sessionIndex = sessionIndex
+
+            navigationController?.pushViewController(sessionStartTimeViewController, animated: true)
+        case 2:
+            let sessionEndTimeViewController = SessionEndTimeViewController()
+            sessionEndTimeViewController.stateController = stateController
+            sessionEndTimeViewController.courseIndex = courseIndex
+            sessionEndTimeViewController.sectionIndex = sectionIndex
+            sessionEndTimeViewController.sessionIndex = sessionIndex
+
+            navigationController?.pushViewController(sessionEndTimeViewController, animated: true)
+        default:
+            break
+        }
+    }
 }
