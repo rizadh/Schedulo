@@ -40,19 +40,6 @@ class CoursesViewController: UITableViewController {
         let indexPath = IndexPath(row: stateController.courses.count - 1, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
-
-    private func editCourse(at index: Int) {
-        let courseDetailViewController = CourseDetailViewController(style: .grouped)
-        courseDetailViewController.stateController = stateController
-        courseDetailViewController.courseIndex = index
-
-        navigationController?.pushViewController(courseDetailViewController, animated: true)
-    }
-
-    private func deleteCourse(at courseIndex: Int) {
-        stateController.courses.remove(at: courseIndex)
-        tableView.deleteRows(at: [IndexPath(row: courseIndex, section: 0)], with: .automatic)
-    }
 }
 
 // MARK: - UITableViewController Method Overrides
@@ -73,12 +60,17 @@ extension CoursesViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        editCourse(at: indexPath.row)
+        let courseDetailViewController = CourseDetailViewController(style: .grouped)
+        courseDetailViewController.stateController = stateController
+        courseDetailViewController.courseIndex = indexPath.row
+
+        navigationController?.pushViewController(courseDetailViewController, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if case .delete = editingStyle {
-            deleteCourse(at: indexPath.row)
+            stateController.courses.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
 }
