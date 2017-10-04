@@ -12,12 +12,6 @@ class CourseNameViewController: UITableViewController, UITextFieldDelegate {
     var stateController: StateController!
     var courseIndex: Int!
 
-//    lazy var courseNameField: UITextField = {
-//
-//
-//        return textField
-//    }()
-
     private var course: Course {
         get {
             return stateController.courses[courseIndex]
