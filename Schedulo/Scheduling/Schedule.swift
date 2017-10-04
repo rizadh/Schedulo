@@ -9,7 +9,7 @@
 import Foundation
 
 struct Schedule: Codable {
-    private(set) var selectedSections = [Course: [Section]]()
+    private(set) var selectedSections = [Course: Section]()
 
     static func getSchedules(for courses: [Course]) -> [Schedule] {
         return courses.reduce([Schedule()]) { (schedules, course) in
@@ -34,12 +34,7 @@ struct Schedule: Codable {
     }
 
     private mutating func add(_ section: Section, in course: Course) {
-        if var existingSections = selectedSections[course] {
-            existingSections.append(section)
-            selectedSections[course] = existingSections
-        } else {
-            selectedSections[course] = [section]
-        }
+        selectedSections[course] = section
     }
 
     var sessions: [Session] {
@@ -128,17 +123,6 @@ extension Schedule {
 
     var averageSessionTime: Int {
         return Int(totalSessionTime / daysWithSessions.count)
-    }
-}
-
-// MARK: - CustomStringConvertible Conformance
-extension Schedule: CustomStringConvertible {
-    var description: String {
-        return selectedSections.map { (course, sections) in
-            sections.map { section in
-                "\(course.name) -> \(section.name)"
-            }.joined(separator: "\n")
-        }.joined(separator: "\n")
     }
 }
 

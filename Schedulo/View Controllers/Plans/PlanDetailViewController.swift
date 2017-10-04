@@ -94,6 +94,12 @@ class PlanDetailViewController: UITableViewController {
             planCoursesViewController.planIndex = planIndex
 
             navigationController?.pushViewController(planCoursesViewController, animated: true)
+        case 2:
+            let planSchedulesViewController = PlanSchedulesViewController()
+            planSchedulesViewController.stateController = stateController
+            planSchedulesViewController.planIndex = planIndex
+
+            navigationController?.pushViewController(planSchedulesViewController, animated: true)
         default:
             break
         }

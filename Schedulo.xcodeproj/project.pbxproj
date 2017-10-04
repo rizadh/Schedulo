@@ -23,6 +23,8 @@
 		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
 		4A5402441F2A19D200CFDFAE /* SectionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5402431F2A19D200CFDFAE /* SectionGroup.swift */; };
 		4A667FB91F20D63500D41E87 /* InputSuggestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */; };
+		4A6D16D51F849C8200705F80 /* PlanSchedulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */; };
+		4A6D16D71F849DB600705F80 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D16D61F849DB600705F80 /* ScheduleViewController.swift */; };
 		4A8C8B631F1F880800D317D0 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B621F1F880800D317D0 /* TimePickerView.swift */; };
 		4A8C8B651F1F9EB600D317D0 /* DayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */; };
 		4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */; };
@@ -64,6 +66,8 @@
 		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
 		4A5402431F2A19D200CFDFAE /* SectionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionGroup.swift; sourceTree = "<group>"; };
 		4A667FB81F20D63500D41E87 /* InputSuggestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSuggestionView.swift; sourceTree = "<group>"; };
+		4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSchedulesViewController.swift; sourceTree = "<group>"; };
+		4A6D16D61F849DB600705F80 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		4A8C8B621F1F880800D317D0 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		4A8C8B641F1F9EB600D317D0 /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
 		4AAA877E1F02F67100FA1AC2 /* StepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */,
 				4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */,
 				4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */,
+				4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */,
+				4A6D16D61F849DB600705F80 /* ScheduleViewController.swift */,
 			);
 			path = Plans;
 			sourceTree = "<group>";
@@ -309,7 +315,9 @@
 				4AAA877F1F02F67100FA1AC2 /* StepperCell.swift in Sources */,
 				4AC85F8F1EFDC08900062548 /* Time.swift in Sources */,
 				4A2A57B31F84802A0014CF45 /* SessionViewController.swift in Sources */,
+				4A6D16D51F849C8200705F80 /* PlanSchedulesViewController.swift in Sources */,
 				4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */,
+				4A6D16D71F849DB600705F80 /* ScheduleViewController.swift in Sources */,
 				4A2A57B71F8488E60014CF45 /* SessionStartTimeViewController.swift in Sources */,
 				4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */,
 				4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */,
