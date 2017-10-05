@@ -111,7 +111,18 @@ class CourseDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         course.sections.remove(at: indexPath.row)
+
+        tableView.beginUpdates()
+
         tableView.deleteRows(at: [indexPath], with: .automatic)
+
+        let indexPaths = (indexPath.row..<course.sections.count).map {
+            IndexPath(row: $0 + 1, section: indexPath.section)
+        }
+
+        tableView.reloadRows(at: indexPaths, with: .automatic)
+
+        tableView.endUpdates()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
