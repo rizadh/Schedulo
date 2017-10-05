@@ -52,7 +52,7 @@ extension PlansViewController {
         let plan = stateController.plans[indexPath.row]
 
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = "\(plan.season) \(plan.year)"
+        cell.textLabel?.text = "\(plan)"
 
         return cell
     }

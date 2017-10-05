@@ -29,3 +29,9 @@ struct Plan: Codable {
         self.year = year
     }
 }
+
+extension Plan: CustomStringConvertible {
+    var description: String {
+        return "\(self.season) \(self.year)"
+    }
+}
