@@ -26,6 +26,8 @@ class SectionDetailViewController: UITableViewController {
 
     override func viewDidLoad() {
         title = "Section"
+
+        navigationItem.rightBarButtonItem = editButtonItem
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +75,7 @@ class SectionDetailViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.insertRows(at: [indexPath], with: .automatic)
         } else {
-            let sessionViewController  = SessionViewController(style: .grouped)
+            let sessionViewController = SessionViewController(style: .grouped)
             sessionViewController.stateController = stateController
             sessionViewController.courseIndex = courseIndex
             sessionViewController.sectionIndex = sectionIndex
@@ -89,6 +91,26 @@ class SectionDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 0 && indexPath.row < section.sessions.count
+        return indexPath.row < section.sessions.count
+    }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        guard proposedDestinationIndexPath.row < section.sessions.count else {
+            return IndexPath(row: section.sessions.count - 1, section: proposedDestinationIndexPath.section)
+        }
+
+        return proposedDestinationIndexPath
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let sourceIndex = sourceIndexPath.row
+        let destinationIndex = destinationIndexPath.row
+
+        let movedSession = section.sessions.remove(at: sourceIndex)
+        section.sessions.insert(movedSession, at: destinationIndex)
     }
 }

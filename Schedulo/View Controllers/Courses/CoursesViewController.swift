@@ -17,6 +17,7 @@ class CoursesViewController: UITableViewController {
 
         navigationItem.title = "Courses"
         navigationItem.rightBarButtonItem = addButtomItem
+        navigationItem.leftBarButtonItem = editButtonItem
 
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .always
@@ -72,5 +73,17 @@ extension CoursesViewController {
             stateController.courses.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
+    }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let sourceIndex = sourceIndexPath.row
+        let destinationIndex = destinationIndexPath.row
+
+        let movedCourse = stateController.courses.remove(at: sourceIndex)
+        stateController.courses.insert(movedCourse, at: destinationIndex)
     }
 }

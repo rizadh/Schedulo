@@ -16,6 +16,7 @@ class PlansViewController: UITableViewController {
 
         self.navigationItem.title = "Plans"
         self.navigationItem.rightBarButtonItem = addButtonItem
+        navigationItem.leftBarButtonItem = editButtonItem
 
         if #available(iOS 11, *) {
             self.navigationItem.largeTitleDisplayMode = .always
@@ -69,5 +70,17 @@ extension PlansViewController {
         planDetailViewController.planIndex = indexPath.row
 
         navigationController?.pushViewController(planDetailViewController, animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let sourceIndex = sourceIndexPath.row
+        let destinationIndex = destinationIndexPath.row
+
+        let movedPlan = stateController.plans.remove(at: sourceIndex)
+        stateController.plans.insert(movedPlan, at: destinationIndex)
     }
 }
