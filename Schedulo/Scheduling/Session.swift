@@ -8,9 +8,25 @@
 
 import Foundation
 
+struct Room: Codable {
+    var number: Int
+    var building: Building
+}
+
+struct Building: Codable {
+    var name: String
+    var abbreviation: String
+}
+
 struct Session: Codable {
     var day: Day
     var time: TimeRange
+    var room: Room?
+
+    init(day: Day, time: TimeRange) {
+        self.day = day
+        self.time = time
+    }
 }
 
 extension Session: Equatable {
