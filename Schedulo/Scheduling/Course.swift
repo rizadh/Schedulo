@@ -8,8 +8,15 @@
 
 import Foundation
 
+struct Instructor: Codable {
+    var title: String
+    var firstName: String
+    var lastName: String
+}
+
 struct Course: Codable {
     var name: String
+    var instructor: Instructor?
     var sections: [Section]
 
     init(_ name: String, sections: [Section]) {
