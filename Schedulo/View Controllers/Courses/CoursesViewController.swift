@@ -12,8 +12,24 @@ class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     var stateController: StateController!
 
+    var courses: [Course] {
+        get {
+            return stateController.courses
+        }
+
+        set {
+            stateController.courses = newValue
+        }
+    }
+
     override func viewDidLoad() {
         let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
+
+        if #available(iOS 11.0, *) {
+            tableView.dragDelegate = self
+            tableView.dropDelegate = self
+            tableView.dragInteractionEnabled = true
+        }
 
         navigationItem.title = "Courses"
         navigationItem.rightBarButtonItem = addButtomItem
@@ -42,37 +58,6 @@ class CoursesViewController: UITableViewController {
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
 
-    @objc private func longPressCourse(_ sender: UIGestureRecognizer) {
-        guard sender.state == .began else {
-            return
-        }
-
-        guard let cell = sender.view as? UITableViewCell else {
-            return
-        }
-
-        guard let indexPath = tableView.indexPath(for: cell) else {
-            return
-        }
-
-        let courseIndex = indexPath.row
-        let course = stateController.courses[courseIndex]
-
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        alertController.addAction(UIAlertAction(title: "Add \(course.name) to a plan", style: .default, handler: { _ in
-            let planPickerViewController = PlanPickerViewController()
-            planPickerViewController.stateController = self.stateController
-            planPickerViewController.courseIndex = courseIndex
-
-            self.present(UINavigationController(rootViewController: planPickerViewController), animated: true, completion: nil)
-        }))
-
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        present(alertController, animated: true, completion: nil)
-    }
-
     // MARK: - UITableViewController Method Overrides
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,9 +71,6 @@ class CoursesViewController: UITableViewController {
 
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = course.name
-
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressCourse(_:)))
-        cell.addGestureRecognizer(longPressRecognizer)
 
         return cell
     }
@@ -118,5 +100,59 @@ class CoursesViewController: UITableViewController {
 
         let movedCourse = stateController.courses.remove(at: sourceIndex)
         stateController.courses.insert(movedCourse, at: destinationIndex)
+    }
+}
+
+@available(iOS 11, *)
+extension CoursesViewController: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let course = courses[indexPath.row]
+        let courseProvider = CourseProvider(for: course)
+        let itemProvider = NSItemProvider(object: courseProvider)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+
+        return [dragItem]
+    }
+
+    func tableView(_ tableView: UITableView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        let course = courses[indexPath.row]
+        let courseProvider = CourseProvider(for: course)
+        let itemProvider = NSItemProvider(object: courseProvider)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+
+        return [dragItem]
+    }
+}
+
+@available(iOS 11, *)
+extension CoursesViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let destinationRow = coordinator.destinationIndexPath?.row ?? courses.count
+
+        coordinator.session.loadObjects(ofClass: CourseProvider.self) { (items) in
+            let coursesToInsert = (items as! [CourseProvider]).map { $0.course }
+
+            var indexPaths = [IndexPath]()
+            for (index, course) in coursesToInsert.enumerated() {
+                self.courses.insert(course, at: destinationRow + index)
+                indexPaths.append(IndexPath(row: destinationRow + index, section: 0))
+            }
+
+            DispatchQueue.main.async {
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if tableView.hasActiveDrag {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        } else {
+            return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: CourseProvider.self)
     }
 }
