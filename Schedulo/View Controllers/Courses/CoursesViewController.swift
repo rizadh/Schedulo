@@ -127,7 +127,7 @@ extension CoursesViewController: UITableViewDragDelegate {
 @available(iOS 11, *)
 extension CoursesViewController: UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        let destinationRow = coordinator.destinationIndexPath?.row ?? courses.count - 1
+        let destinationRow = coordinator.destinationIndexPath?.row ?? tableView.numberOfRows(inSection: 0)
 
         coordinator.session.loadObjects(ofClass: CourseProvider.self) { (items) in
             let coursesToInsert = (items as! [CourseProvider]).map { $0.course }

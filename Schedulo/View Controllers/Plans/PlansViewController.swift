@@ -142,9 +142,9 @@ extension PlansViewController: UITableViewDropDelegate {
     }
 
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        let destinationRow = coordinator.destinationIndexPath?.row ?? plans.count - 1
-
         if coordinator.session.canLoadObjects(ofClass: PlanProvider.self) {
+            let destinationRow = coordinator.destinationIndexPath?.row ?? tableView.numberOfRows(inSection: 0)
+
             coordinator.session.loadObjects(ofClass: PlanProvider.self, completion: { (items) in
                 let plansToInsert = (items as! [PlanProvider]).map { $0.plan }
 
@@ -159,6 +159,8 @@ extension PlansViewController: UITableViewDropDelegate {
                 }
             })
         } else if coordinator.session.canLoadObjects(ofClass: CourseProvider.self) {
+            let destinationRow = coordinator.destinationIndexPath!.row
+
             coordinator.session.loadObjects(ofClass: CourseProvider.self, completion: { (items) in
                 let coursesToInsert = (items as! [CourseProvider]).map { $0.course }
 
