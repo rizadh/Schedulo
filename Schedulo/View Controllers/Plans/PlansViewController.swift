@@ -11,15 +11,35 @@ import UIKit
 class PlansViewController: UITableViewController {
     var stateController: StateController!
 
+    var plans: [Plan] {
+        get {
+            return stateController.plans
+        }
+
+        set {
+            stateController.plans = newValue
+        }
+    }
+
     override func viewDidLoad() {
         let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
 
-        self.navigationItem.title = "Plans"
-        self.navigationItem.rightBarButtonItem = addButtonItem
+        if #available(iOS 11.0, *) {
+            tableView.dropDelegate = self
+            tableView.dragDelegate = self
+            tableView.dragInteractionEnabled = true
+        }
+
+        navigationItem.title = "Plans"
+        navigationItem.rightBarButtonItem = addButtonItem
         navigationItem.leftBarButtonItem = editButtonItem
 
         if #available(iOS 11, *) {
-            self.navigationItem.largeTitleDisplayMode = .always
+            navigationItem.largeTitleDisplayMode = .always
+        }
+
+        if #available(iOS 11.0, *) {
+            tabBarItem.isSpringLoaded = true
         }
     }
 
@@ -27,6 +47,10 @@ class PlansViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         tableView.reloadData()
+
+        if #available(iOS 11.0, *) {
+            tableView.dropDelegate = self
+        }
     }
 
     // MARK: - Private Methods
@@ -38,10 +62,7 @@ class PlansViewController: UITableViewController {
         stateController.plans.append(plan)
         tableView.insertRows(at: [IndexPath(row: stateController.plans.count - 1, section: 0)], with: .automatic)
     }
-}
 
-// MARK: - UITableViewController Method Overrides
-extension PlansViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stateController.plans.count
     }
@@ -82,5 +103,71 @@ extension PlansViewController {
 
         let movedPlan = stateController.plans.remove(at: sourceIndex)
         stateController.plans.insert(movedPlan, at: destinationIndex)
+    }
+}
+
+@available(iOS 11.0, *)
+extension PlansViewController: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let plan = plans[indexPath.row]
+        let planProvider = PlanProvider(for: plan)
+        let itemProvider = NSItemProvider(object: planProvider)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+
+        return [dragItem]
+    }
+
+    func tableView(_ tableView: UITableView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        let plan = plans[indexPath.row]
+        let planProvider = PlanProvider(for: plan)
+        let itemProvider = NSItemProvider(object: planProvider)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+
+        return [dragItem]
+    }
+}
+
+@available(iOS 11, *)
+extension PlansViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if session.canLoadObjects(ofClass: PlanProvider.self) {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+
+        if session.canLoadObjects(ofClass: CourseProvider.self) && destinationIndexPath != nil {
+            return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
+        }
+
+        return UITableViewDropProposal(operation: .cancel)
+    }
+
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let destinationRow = coordinator.destinationIndexPath?.row ?? plans.count - 1
+
+        if coordinator.session.canLoadObjects(ofClass: PlanProvider.self) {
+            coordinator.session.loadObjects(ofClass: PlanProvider.self, completion: { (items) in
+                let plansToInsert = (items as! [PlanProvider]).map { $0.plan }
+
+                var indexPaths = [IndexPath]()
+                for (index, plan) in plansToInsert.enumerated() {
+                    self.plans.insert(plan, at: destinationRow + index)
+                    indexPaths.append(IndexPath(row: destinationRow + index, section: 0))
+                }
+
+                DispatchQueue.main.async {
+                    tableView.insertRows(at: indexPaths, with: .automatic)
+                }
+            })
+        } else if coordinator.session.canLoadObjects(ofClass: CourseProvider.self) {
+            coordinator.session.loadObjects(ofClass: CourseProvider.self, completion: { (items) in
+                let coursesToInsert = (items as! [CourseProvider]).map { $0.course }
+
+                self.plans[destinationRow].courses.append(contentsOf: coursesToInsert)
+            })
+        }
+    }
+
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: CourseProvider.self) || session.canLoadObjects(ofClass: PlanProvider.self)
     }
 }
