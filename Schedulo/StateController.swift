@@ -19,7 +19,9 @@ class StateController {
 
     private var state = State() {
         didSet {
-            StateController.savedState = state
+            DispatchQueue.global(qos: .background).async { [weak self] in
+                StateController.savedState = self?.state
+            }
         }
     }
 
