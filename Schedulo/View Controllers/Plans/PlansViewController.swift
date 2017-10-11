@@ -11,6 +11,14 @@ import UIKit
 class PlansViewController: UITableViewController {
     var stateController: StateController!
 
+    override var title: String? {
+        get {
+            return "Plans"
+        }
+
+        set {}
+    }
+
     var plans: [Plan] {
         get {
             return stateController.plans
@@ -30,7 +38,6 @@ class PlansViewController: UITableViewController {
             tableView.dragInteractionEnabled = true
         }
 
-        navigationItem.title = "Plans"
         navigationItem.rightBarButtonItem = addButtonItem
         navigationItem.leftBarButtonItem = editButtonItem
 

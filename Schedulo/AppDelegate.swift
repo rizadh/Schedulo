@@ -16,10 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var stateController: StateController = StateController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-
-        let tabBarController = UITabBarController()
-
         let coursesViewController = CoursesViewController()
         coursesViewController.stateController = stateController
 
@@ -35,8 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navigationControllers.forEach { $0.navigationBar.prefersLargeTitles = true }
         }
 
+        let tabBarController = UITabBarController()
         tabBarController.viewControllers = navigationControllers
-
         tabBarController.selectedIndex = 1
 
         window = UIWindow(frame: UIScreen.main.bounds)

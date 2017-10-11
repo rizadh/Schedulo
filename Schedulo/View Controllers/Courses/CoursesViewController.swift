@@ -12,6 +12,14 @@ class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     var stateController: StateController!
 
+    override var title: String? {
+        get {
+            return "Courses"
+        }
+
+        set {}
+    }
+
     var courses: [Course] {
         get {
             return stateController.courses
@@ -31,7 +39,6 @@ class CoursesViewController: UITableViewController {
             tableView.dragInteractionEnabled = true
         }
 
-        navigationItem.title = "Courses"
         navigationItem.rightBarButtonItem = addButtomItem
         navigationItem.leftBarButtonItem = editButtonItem
 
