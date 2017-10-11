@@ -34,6 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = navigationControllers
         tabBarController.selectedIndex = 1
+        if #available(iOS 11.0, *) {
+            tabBarController.tabBar.isSpringLoaded = true
+        }
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
