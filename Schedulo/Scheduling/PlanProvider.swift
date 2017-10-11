@@ -40,6 +40,4 @@ extension PlanProvider: NSItemProviderReading {
 
         return PlanProvider(for: plan)
     }
-
-
 }
