@@ -16,7 +16,7 @@ class PlansViewController: UITableViewController {
             return "Plans"
         }
 
-        set {}
+        set { }
     }
 
     var plans: [Plan] {
@@ -29,9 +29,9 @@ class PlansViewController: UITableViewController {
         }
     }
 
-    override func viewDidLoad() {
-        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
+    lazy var addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlan))
 
+    override func viewDidLoad() {
         if #available(iOS 11.0, *) {
             tableView.dropDelegate = self
             tableView.dragDelegate = self
@@ -133,6 +133,16 @@ extension PlansViewController: UITableViewDragDelegate {
         let dragItem = UIDragItem(itemProvider: itemProvider)
 
         return [dragItem]
+    }
+
+    func tableView(_ tableView: UITableView, dragSessionWillBegin session: UIDragSession) {
+        navigationItem.setLeftBarButton(nil, animated: true)
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
+        navigationItem.setLeftBarButton(editButtonItem, animated: true)
+        navigationItem.setRightBarButton(addButtonItem, animated: true)
     }
 }
 

@@ -17,7 +17,7 @@ class CoursesViewController: UITableViewController {
             return "Courses"
         }
 
-        set {}
+        set { }
     }
 
     var courses: [Course] {
@@ -30,16 +30,16 @@ class CoursesViewController: UITableViewController {
         }
     }
 
-    override func viewDidLoad() {
-        let addButtomItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
+    lazy var addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCourse))
 
+    override func viewDidLoad() {
         if #available(iOS 11.0, *) {
             tableView.dragDelegate = self
             tableView.dropDelegate = self
             tableView.dragInteractionEnabled = true
         }
 
-        navigationItem.rightBarButtonItem = addButtomItem
+        navigationItem.rightBarButtonItem = addButtonItem
         navigationItem.leftBarButtonItem = editButtonItem
 
         if #available(iOS 11.0, *) {
@@ -97,9 +97,22 @@ class CoursesViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if #available(iOS 11.0, *) {
+            guard !tableView.hasActiveDrag
+                else { return }
+        }
+
         if case .delete = editingStyle {
             stateController.courses.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if #available(iOS 11.0, *) {
+            return !tableView.hasActiveDrag
+        } else {
+            return true
         }
     }
 
@@ -135,6 +148,16 @@ extension CoursesViewController: UITableViewDragDelegate {
         let dragItem = UIDragItem(itemProvider: itemProvider)
 
         return [dragItem]
+    }
+
+    func tableView(_ tableView: UITableView, dragSessionWillBegin session: UIDragSession) {
+        navigationItem.setLeftBarButton(nil, animated: true)
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
+        navigationItem.setLeftBarButton(editButtonItem, animated: true)
+        navigationItem.setRightBarButton(addButtonItem, animated: true)
     }
 }
 
