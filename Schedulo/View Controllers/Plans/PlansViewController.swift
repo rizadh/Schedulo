@@ -46,10 +46,12 @@ class PlansViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        tableView.reloadData()
-
         if #available(iOS 11.0, *) {
-            tableView.dropDelegate = self
+            if !tableView.hasActiveDrag {
+                tableView.reloadData()
+            }
+        } else {
+            tableView.reloadData()
         }
     }
 
@@ -142,30 +144,44 @@ extension PlansViewController: UITableViewDropDelegate {
     }
 
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        if coordinator.session.canLoadObjects(ofClass: PlanProvider.self) {
-            let destinationRow = coordinator.destinationIndexPath?.row ?? tableView.numberOfRows(inSection: 0)
+        let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(row: plans.count, section: 0)
+        let destinationIndex = destinationIndexPath.row
 
-            coordinator.session.loadObjects(ofClass: PlanProvider.self, completion: { (items) in
-                let plansToInsert = (items as! [PlanProvider]).map { $0.plan }
+        for item in coordinator.items {
+            let itemProvider = item.dragItem.itemProvider
 
-                var indexPaths = [IndexPath]()
-                for (index, plan) in plansToInsert.enumerated() {
-                    self.plans.insert(plan, at: destinationRow + index)
-                    indexPaths.append(IndexPath(row: destinationRow + index, section: 0))
-                }
+            if let sourceIndexPath = item.sourceIndexPath {
+                plans.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+                tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
+            }
 
-                DispatchQueue.main.async {
-                    tableView.insertRows(at: indexPaths, with: .automatic)
-                }
-            })
-        } else if coordinator.session.canLoadObjects(ofClass: CourseProvider.self) {
-            let destinationRow = coordinator.destinationIndexPath!.row
+            if itemProvider.canLoadObject(ofClass: PlanProvider.self) {
+                coordinator.drop(item.dragItem, toRowAt: destinationIndexPath)
 
-            coordinator.session.loadObjects(ofClass: CourseProvider.self, completion: { (items) in
-                let coursesToInsert = (items as! [CourseProvider]).map { $0.course }
+                itemProvider.loadObject(ofClass: PlanProvider.self, completionHandler: { (provider, _) in
+                    let planProvider = provider as! PlanProvider
+                    let plan = planProvider.plan
 
-                self.plans[destinationRow].courses.append(contentsOf: coursesToInsert)
-            })
+                    self.plans.insert(plan, at: destinationIndex)
+
+                    tableView.insertRows(at: [destinationIndexPath], with: .automatic)
+                })
+            }
+
+            if itemProvider.canLoadObject(ofClass: CourseProvider.self) {
+                guard destinationIndex < plans.count
+                    else { return }
+
+                let cell = tableView.cellForRow(at: destinationIndexPath)!
+                coordinator.drop(item.dragItem, intoRowAt: destinationIndexPath, rect: cell.bounds)
+
+                item.dragItem.itemProvider.loadObject(ofClass: CourseProvider.self, completionHandler: { (provider, _) in
+                    let courseProvider = provider as! CourseProvider
+                    let course = courseProvider.course
+
+                    self.plans[destinationIndex].courses.append(course)
+                })
+            }
         }
     }
 
