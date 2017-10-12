@@ -14,6 +14,12 @@ class CourseDetailViewController: UITableViewController {
     var stateController: StateController!
     var courseIndex: Int!
 
+    private enum Cell {
+        case name
+    }
+
+    private var cellEditing: Cell?
+
     // MARK: Course Management
 
     private var course: Course {
@@ -38,10 +44,17 @@ class CourseDetailViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        tableView.reloadData()
+        if let cell = cellEditing {
+            switch cell {
+            case .name:
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
+
+            cellEditing = nil
+        }
     }
 
     // MARK: - UITableViewController Overrides
@@ -89,6 +102,8 @@ class CourseDetailViewController: UITableViewController {
             let courseNameViewController = CourseNameViewController(style: .grouped)
             courseNameViewController.stateController = stateController
             courseNameViewController.courseIndex = courseIndex
+
+            cellEditing = .name
 
             navigationController?.pushViewController(courseNameViewController, animated: true)
         } else if indexPath.row == course.sections.count {

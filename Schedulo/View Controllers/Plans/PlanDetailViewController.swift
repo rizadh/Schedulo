@@ -13,6 +13,13 @@ class PlanDetailViewController: UITableViewController {
     var stateController: StateController!
     var planIndex: Int!
 
+    private enum Cell {
+        case year
+        case season
+    }
+
+    private var cellEditing: Cell?
+
     var plan: Plan {
         get {
             return stateController.plans[planIndex]
@@ -33,10 +40,19 @@ class PlanDetailViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        tableView.reloadData()
+        if let cell = cellEditing {
+            switch cell {
+            case .year:
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            case .season:
+                tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+            }
+
+            cellEditing = nil
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,11 +96,15 @@ class PlanDetailViewController: UITableViewController {
                 planYearViewController.stateController = stateController
                 planYearViewController.planIndex = planIndex
 
+                cellEditing = .year
+
                 navigationController?.pushViewController(planYearViewController, animated: true)
             } else {
                 let planSeasonViewController = PlanSeasonViewController()
                 planSeasonViewController.stateController = stateController
                 planSeasonViewController.planIndex = planIndex
+
+                cellEditing = .season
 
                 navigationController?.pushViewController(planSeasonViewController, animated: true)
             }

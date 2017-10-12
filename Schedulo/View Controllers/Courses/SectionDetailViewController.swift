@@ -14,6 +14,8 @@ class SectionDetailViewController: UITableViewController {
     var courseIndex: Int!
     var sectionIndex: Int!
 
+    private var sessionIndexEditing: Int?
+
     private var section: Section {
         get {
             return stateController.courses[courseIndex].sections[sectionIndex]
@@ -30,10 +32,13 @@ class SectionDetailViewController: UITableViewController {
         navigationItem.rightBarButtonItem = editButtonItem
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        tableView.reloadData()
+        if let index = sessionIndexEditing {
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            sessionIndexEditing = nil
+        }
     }
 
     // MARK: - UITableViewController Overrides
@@ -80,6 +85,8 @@ class SectionDetailViewController: UITableViewController {
             sessionViewController.courseIndex = courseIndex
             sessionViewController.sectionIndex = sectionIndex
             sessionViewController.sessionIndex = indexPath.row
+
+            sessionIndexEditing = indexPath.row
 
             navigationController?.pushViewController(sessionViewController, animated: true)
         }

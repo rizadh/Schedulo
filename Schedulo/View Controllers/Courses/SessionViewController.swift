@@ -15,6 +15,14 @@ class SessionViewController: UITableViewController {
     var sectionIndex: Int!
     var sessionIndex: Int!
 
+    private enum Cell {
+        case day
+        case start
+        case end
+    }
+
+    private var cellEditing: Cell?
+
     var session: Session {
         get {
             return stateController.courses[courseIndex].sections[sectionIndex].sessions[sessionIndex]
@@ -31,10 +39,21 @@ class SessionViewController: UITableViewController {
         title = "Time"
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        tableView.reloadData()
+        if let cell = cellEditing {
+            switch cell {
+            case .day:
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            case .start:
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
+            case .end:
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 2)], with: .automatic)
+            }
+
+            cellEditing = nil
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -76,6 +95,8 @@ class SessionViewController: UITableViewController {
             sessionDayViewController.sectionIndex = sectionIndex
             sessionDayViewController.sessionIndex = sessionIndex
 
+            cellEditing = .day
+
             navigationController?.pushViewController(sessionDayViewController, animated: true)
         case 1:
             let sessionStartTimeViewController = SessionStartTimeViewController()
@@ -84,6 +105,8 @@ class SessionViewController: UITableViewController {
             sessionStartTimeViewController.sectionIndex = sectionIndex
             sessionStartTimeViewController.sessionIndex = sessionIndex
 
+            cellEditing = .start
+
             navigationController?.pushViewController(sessionStartTimeViewController, animated: true)
         case 2:
             let sessionEndTimeViewController = SessionEndTimeViewController()
@@ -91,6 +114,8 @@ class SessionViewController: UITableViewController {
             sessionEndTimeViewController.courseIndex = courseIndex
             sessionEndTimeViewController.sectionIndex = sectionIndex
             sessionEndTimeViewController.sessionIndex = sessionIndex
+
+            cellEditing = .end
 
             navigationController?.pushViewController(sessionEndTimeViewController, animated: true)
         default:
