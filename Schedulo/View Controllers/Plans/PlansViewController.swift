@@ -138,11 +138,15 @@ extension PlansViewController: UITableViewDragDelegate {
     func tableView(_ tableView: UITableView, dragSessionWillBegin session: UIDragSession) {
         navigationItem.setLeftBarButton(nil, animated: true)
         navigationItem.setRightBarButton(nil, animated: true)
+
+        tableView.allowsSelection = false
     }
 
     func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
         navigationItem.setLeftBarButton(editButtonItem, animated: true)
         navigationItem.setRightBarButton(addButtonItem, animated: true)
+
+        tableView.allowsSelection = true
     }
 }
 
