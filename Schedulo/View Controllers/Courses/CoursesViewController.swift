@@ -11,6 +11,7 @@ import UIKit
 class CoursesViewController: UITableViewController {
     // MARK: - Private Properties
     var stateController: StateController!
+    var courseIndexEditing: Int?
 
     override var title: String? {
         get {
@@ -50,12 +51,9 @@ class CoursesViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if #available(iOS 11.0, *) {
-            if !tableView.hasActiveDrag {
-                tableView.reloadData()
-            }
-        } else {
-            tableView.reloadData()
+        if let index = courseIndexEditing {
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            courseIndexEditing = nil
         }
     }
 
@@ -92,6 +90,8 @@ class CoursesViewController: UITableViewController {
         let courseDetailViewController = CourseDetailViewController(style: .grouped)
         courseDetailViewController.stateController = stateController
         courseDetailViewController.courseIndex = indexPath.row
+
+        courseIndexEditing = indexPath.row
 
         navigationController?.pushViewController(courseDetailViewController, animated: true)
     }

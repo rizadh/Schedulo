@@ -10,6 +10,7 @@ import UIKit
 
 class PlansViewController: UITableViewController {
     var stateController: StateController!
+    var planIndexEditing: Int?
 
     override var title: String? {
         get {
@@ -53,12 +54,9 @@ class PlansViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if #available(iOS 11.0, *) {
-            if !tableView.hasActiveDrag {
-                tableView.reloadData()
-            }
-        } else {
-            tableView.reloadData()
+        if let index = planIndexEditing {
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            planIndexEditing = nil
         }
     }
 
@@ -98,6 +96,8 @@ class PlansViewController: UITableViewController {
         let planDetailViewController = PlanDetailViewController(style: .grouped)
         planDetailViewController.stateController = stateController
         planDetailViewController.planIndex = indexPath.row
+
+        planIndexEditing = indexPath.row
 
         navigationController?.pushViewController(planDetailViewController, animated: true)
     }
