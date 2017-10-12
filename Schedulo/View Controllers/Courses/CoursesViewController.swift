@@ -53,8 +53,13 @@ class CoursesViewController: UITableViewController {
 
         if let index = courseIndexEditing {
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-            courseIndexEditing = nil
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+
+        courseIndexEditing = nil
     }
 
     // MARK: - Private Methods

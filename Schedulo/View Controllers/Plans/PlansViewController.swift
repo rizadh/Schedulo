@@ -56,8 +56,13 @@ class PlansViewController: UITableViewController {
 
         if let index = planIndexEditing {
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-            planIndexEditing = nil
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        planIndexEditing = nil
     }
 
     // MARK: - Private Methods
