@@ -37,21 +37,30 @@ class ScheduleViewController: UIViewController {
         let sessionsWrapperView = getSessionsWrapperView(across: displayableSessionTimeRange)
         sessionsWrapperView.translatesAutoresizingMaskIntoConstraints = false
 
-        let timeScaleView = getTimeScaleView(from: displayableSessionTimeRange.earliest.hour, to: displayableSessionTimeRange.latest.hour)
-        timeScaleView.translatesAutoresizingMaskIntoConstraints = false
+        let timeScaleViewLeft = getTimeScaleView(from: displayableSessionTimeRange.earliest.hour, to: displayableSessionTimeRange.latest.hour, alignedTo: .right)
+        timeScaleViewLeft.translatesAutoresizingMaskIntoConstraints = false
+
+        let timeScaleViewRight = getTimeScaleView(from: displayableSessionTimeRange.earliest.hour, to: displayableSessionTimeRange.latest.hour, alignedTo: .left)
+        timeScaleViewRight.translatesAutoresizingMaskIntoConstraints = false
 
         let daysOfTheWeekView = getDaysOfTheWeekView()
         daysOfTheWeekView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(sessionsWrapperView)
-        view.addSubview(timeScaleView)
+        view.addSubview(timeScaleViewLeft)
+        view.addSubview(timeScaleViewRight)
         view.addSubview(daysOfTheWeekView)
 
         daysOfTheWeekView.leftAnchor.constraint(equalTo: sessionsWrapperView.leftAnchor).isActive = true
         daysOfTheWeekView.rightAnchor.constraint(equalTo: sessionsWrapperView.rightAnchor).isActive = true
-        timeScaleView.topAnchor.constraint(equalTo: sessionsWrapperView.topAnchor).isActive = true
-        timeScaleView.bottomAnchor.constraint(equalTo: sessionsWrapperView.bottomAnchor).isActive = true
 
+        timeScaleViewLeft.topAnchor.constraint(equalTo: sessionsWrapperView.topAnchor).isActive = true
+        timeScaleViewLeft.bottomAnchor.constraint(equalTo: sessionsWrapperView.bottomAnchor).isActive = true
+
+        timeScaleViewRight.topAnchor.constraint(equalTo: sessionsWrapperView.topAnchor).isActive = true
+        timeScaleViewRight.bottomAnchor.constraint(equalTo: sessionsWrapperView.bottomAnchor).isActive = true
+
+        sessionsWrapperView.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
         sessionsWrapperView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor).isActive = true
 
         if #available(iOS 11.0, *) {
@@ -59,23 +68,26 @@ class ScheduleViewController: UIViewController {
             daysOfTheWeekView.topAnchor.constraintEqualToSystemSpacingBelow(view.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
 
             // Sessions
-            sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleView.rightAnchor, multiplier: 1).isActive = true
-            view.rightAnchor.constraintEqualToSystemSpacingAfter(sessionsWrapperView.rightAnchor, multiplier: 1).isActive = true
+            sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleViewLeft.rightAnchor, multiplier: 1).isActive = true
+//            view.rightAnchor.constraintEqualToSystemSpacingAfter(sessionsWrapperView.rightAnchor, multiplier: 1).isActive = true
+
             sessionsWrapperView.topAnchor.constraintEqualToSystemSpacingBelow(daysOfTheWeekView.bottomAnchor, multiplier: 1).isActive = true
 
             // Time scale
-            timeScaleView.leftAnchor.constraintEqualToSystemSpacingAfter(view.leftAnchor, multiplier: 1).isActive = true
+            timeScaleViewLeft.leftAnchor.constraintEqualToSystemSpacingAfter(view.leftAnchor, multiplier: 1).isActive = true
+            timeScaleViewRight.leftAnchor.constraintEqualToSystemSpacingAfter(sessionsWrapperView.rightAnchor, multiplier: 1).isActive = true
         } else {
             // Days of the week
             daysOfTheWeekView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 8).isActive = true
 
             // Sessions
-            sessionsWrapperView.leftAnchor.constraint(equalTo: timeScaleView.rightAnchor, constant: 8).isActive = true
+            sessionsWrapperView.leftAnchor.constraint(equalTo: timeScaleViewLeft.rightAnchor, constant: 8).isActive = true
             sessionsWrapperView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
             sessionsWrapperView.topAnchor.constraint(equalTo: daysOfTheWeekView.bottomAnchor, constant: 8).isActive = true
 
             // Time scale
-            timeScaleView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
+            timeScaleViewLeft.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
+            timeScaleViewRight.rightAnchor.constraint(equalTo: sessionsWrapperView.rightAnchor, constant: 8).isActive = true
         }
     }
 
@@ -166,7 +178,7 @@ class ScheduleViewController: UIViewController {
         return stackView
     }
 
-    private func getTimeScaleView(from earliestHour: Int, to latestHour: Int) -> UIView {
+    private func getTimeScaleView(from earliestHour: Int, to latestHour: Int, alignedTo alignment: NSTextAlignment) -> UIView {
         let timeScaleView = UIView()
 
         (earliestHour...latestHour).forEach { hour in
@@ -181,7 +193,7 @@ class ScheduleViewController: UIViewController {
 
             marker.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
             marker.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-            marker.textAlignment = .right
+            marker.textAlignment = alignment
             marker.textColor = UIColor(white: 0, alpha: 0.5)
 
             timeScaleView.addSubview(marker)
