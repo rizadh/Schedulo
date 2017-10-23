@@ -69,8 +69,6 @@ class ScheduleViewController: UIViewController {
 
             // Sessions
             sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleViewLeft.rightAnchor, multiplier: 1).isActive = true
-//            view.rightAnchor.constraintEqualToSystemSpacingAfter(sessionsWrapperView.rightAnchor, multiplier: 1).isActive = true
-
             sessionsWrapperView.topAnchor.constraintEqualToSystemSpacingBelow(daysOfTheWeekView.bottomAnchor, multiplier: 1).isActive = true
 
             // Time scale
@@ -82,7 +80,6 @@ class ScheduleViewController: UIViewController {
 
             // Sessions
             sessionsWrapperView.leftAnchor.constraint(equalTo: timeScaleViewLeft.rightAnchor, constant: 8).isActive = true
-            sessionsWrapperView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
             sessionsWrapperView.topAnchor.constraint(equalTo: daysOfTheWeekView.bottomAnchor, constant: 8).isActive = true
 
             // Time scale
