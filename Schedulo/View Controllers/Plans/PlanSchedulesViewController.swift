@@ -37,10 +37,8 @@ class PlanSchedulesViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let scheduleViewController = ScheduleViewController(style: .grouped)
-        scheduleViewController.stateController = stateController
-        scheduleViewController.planIndex = planIndex
-        scheduleViewController.scheduleIndex = indexPath.row
+        let schedule = self.schedules[indexPath.row]
+        let scheduleViewController = ScheduleViewController(for: schedule)
 
         navigationController?.pushViewController(scheduleViewController, animated: true)
     }

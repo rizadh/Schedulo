@@ -20,7 +20,7 @@
 		4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */; };
 		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
 		4A6D16D51F849C8200705F80 /* PlanSchedulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */; };
-		4A6D16D71F849DB600705F80 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D16D61F849DB600705F80 /* ScheduleViewController.swift */; };
+		4A6F4E371F8F1DF1004693B2 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6F4E361F8F1DF1004693B2 /* ScheduleViewController.swift */; };
 		4A8B62561F8D539B00ADCC4D /* CourseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8B62551F8D539B00ADCC4D /* CourseProvider.swift */; };
 		4A8B62581F8D642C00ADCC4D /* PlanProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8B62571F8D642C00ADCC4D /* PlanProvider.swift */; };
 		4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87841F0459CC00FA1AC2 /* Season.swift */; };
@@ -55,7 +55,7 @@
 		4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
 		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
 		4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSchedulesViewController.swift; sourceTree = "<group>"; };
-		4A6D16D61F849DB600705F80 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		4A6F4E361F8F1DF1004693B2 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		4A8B62551F8D539B00ADCC4D /* CourseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProvider.swift; sourceTree = "<group>"; };
 		4A8B62571F8D642C00ADCC4D /* PlanProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanProvider.swift; sourceTree = "<group>"; };
 		4AAA87841F0459CC00FA1AC2 /* Season.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
@@ -113,7 +113,6 @@
 				4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */,
 				4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */,
 				4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */,
-				4A6D16D61F849DB600705F80 /* ScheduleViewController.swift */,
 			);
 			path = Plans;
 			sourceTree = "<group>";
@@ -121,6 +120,7 @@
 		4A5402391F29916800CFDFAE /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4A6F4E351F8F1DDF004693B2 /* Schedule */,
 				4A464F5E1F2B6F030079FC29 /* Courses */,
 				4A464F5F1F2B6F090079FC29 /* Plans */,
 			);
@@ -152,6 +152,14 @@
 				4A54023F1F299F1100CFDFAE /* Overlappable.swift */,
 			);
 			path = "Custom Protocols";
+			sourceTree = "<group>";
+		};
+		4A6F4E351F8F1DDF004693B2 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				4A6F4E361F8F1DF1004693B2 /* ScheduleViewController.swift */,
+			);
+			path = Schedule;
 			sourceTree = "<group>";
 		};
 		4AC85F5F1EFDC06300062548 = {
@@ -260,6 +268,7 @@
 			files = (
 				4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */,
 				4AC85F8E1EFDC08900062548 /* Session.swift in Sources */,
+				4A6F4E371F8F1DF1004693B2 /* ScheduleViewController.swift in Sources */,
 				4AC85F871EFDC08900062548 /* Course.swift in Sources */,
 				4A2A57B51F8484380014CF45 /* SessionDayViewController.swift in Sources */,
 				4A2A57AD1F84337C0014CF45 /* CourseNameViewController.swift in Sources */,
@@ -268,7 +277,6 @@
 				4A2A57B31F84802A0014CF45 /* SessionViewController.swift in Sources */,
 				4A6D16D51F849C8200705F80 /* PlanSchedulesViewController.swift in Sources */,
 				4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */,
-				4A6D16D71F849DB600705F80 /* ScheduleViewController.swift in Sources */,
 				4A2A57B71F8488E60014CF45 /* SessionStartTimeViewController.swift in Sources */,
 				4A8B62581F8D642C00ADCC4D /* PlanProvider.swift in Sources */,
 				4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */,
@@ -420,6 +428,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UZW69BGU4W;
 				INFOPLIST_FILE = Schedulo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rizadh.schedulo-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -438,6 +447,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UZW69BGU4W;
 				INFOPLIST_FILE = Schedulo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rizadh.schedulo-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";

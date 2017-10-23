@@ -45,6 +45,10 @@ struct Time: Codable {
     var asMinutes: Int {
         return 60 * self.hour + self.minute
     }
+
+    static func -(left: Time, right: Time) -> Int {
+        return left.asMinutes - right.asMinutes
+    }
 }
 
 extension Time: Equatable {
