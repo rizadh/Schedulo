@@ -95,12 +95,24 @@ class ScheduleViewController: UIViewController {
         timeScaleView.leftAnchor.constraint(equalTo: view.layoutMarginsGuide.leftAnchor).isActive = true
         timeScaleView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         timeScaleView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 36).isActive = true
-        view.layoutMarginsGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(timeScaleView.bottomAnchor, multiplier: 1).isActive = true
+        if #available(iOS 11.0, *) {
+            view.layoutMarginsGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(timeScaleView.bottomAnchor, multiplier: 1).isActive = true
+        } else {
+            view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: timeScaleView.bottomAnchor, constant: 8).isActive = true
+        }
 
-        sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleView.rightAnchor, multiplier: 1).isActive = true
+        if #available(iOS 11.0, *) {
+            sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleView.rightAnchor, multiplier: 1).isActive = true
+        } else {
+            sessionsWrapperView.leftAnchor.constraint(equalTo: timeScaleView.rightAnchor, constant: 8).isActive = true
+        }
         sessionsWrapperView.rightAnchor.constraint(equalTo: view.layoutMarginsGuide.rightAnchor).isActive = true
         sessionsWrapperView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor).isActive = true
-        view.layoutMarginsGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(sessionsWrapperView.bottomAnchor, multiplier: 2).isActive = true
+        if #available(iOS 11.0, *) {
+            view.layoutMarginsGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(sessionsWrapperView.bottomAnchor, multiplier: 2).isActive = true
+        } else {
+            view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: sessionsWrapperView.bottomAnchor, constant: 16).isActive = true
+        }
 
         for (index, dayView) in sessionsWrapperView.arrangedSubviews.enumerated() {
             let day = Day(rawValue: index + 1)!
@@ -115,7 +127,11 @@ class ScheduleViewController: UIViewController {
             dayView.addSubview(dayName)
 
             dayName.centerXAnchor.constraint(equalTo: dayView.centerXAnchor).isActive = true
-            dayName.topAnchor.constraintEqualToSystemSpacingBelow(dayView.topAnchor, multiplier: 1).isActive = true
+            if #available(iOS 11.0, *) {
+                dayName.topAnchor.constraintEqualToSystemSpacingBelow(dayView.topAnchor, multiplier: 1).isActive = true
+            } else {
+                dayName.topAnchor.constraint(equalTo: dayView.topAnchor, constant: 8).isActive = true
+            }
             dayName.heightAnchor.constraint(equalToConstant: 20).isActive = true
         }
 
@@ -171,7 +187,11 @@ class ScheduleViewController: UIViewController {
                 wrapperView.leftAnchor.constraint(equalTo: dayView.leftAnchor).isActive = true
                 wrapperView.rightAnchor.constraint(equalTo: dayView.rightAnchor).isActive = true
                 let label = dayView.subviews.first as! UILabel
-                wrapperView.topAnchor.constraintEqualToSystemSpacingBelow(label.bottomAnchor, multiplier: 1).isActive = true
+                if #available(iOS 11.0, *) {
+                    wrapperView.topAnchor.constraintEqualToSystemSpacingBelow(label.bottomAnchor, multiplier: 1).isActive = true
+                } else {
+                    wrapperView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8).isActive = true
+                }
                 wrapperView.bottomAnchor.constraint(equalTo: dayView.bottomAnchor).isActive = true
             }
 
