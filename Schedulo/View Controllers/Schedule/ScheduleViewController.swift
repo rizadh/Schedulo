@@ -32,108 +32,65 @@ class ScheduleViewController: UIViewController {
     }
 
     private func setupSubviews() {
-        let sessions = schedule.sessions
+        let displayableSessionTimeRange = schedule.sessions.getTimeRangesForDisplay()
 
-        let earliestSessionTime = sessions.earliestTime()
-        let latestSessionTime = sessions.latestTime()
+        let sessionsWrapperView = getSessionsWrapperView(across: displayableSessionTimeRange)
+        sessionsWrapperView.translatesAutoresizingMaskIntoConstraints = false
 
-        let earliestDisplayedTime = earliestSessionTime.minute == 0 ? earliestSessionTime : Time(hour: earliestSessionTime.hour, minute: 0)
-        let latestDisplayedTime = latestSessionTime.minute == 0 ? latestSessionTime : Time(hour: latestSessionTime.hour + 1, minute: 0)
+        let timeScaleView = getTimeScaleView(from: displayableSessionTimeRange.earliest.hour, to: displayableSessionTimeRange.latest.hour)
+        timeScaleView.translatesAutoresizingMaskIntoConstraints = false
 
+        let daysOfTheWeekView = getDaysOfTheWeekView()
+        daysOfTheWeekView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(sessionsWrapperView)
+        view.addSubview(timeScaleView)
+        view.addSubview(daysOfTheWeekView)
+
+        daysOfTheWeekView.leftAnchor.constraint(equalTo: sessionsWrapperView.leftAnchor).isActive = true
+        daysOfTheWeekView.rightAnchor.constraint(equalTo: sessionsWrapperView.rightAnchor).isActive = true
+        timeScaleView.topAnchor.constraint(equalTo: sessionsWrapperView.topAnchor).isActive = true
+        timeScaleView.bottomAnchor.constraint(equalTo: sessionsWrapperView.bottomAnchor).isActive = true
+
+        sessionsWrapperView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor).isActive = true
+
+        if #available(iOS 11.0, *) {
+            // Days of the week
+            daysOfTheWeekView.topAnchor.constraintEqualToSystemSpacingBelow(view.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
+
+            // Sessions
+            sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleView.rightAnchor, multiplier: 1).isActive = true
+            view.rightAnchor.constraintEqualToSystemSpacingAfter(sessionsWrapperView.rightAnchor, multiplier: 1).isActive = true
+            sessionsWrapperView.topAnchor.constraintEqualToSystemSpacingBelow(daysOfTheWeekView.bottomAnchor, multiplier: 1).isActive = true
+
+            // Time scale
+            timeScaleView.leftAnchor.constraintEqualToSystemSpacingAfter(view.leftAnchor, multiplier: 1).isActive = true
+        } else {
+            // Days of the week
+            daysOfTheWeekView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 8).isActive = true
+
+            // Sessions
+            sessionsWrapperView.leftAnchor.constraint(equalTo: timeScaleView.rightAnchor, constant: 8).isActive = true
+            sessionsWrapperView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
+            sessionsWrapperView.topAnchor.constraint(equalTo: daysOfTheWeekView.bottomAnchor, constant: 8).isActive = true
+
+            // Time scale
+            timeScaleView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
+        }
+    }
+
+    private func getSessionsWrapperView(across sessionRange: (earliest: Time, latest: Time)) -> UIView {
         func timeToPercent(_ time: Time) -> CGFloat {
-            let range = CGFloat(latestDisplayedTime - earliestDisplayedTime)
-            let minutesFromEarliest = CGFloat(time - earliestDisplayedTime)
+            let range = CGFloat(sessionRange.latest - sessionRange.earliest)
+            let minutesFromEarliest = CGFloat(time - sessionRange.earliest)
 
             return minutesFromEarliest / range
         }
 
-        let dayViews = (0...4).map { _ in UIView() }
-        let sessionsWrapperView = UIStackView(arrangedSubviews: dayViews)
+        let sessionsWrapperView = UIStackView(arrangedSubviews: (0...4).map { _ in UIView() })
         sessionsWrapperView.translatesAutoresizingMaskIntoConstraints = false
         sessionsWrapperView.distribution = .fillEqually
         sessionsWrapperView.spacing = 8
-
-
-        let timeScaleView = UIView()
-        timeScaleView.translatesAutoresizingMaskIntoConstraints = false
-        (earliestDisplayedTime.hour...latestDisplayedTime.hour).forEach { hour in
-            let marker = UILabel()
-            marker.translatesAutoresizingMaskIntoConstraints = false
-
-            if hour <= 12 {
-                marker.text = "\(hour) AM"
-            } else {
-                marker.text = "\(hour - 12) PM"
-            }
-
-            marker.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
-
-            timeScaleView.addSubview(marker)
-
-            func hourToPercent(_ hour: Int) -> CGFloat {
-                let earliestHour = earliestDisplayedTime.hour
-                let latestHour = latestDisplayedTime.hour
-
-                let range = CGFloat(latestHour - earliestHour)
-                let percent = CGFloat(hour - earliestHour) / range
-
-                return percent
-            }
-
-            marker.centerXAnchor.constraint(equalTo: timeScaleView.centerXAnchor).isActive = true
-            let percent = hourToPercent(hour)
-            if percent == 0 {
-                marker.centerYAnchor.constraint(equalTo: timeScaleView.topAnchor).isActive = true
-            } else {
-                NSLayoutConstraint(item: marker, attribute: .centerY, relatedBy: .equal, toItem: timeScaleView, attribute: .bottom, multiplier: percent, constant: 0).isActive = true
-            }
-        }
-
-        view.addSubview(sessionsWrapperView)
-        view.addSubview(timeScaleView)
-
-        timeScaleView.leftAnchor.constraint(equalTo: view.layoutMarginsGuide.leftAnchor).isActive = true
-        timeScaleView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        timeScaleView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 36).isActive = true
-        if #available(iOS 11.0, *) {
-            view.layoutMarginsGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(timeScaleView.bottomAnchor, multiplier: 1).isActive = true
-        } else {
-            view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: timeScaleView.bottomAnchor, constant: 8).isActive = true
-        }
-
-        if #available(iOS 11.0, *) {
-            sessionsWrapperView.leftAnchor.constraintEqualToSystemSpacingAfter(timeScaleView.rightAnchor, multiplier: 1).isActive = true
-        } else {
-            sessionsWrapperView.leftAnchor.constraint(equalTo: timeScaleView.rightAnchor, constant: 8).isActive = true
-        }
-        sessionsWrapperView.rightAnchor.constraint(equalTo: view.layoutMarginsGuide.rightAnchor).isActive = true
-        sessionsWrapperView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor).isActive = true
-        if #available(iOS 11.0, *) {
-            view.layoutMarginsGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(sessionsWrapperView.bottomAnchor, multiplier: 2).isActive = true
-        } else {
-            view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: sessionsWrapperView.bottomAnchor, constant: 16).isActive = true
-        }
-
-        for (index, dayView) in sessionsWrapperView.arrangedSubviews.enumerated() {
-            let day = Day(rawValue: index + 1)!
-
-            let dayName = UILabel()
-            dayName.translatesAutoresizingMaskIntoConstraints = false
-            let dayText = day.description
-            let endIndex = dayText.index(dayText.startIndex, offsetBy: 3)
-            dayName.text = String("\(day)"[..<endIndex]).uppercased()
-            dayName.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
-
-            dayView.addSubview(dayName)
-
-            dayName.centerXAnchor.constraint(equalTo: dayView.centerXAnchor).isActive = true
-            if #available(iOS 11.0, *) {
-                dayName.topAnchor.constraintEqualToSystemSpacingBelow(dayView.topAnchor, multiplier: 1).isActive = true
-            } else {
-                dayName.topAnchor.constraint(equalTo: dayView.topAnchor, constant: 8).isActive = true
-            }
-            dayName.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        }
 
         var currentCourseHue: CGFloat = 0
         let hueDelta = CGFloat(1) / CGFloat(schedule.selectedSections.count)
@@ -144,16 +101,11 @@ class ScheduleViewController: UIViewController {
             let courseColorText = UIColor(hue: currentCourseHue, saturation: 0.5, brightness: 0.5, alpha: 1)
 
             for session in section.sessions {
-                let wrapperView = UIView()
-                wrapperView.translatesAutoresizingMaskIntoConstraints = false
-
                 let dayIndex = session.day.rawValue
                 let dayView = sessionsWrapperView.arrangedSubviews[dayIndex - 1]
 
                 let startPercent = timeToPercent(session.time.start)
                 let endPercent = timeToPercent(session.time.end)
-                let midPercent = (startPercent + endPercent) / 2
-                let percentRange = endPercent - startPercent
 
                 let sessionView = UIView()
                 sessionView.translatesAutoresizingMaskIntoConstraints = false
@@ -175,28 +127,83 @@ class ScheduleViewController: UIViewController {
                 courseLabel.centerXAnchor.constraint(equalTo: sessionView.centerXAnchor).isActive = true
                 courseLabel.centerYAnchor.constraint(equalTo: sessionView.centerYAnchor).isActive = true
 
-                wrapperView.addSubview(sessionView)
+                dayView.addSubview(sessionView)
 
-                sessionView.leftAnchor.constraint(equalTo: wrapperView.leftAnchor).isActive = true
-                sessionView.rightAnchor.constraint(equalTo: wrapperView.rightAnchor).isActive = true
-                sessionView.heightAnchor.constraint(equalTo: wrapperView.heightAnchor, multiplier: percentRange).isActive = true
-                NSLayoutConstraint(item: sessionView, attribute: .centerY, relatedBy: .equal, toItem: wrapperView, attribute: .bottom, multiplier: midPercent, constant: 0).isActive = true
-
-                dayView.addSubview(wrapperView)
-
-                wrapperView.leftAnchor.constraint(equalTo: dayView.leftAnchor).isActive = true
-                wrapperView.rightAnchor.constraint(equalTo: dayView.rightAnchor).isActive = true
-                let label = dayView.subviews.first as! UILabel
-                if #available(iOS 11.0, *) {
-                    wrapperView.topAnchor.constraintEqualToSystemSpacingBelow(label.bottomAnchor, multiplier: 1).isActive = true
+                sessionView.leftAnchor.constraint(equalTo: dayView.leftAnchor).isActive = true
+                sessionView.rightAnchor.constraint(equalTo: dayView.rightAnchor).isActive = true
+                if startPercent == 0 {
+                    sessionView.topAnchor.constraint(equalTo: dayView.topAnchor).isActive = true
                 } else {
-                    wrapperView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8).isActive = true
+                    NSLayoutConstraint(item: sessionView, attribute: .top, relatedBy: .equal, toItem: dayView, attribute: .bottom, multiplier: startPercent, constant: 0).isActive = true
                 }
-                wrapperView.bottomAnchor.constraint(equalTo: dayView.bottomAnchor).isActive = true
+                NSLayoutConstraint(item: sessionView, attribute: .bottom, relatedBy: .equal, toItem: dayView, attribute: .bottom, multiplier: endPercent, constant: 0).isActive = true
             }
 
             currentCourseHue += hueDelta
         }
+
+        return sessionsWrapperView
+    }
+
+    private func getDaysOfTheWeekView() -> UIView {
+        let labels: [UILabel] = (1...5).map { dayIndex in
+            let day = Day(rawValue: dayIndex)!
+
+            let dayLabel = UILabel()
+            let dayText = day.description
+            let endIndex = dayText.index(dayText.startIndex, offsetBy: 3)
+            dayLabel.text = dayText[..<endIndex].uppercased()
+            dayLabel.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
+            dayLabel.textAlignment = .center
+
+            return dayLabel
+        }
+
+        let stackView = UIStackView(arrangedSubviews: labels)
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+
+        return stackView
+    }
+
+    private func getTimeScaleView(from earliestHour: Int, to latestHour: Int) -> UIView {
+        let timeScaleView = UIView()
+
+        (earliestHour...latestHour).forEach { hour in
+            let marker = UILabel()
+            marker.translatesAutoresizingMaskIntoConstraints = false
+
+            if hour <= 12 {
+                marker.text = "\(hour)"
+            } else {
+                marker.text = "\(hour - 12)"
+            }
+
+            marker.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
+            marker.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+            marker.textAlignment = .right
+            marker.textColor = UIColor(white: 0, alpha: 0.5)
+
+            timeScaleView.addSubview(marker)
+
+            func hourToPercent(_ hour: Int) -> CGFloat {
+                let range = CGFloat(latestHour - earliestHour)
+                let percent = CGFloat(hour - earliestHour) / range
+
+                return percent
+            }
+
+            marker.leftAnchor.constraint(equalTo: timeScaleView.leftAnchor).isActive = true
+            marker.rightAnchor.constraint(equalTo: timeScaleView.rightAnchor).isActive = true
+            let percent = hourToPercent(hour)
+            if percent == 0 {
+                marker.centerYAnchor.constraint(equalTo: timeScaleView.topAnchor).isActive = true
+            } else {
+                NSLayoutConstraint(item: marker, attribute: .centerY, relatedBy: .equal, toItem: timeScaleView, attribute: .bottom, multiplier: percent, constant: 0).isActive = true
+            }
+        }
+
+        return timeScaleView
     }
 }
 
@@ -227,5 +234,18 @@ extension Array where Element == Session {
         }
 
         return latest
+    }
+
+    func getTimeRangesForDisplay() -> (earliest: Time, latest: Time) {
+        let earliestSessionTime = earliestTime()
+        let latestSessionTime = latestTime()
+
+        let earliestDisplayedTime = earliestSessionTime.minute == 0 ? earliestSessionTime : Time(hour: earliestSessionTime.hour, minute: 0)
+        let latestDisplayedTime = latestSessionTime.minute == 0 ? latestSessionTime : Time(hour: latestSessionTime.hour + 1, minute: 0)
+
+        return (
+            earliest: earliestDisplayedTime,
+            latest: latestDisplayedTime
+        )
     }
 }
