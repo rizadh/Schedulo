@@ -7,75 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A2A57AD1F84337C0014CF45 /* CourseNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57AC1F84337C0014CF45 /* CourseNameViewController.swift */; };
-		4A2A57AF1F845E550014CF45 /* SectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57AE1F845E550014CF45 /* SectionDetailViewController.swift */; };
-		4A2A57B31F84802A0014CF45 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B21F84802A0014CF45 /* SessionViewController.swift */; };
-		4A2A57B51F8484380014CF45 /* SessionDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B41F8484380014CF45 /* SessionDayViewController.swift */; };
-		4A2A57B71F8488E60014CF45 /* SessionStartTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B61F8488E60014CF45 /* SessionStartTimeViewController.swift */; };
-		4A2A57B91F8489EA0014CF45 /* SessionEndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57B81F8489EA0014CF45 /* SessionEndTimeViewController.swift */; };
-		4A2A57BB1F848E420014CF45 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */; };
-		4A2A57BD1F84918E0014CF45 /* PlanYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BC1F84918E0014CF45 /* PlanYearViewController.swift */; };
-		4A2A57BF1F8495DB0014CF45 /* PlanSeasonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */; };
-		4A2A57C11F84996B0014CF45 /* PlanCoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */; };
-		4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */; };
-		4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54023F1F299F1100CFDFAE /* Overlappable.swift */; };
-		4A6D16D51F849C8200705F80 /* PlanSchedulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */; };
-		4A6F4E371F8F1DF1004693B2 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6F4E361F8F1DF1004693B2 /* ScheduleViewController.swift */; };
-		4A8B62561F8D539B00ADCC4D /* CourseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8B62551F8D539B00ADCC4D /* CourseProvider.swift */; };
-		4A8B62581F8D642C00ADCC4D /* PlanProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8B62571F8D642C00ADCC4D /* PlanProvider.swift */; };
-		4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87841F0459CC00FA1AC2 /* Season.swift */; };
-		4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87921F06F98B00FA1AC2 /* StateController.swift */; };
-		4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87941F06FA3900FA1AC2 /* Plan.swift */; };
-		4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */; };
 		4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6B1EFDC06300062548 /* AppDelegate.swift */; };
 		4AC85F731EFDC06300062548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F721EFDC06300062548 /* Assets.xcassets */; };
 		4AC85F761EFDC06300062548 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */; };
-		4AC85F871EFDC08900062548 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F7D1EFDC08900062548 /* Course.swift */; };
-		4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F801EFDC08900062548 /* CourseGenerator.swift */; };
-		4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F811EFDC08900062548 /* Schedule.swift */; };
-		4AC85F8C1EFDC08900062548 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F821EFDC08900062548 /* Section.swift */; };
-		4AC85F8D1EFDC08900062548 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F831EFDC08900062548 /* Day.swift */; };
-		4AC85F8E1EFDC08900062548 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F841EFDC08900062548 /* Session.swift */; };
-		4AC85F8F1EFDC08900062548 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F851EFDC08900062548 /* Time.swift */; };
-		4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F861EFDC08900062548 /* TimeRange.swift */; };
-		4ADC50401F196342007284DE /* PlansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADC503F1F196342007284DE /* PlansViewController.swift */; };
+		4AD0D4ED1FE3226600188CCB /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4AD0D4EB1FE3226600188CCB /* Model.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4A2A57AC1F84337C0014CF45 /* CourseNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseNameViewController.swift; sourceTree = "<group>"; };
-		4A2A57AE1F845E550014CF45 /* SectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDetailViewController.swift; sourceTree = "<group>"; };
-		4A2A57B21F84802A0014CF45 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
-		4A2A57B41F8484380014CF45 /* SessionDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDayViewController.swift; sourceTree = "<group>"; };
-		4A2A57B61F8488E60014CF45 /* SessionStartTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartTimeViewController.swift; sourceTree = "<group>"; };
-		4A2A57B81F8489EA0014CF45 /* SessionEndTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEndTimeViewController.swift; sourceTree = "<group>"; };
-		4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
-		4A2A57BC1F84918E0014CF45 /* PlanYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanYearViewController.swift; sourceTree = "<group>"; };
-		4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSeasonViewController.swift; sourceTree = "<group>"; };
-		4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCoursesViewController.swift; sourceTree = "<group>"; };
-		4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
-		4A54023F1F299F1100CFDFAE /* Overlappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlappable.swift; sourceTree = "<group>"; };
-		4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSchedulesViewController.swift; sourceTree = "<group>"; };
-		4A6F4E361F8F1DF1004693B2 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
-		4A8B62551F8D539B00ADCC4D /* CourseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProvider.swift; sourceTree = "<group>"; };
-		4A8B62571F8D642C00ADCC4D /* PlanProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanProvider.swift; sourceTree = "<group>"; };
-		4AAA87841F0459CC00FA1AC2 /* Season.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
-		4AAA87921F06F98B00FA1AC2 /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
-		4AAA87941F06FA3900FA1AC2 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
-		4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
 		4AC85F681EFDC06300062548 /* Schedulo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedulo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC85F6B1EFDC06300062548 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AC85F721EFDC06300062548 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4AC85F751EFDC06300062548 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4AC85F771EFDC06300062548 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4AC85F7D1EFDC08900062548 /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
-		4AC85F801EFDC08900062548 /* CourseGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseGenerator.swift; sourceTree = "<group>"; };
-		4AC85F811EFDC08900062548 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
-		4AC85F821EFDC08900062548 /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
-		4AC85F831EFDC08900062548 /* Day.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
-		4AC85F841EFDC08900062548 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		4AC85F851EFDC08900062548 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
-		4AC85F861EFDC08900062548 /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
-		4ADC503F1F196342007284DE /* PlansViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansViewController.swift; sourceTree = "<group>"; };
+		4AD0D4EC1FE3226600188CCB /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,79 +33,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4A464F5E1F2B6F030079FC29 /* Courses */ = {
-			isa = PBXGroup;
-			children = (
-				4AAA87981F073BF100FA1AC2 /* CoursesViewController.swift */,
-				4A51400F1F841F3300BC7AF4 /* CourseDetailViewController.swift */,
-				4A2A57AC1F84337C0014CF45 /* CourseNameViewController.swift */,
-				4A2A57AE1F845E550014CF45 /* SectionDetailViewController.swift */,
-				4A2A57B21F84802A0014CF45 /* SessionViewController.swift */,
-				4A2A57B41F8484380014CF45 /* SessionDayViewController.swift */,
-				4A2A57B81F8489EA0014CF45 /* SessionEndTimeViewController.swift */,
-				4A2A57B61F8488E60014CF45 /* SessionStartTimeViewController.swift */,
-			);
-			path = Courses;
-			sourceTree = "<group>";
-		};
-		4A464F5F1F2B6F090079FC29 /* Plans */ = {
-			isa = PBXGroup;
-			children = (
-				4ADC503F1F196342007284DE /* PlansViewController.swift */,
-				4A2A57BC1F84918E0014CF45 /* PlanYearViewController.swift */,
-				4A2A57BA1F848E420014CF45 /* PlanDetailViewController.swift */,
-				4A2A57BE1F8495DB0014CF45 /* PlanSeasonViewController.swift */,
-				4A2A57C01F84996B0014CF45 /* PlanCoursesViewController.swift */,
-				4A6D16D41F849C8200705F80 /* PlanSchedulesViewController.swift */,
-			);
-			path = Plans;
-			sourceTree = "<group>";
-		};
-		4A5402391F29916800CFDFAE /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				4A6F4E351F8F1DDF004693B2 /* Schedule */,
-				4A464F5E1F2B6F030079FC29 /* Courses */,
-				4A464F5F1F2B6F090079FC29 /* Plans */,
-			);
-			path = "View Controllers";
-			sourceTree = "<group>";
-		};
-		4A54023E1F299E3400CFDFAE /* Scheduling */ = {
-			isa = PBXGroup;
-			children = (
-				4A8B62571F8D642C00ADCC4D /* PlanProvider.swift */,
-				4AC85F801EFDC08900062548 /* CourseGenerator.swift */,
-				4AC85F7D1EFDC08900062548 /* Course.swift */,
-				4A8B62551F8D539B00ADCC4D /* CourseProvider.swift */,
-				4AC85F811EFDC08900062548 /* Schedule.swift */,
-				4AC85F821EFDC08900062548 /* Section.swift */,
-				4AC85F831EFDC08900062548 /* Day.swift */,
-				4AC85F841EFDC08900062548 /* Session.swift */,
-				4AC85F851EFDC08900062548 /* Time.swift */,
-				4AC85F861EFDC08900062548 /* TimeRange.swift */,
-				4AAA87841F0459CC00FA1AC2 /* Season.swift */,
-				4AAA87941F06FA3900FA1AC2 /* Plan.swift */,
-			);
-			path = Scheduling;
-			sourceTree = "<group>";
-		};
-		4A5402421F299FD100CFDFAE /* Custom Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				4A54023F1F299F1100CFDFAE /* Overlappable.swift */,
-			);
-			path = "Custom Protocols";
-			sourceTree = "<group>";
-		};
-		4A6F4E351F8F1DDF004693B2 /* Schedule */ = {
-			isa = PBXGroup;
-			children = (
-				4A6F4E361F8F1DF1004693B2 /* ScheduleViewController.swift */,
-			);
-			path = Schedule;
-			sourceTree = "<group>";
-		};
 		4AC85F5F1EFDC06300062548 = {
 			isa = PBXGroup;
 			children = (
@@ -181,11 +52,8 @@
 		4AC85F6A1EFDC06300062548 /* Schedulo */ = {
 			isa = PBXGroup;
 			children = (
+				4AD0D4EB1FE3226600188CCB /* Model.xcdatamodeld */,
 				4AC85F6B1EFDC06300062548 /* AppDelegate.swift */,
-				4AAA87921F06F98B00FA1AC2 /* StateController.swift */,
-				4A5402421F299FD100CFDFAE /* Custom Protocols */,
-				4A54023E1F299E3400CFDFAE /* Scheduling */,
-				4A5402391F29916800CFDFAE /* View Controllers */,
 				4AC85F721EFDC06300062548 /* Assets.xcassets */,
 				4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */,
 				4AC85F771EFDC06300062548 /* Info.plist */,
@@ -266,36 +134,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A5140101F841F3300BC7AF4 /* CourseDetailViewController.swift in Sources */,
-				4AC85F8E1EFDC08900062548 /* Session.swift in Sources */,
-				4A6F4E371F8F1DF1004693B2 /* ScheduleViewController.swift in Sources */,
-				4AC85F871EFDC08900062548 /* Course.swift in Sources */,
-				4A2A57B51F8484380014CF45 /* SessionDayViewController.swift in Sources */,
-				4A2A57AD1F84337C0014CF45 /* CourseNameViewController.swift in Sources */,
-				4AC85F8F1EFDC08900062548 /* Time.swift in Sources */,
-				4A8B62561F8D539B00ADCC4D /* CourseProvider.swift in Sources */,
-				4A2A57B31F84802A0014CF45 /* SessionViewController.swift in Sources */,
-				4A6D16D51F849C8200705F80 /* PlanSchedulesViewController.swift in Sources */,
-				4AAA87951F06FA3900FA1AC2 /* Plan.swift in Sources */,
-				4A2A57B71F8488E60014CF45 /* SessionStartTimeViewController.swift in Sources */,
-				4A8B62581F8D642C00ADCC4D /* PlanProvider.swift in Sources */,
-				4AC85F8A1EFDC08900062548 /* CourseGenerator.swift in Sources */,
-				4AAA87991F073BF100FA1AC2 /* CoursesViewController.swift in Sources */,
-				4A2A57AF1F845E550014CF45 /* SectionDetailViewController.swift in Sources */,
-				4A2A57BD1F84918E0014CF45 /* PlanYearViewController.swift in Sources */,
-				4A2A57BF1F8495DB0014CF45 /* PlanSeasonViewController.swift in Sources */,
-				4AAA87851F0459CC00FA1AC2 /* Season.swift in Sources */,
-				4AC85F901EFDC08900062548 /* TimeRange.swift in Sources */,
-				4AAA87931F06F98B00FA1AC2 /* StateController.swift in Sources */,
-				4AC85F8D1EFDC08900062548 /* Day.swift in Sources */,
-				4AC85F8C1EFDC08900062548 /* Section.swift in Sources */,
-				4AC85F8B1EFDC08900062548 /* Schedule.swift in Sources */,
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
-				4A5402401F299F1100CFDFAE /* Overlappable.swift in Sources */,
-				4A2A57C11F84996B0014CF45 /* PlanCoursesViewController.swift in Sources */,
-				4A2A57B91F8489EA0014CF45 /* SessionEndTimeViewController.swift in Sources */,
-				4ADC50401F196342007284DE /* PlansViewController.swift in Sources */,
-				4A2A57BB1F848E420014CF45 /* PlanDetailViewController.swift in Sources */,
+				4AD0D4ED1FE3226600188CCB /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +268,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UZW69BGU4W;
 				INFOPLIST_FILE = Schedulo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rizadh.schedulo-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -447,7 +287,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UZW69BGU4W;
 				INFOPLIST_FILE = Schedulo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rizadh.schedulo-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -480,6 +320,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4AD0D4EB1FE3226600188CCB /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4AD0D4EC1FE3226600188CCB /* Model.xcdatamodel */,
+			);
+			currentVersion = 4AD0D4EC1FE3226600188CCB /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 4AC85F601EFDC06300062548 /* Project object */;
 }
