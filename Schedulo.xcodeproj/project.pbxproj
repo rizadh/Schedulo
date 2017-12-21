@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A38A8FD1FE8BFFA00359398 /* Semester+Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A38A8FC1FE8BFFA00359398 /* Semester+Title.swift */; };
+		4A38A8FF1FE9C2CB00359398 /* SemesterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A38A8FE1FE9C2CB00359398 /* SemesterViewController.swift */; };
+		4A5DC8AF1FE354050065CAB3 /* SemesterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5DC8AE1FE354050065CAB3 /* SemesterListViewController.swift */; };
 		4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC85F6B1EFDC06300062548 /* AppDelegate.swift */; };
 		4AC85F731EFDC06300062548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F721EFDC06300062548 /* Assets.xcassets */; };
 		4AC85F761EFDC06300062548 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */; };
@@ -14,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A38A8FC1FE8BFFA00359398 /* Semester+Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Semester+Title.swift"; sourceTree = "<group>"; usesTabs = 0; };
+		4A38A8FE1FE9C2CB00359398 /* SemesterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemesterViewController.swift; sourceTree = "<group>"; };
+		4A5DC8AE1FE354050065CAB3 /* SemesterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemesterListViewController.swift; sourceTree = "<group>"; };
 		4AC85F681EFDC06300062548 /* Schedulo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedulo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC85F6B1EFDC06300062548 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AC85F721EFDC06300062548 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -33,6 +39,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A5DC8B21FE354360065CAB3 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4A5DC8AE1FE354050065CAB3 /* SemesterListViewController.swift */,
+				4A38A8FE1FE9C2CB00359398 /* SemesterViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		4AC85F5F1EFDC06300062548 = {
 			isa = PBXGroup;
 			children = (
@@ -54,11 +69,21 @@
 			children = (
 				4AD0D4EB1FE3226600188CCB /* Model.xcdatamodeld */,
 				4AC85F6B1EFDC06300062548 /* AppDelegate.swift */,
+				4AEE68511FE8719000350ED7 /* ModelExtensions */,
+				4A5DC8B21FE354360065CAB3 /* Controllers */,
 				4AC85F721EFDC06300062548 /* Assets.xcassets */,
 				4AC85F741EFDC06300062548 /* LaunchScreen.storyboard */,
 				4AC85F771EFDC06300062548 /* Info.plist */,
 			);
 			path = Schedulo;
+			sourceTree = "<group>";
+		};
+		4AEE68511FE8719000350ED7 /* ModelExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				4A38A8FC1FE8BFFA00359398 /* Semester+Title.swift */,
+			);
+			path = ModelExtensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,8 +159,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A38A8FD1FE8BFFA00359398 /* Semester+Title.swift in Sources */,
 				4AC85F6C1EFDC06300062548 /* AppDelegate.swift in Sources */,
+				4A5DC8AF1FE354050065CAB3 /* SemesterListViewController.swift in Sources */,
 				4AD0D4ED1FE3226600188CCB /* Model.xcdatamodeld in Sources */,
+				4A38A8FF1FE9C2CB00359398 /* SemesterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

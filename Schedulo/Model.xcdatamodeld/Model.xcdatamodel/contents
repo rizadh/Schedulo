@@ -1,41 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
-    <entity name="Course" representedClassName="CourseMO" syncable="YES" codeGenerationType="class">
+    <entity name="Course" representedClassName="Course" syncable="YES" codeGenerationType="class">
         <attribute name="code" attributeType="String" syncable="YES"/>
-        <relationship name="plan" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Plan" inverseName="courses" inverseEntity="Plan" syncable="YES"/>
-        <relationship name="sectionGroups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SectionGroup" inverseName="course" inverseEntity="SectionGroup" syncable="YES"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="code"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
+        <relationship name="sectionGroups" toMany="YES" deletionRule="Cascade" destinationEntity="SectionGroup" inverseName="course" inverseEntity="SectionGroup" syncable="YES"/>
+        <relationship name="semester" toMany="YES" deletionRule="Nullify" destinationEntity="Semester" inverseName="courses" inverseEntity="Semester" syncable="YES"/>
     </entity>
-    <entity name="Plan" representedClassName="PlanMO" syncable="YES" codeGenerationType="class">
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="courses" toMany="YES" deletionRule="Cascade" destinationEntity="Course" inverseName="plan" inverseEntity="Course" syncable="YES"/>
-        <relationship name="semester" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Semester" inverseName="plans" inverseEntity="Semester" syncable="YES"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="name"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
-    <entity name="Section" representedClassName="SectionMO" syncable="YES" codeGenerationType="class">
+    <entity name="Section" representedClassName="Section" syncable="YES" codeGenerationType="class">
         <attribute name="section" attributeType="String" syncable="YES"/>
-        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SectionGroup" inverseName="sections" inverseEntity="SectionGroup" syncable="YES"/>
-        <relationship name="sessions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Session" inverseName="section" inverseEntity="Session" syncable="YES"/>
+        <relationship name="group" maxCount="1" deletionRule="Nullify" destinationEntity="SectionGroup" inverseName="sections" inverseEntity="SectionGroup" syncable="YES"/>
+        <relationship name="sessions" toMany="YES" deletionRule="Cascade" destinationEntity="Session" inverseName="section" inverseEntity="Session" syncable="YES"/>
     </entity>
-    <entity name="SectionGroup" representedClassName="SectionGroupMO" syncable="YES" codeGenerationType="class">
+    <entity name="SectionGroup" representedClassName="SectionGroup" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="sectionGroups" inverseEntity="Course" syncable="YES"/>
-        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Section" inverseName="group" inverseEntity="Section" syncable="YES"/>
+        <relationship name="course" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="sectionGroups" inverseEntity="Course" syncable="YES"/>
+        <relationship name="sections" toMany="YES" deletionRule="Cascade" destinationEntity="Section" inverseName="group" inverseEntity="Section" syncable="YES"/>
     </entity>
     <entity name="Semester" representedClassName="Semester" syncable="YES" codeGenerationType="class">
-        <attribute name="season" attributeType="String" syncable="YES"/>
-        <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="plans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Plan" inverseName="semester" inverseEntity="Plan" syncable="YES"/>
+        <attribute name="season" attributeType="String" regularExpressionString="(Winter|Summer|Fall)" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="courses" toMany="YES" deletionRule="Cascade" destinationEntity="Course" inverseName="semester" inverseEntity="Course" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="year"/>
+                <constraint value="season"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
-    <entity name="Session" representedClassName="SessionMO" syncable="YES" codeGenerationType="class">
+    <entity name="Session" representedClassName="Session" syncable="YES" codeGenerationType="class">
         <attribute name="endHour" attributeType="Integer 16" minValueString="0" maxValueString="23" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="endMinute" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="runsOnFriday" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -45,14 +36,13 @@
         <attribute name="runsOnWednesday" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startHour" attributeType="Integer 16" minValueString="0" maxValueString="23" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startMinute" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="sessions" inverseEntity="Section" syncable="YES"/>
+        <relationship name="section" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="sessions" inverseEntity="Section" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Course" positionX="-306" positionY="-412" width="128" height="88"/>
-        <element name="SectionGroup" positionX="-153" positionY="-412" width="128" height="88"/>
-        <element name="Section" positionX="-153" positionY="-297" width="128" height="88"/>
-        <element name="Session" positionX="-306" positionY="-306" width="117" height="193"/>
-        <element name="Semester" positionX="-659" positionY="-412" width="128" height="88"/>
-        <element name="Plan" positionX="-488" positionY="-414" width="128" height="90"/>
+        <element name="Course" positionX="-578" positionY="-486" width="128" height="88"/>
+        <element name="Section" positionX="-612" positionY="-297" width="128" height="90"/>
+        <element name="SectionGroup" positionX="-803" positionY="-414" width="128" height="88"/>
+        <element name="Semester" positionX="-803" positionY="-522" width="128" height="90"/>
+        <element name="Session" positionX="-801" positionY="-297" width="126" height="195"/>
     </elements>
 </model>
